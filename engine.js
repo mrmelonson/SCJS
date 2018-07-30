@@ -2,11 +2,10 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const token = require("./token.json");
 const contants = require("./constants.json");
-//import "startup.js";
+const logger = require("./logging")
 
 client.on("ready", async=> {
-    console.log(`\n\n\n\n\n BOT STARTED...`);
-
+    console.log("\n\n\n\n\n BOT STARTING...")
     client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
