@@ -1,10 +1,13 @@
+const Discord = require("discord.js");
+
 module.exports = {
     isModerator: function(member) {
-        return member.roles.some(r => ["Staff"]).includes(r.name)
+        member.roles.forEach(role => {
+            if (role.name == "staff") {
+                return true;
+            }
+            console.log(role.name);
+        });
+        return false;
     }
 };
-
-
-
-
-
