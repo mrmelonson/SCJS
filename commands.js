@@ -2,22 +2,33 @@ const Discord = require("discord.js");
 const constant = require("./constants.json")
 const utilities = require("./utilities.js");
 const logger = require("./logging");
+const nonAssignable = require("./nonassignable.json");
 
 var commandDictionary = {
     "ping" : ping,
     "info" : info,
     "mute" : mute,
+    "unmute" : unmute,
     "assign" : assign,
     "remove" : remove,
     "help" : help
 };
 
+//
+// PING COMMAND
+// Pings the bot
+//
 function ping(message, args) {
     message.channel.send(":ping_pong: Pong!");
 }
 
+//
+// MUTE COMMAND
+// Mutes people
+//
+
 function mute(message, args) {
-    if(utilities.isModerator(message.member)) {
+    if(!(utilities.isModerator(message.member))) {
         logger.warn(message.author.tag + ": non staff attempting to use mute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -30,6 +41,12 @@ function mute(message, args) {
         return;
     }
 
+    if(member.id == message.member.id) {
+        logger.log(message.author.tag + ": Tried to mute themselves :/");
+        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
+        return;
+    }
+
     try {
         var muteRole;
         message.guild.roles.forEach(role => {
@@ -39,13 +56,61 @@ function mute(message, args) {
         }); 
 
         member.addRole(muteRole);
+        message.channel.send("<@" + member.id + ">, you have been muted");
         logger.warn(message.author.tag + " has muted " + member.user.tag);
     }
     catch (err) {
         message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
-        logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag);
+        logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
     }
 }
+
+//
+// UNMUTE COMMAND
+// Does the polar opposite of the mute command
+//
+
+function unmute(message, args) {
+    if(!(utilities.isModerator(message.member))) {
+        logger.warn(message.author.tag + ": non staff attempting to use unmute command");
+        message.channel.send("Sorry, you do not have access to this command")
+        return;
+    }
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if (!member) {
+        logger.log(message.author.tag +": Failed unmute command, did not mention user");
+        message.channel.send("Incorrect syntax, please mention user: `kunmute [user]`");
+        return;
+    }
+
+    if(member.id == message.member.id) {
+        logger.log(message.author.tag + ": Tried to unmute themselves");
+        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
+        return;
+    }
+
+    try {
+        var muteRole;
+        member.roles.forEach(role => {
+            if (role.name == "cool off") {
+                muteRole = role;
+            }
+        });
+
+        member.removeRole(muteRole);
+        logger.warn(message.author.tag + " has unmuted " + member.user.tag);
+    }
+    catch (err) {
+        message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
+        logger.warn(message.author.tag + ", failed to assign unmute role to " + member.tag);
+    }
+}
+
+//
+// ASSIGN COMMAND
+// Assigns roles to users
+//
 
 function assign(message, args) {
     var roleName = args.join(' ');
@@ -57,18 +122,31 @@ function assign(message, args) {
         return;
     }
     var flag = false;
+    try {
+        nonAssignable.nonAssignable.forEach(role => {
+            if (roleName == role) {
+                throw ('forbidden');
+            }
+        });
+    }
+    catch (err) {
+        message.channel.send("Sorry, i don't have permission to assign that role to you.")
+        logger.warn("Could not assign role: " + err);
+        return;
+    }
+
     message.guild.roles.forEach(role => {
         if(role.name == roleName) {
             try {
                 message.member.addRole(role);
                 message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.")
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
+                flag = true;
             }
             catch (err) {
                 message.channel.send("Sorry, i don't have permission to assign that role to you.")
                 logger.warn("Could not assign role: " + err);
             }
-            flag = true;
             return;
         }
     });
@@ -89,6 +167,19 @@ function remove(message, args) {
         return;
     }
 
+    try {
+        nonAssignable.nonAssignable.forEach(role => {
+            if (roleName == "cool off") {
+                throw ('forbidden');
+            }
+        });
+    }
+    catch (err) {
+        message.channel.send("Sorry, i don't have permission to remove that role from you.")
+        logger.warn("Could not assign role: " + err);
+        return;
+    }
+
     var flag = false;
 
     message.member.roles.forEach(role => {
@@ -97,12 +188,12 @@ function remove(message, args) {
                 message.member.removeRole(role);
                 message.channel.send("<@" + message.member.id+ ">, I have removed [" + role.name + "] from you.");
                 logger.log("Removed role [" + role.name + "] from " + message.member.user.tag);
+                flag = true;
             }
             catch (err) {
                 message.channel.send("Sorry, i don't have permission to remove that role from you.")
                 logger.warn("Could not remove role: " + err);
             }
-            flag = true;
             return;
         }
     });
