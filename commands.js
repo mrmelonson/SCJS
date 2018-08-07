@@ -157,6 +157,11 @@ function assign(message, args) {
     return;
 }
 
+//
+// Remove Command
+// Removes roles from user
+//
+
 function remove(message, args) {
     var roleName = args.join(' ');
     roleName = roleName.toLowerCase();
@@ -204,6 +209,11 @@ function remove(message, args) {
     return;
 }
 
+//
+// Info command
+// Gives info about the bot
+//
+
 function info(message, args) {
     message.channel.send(
         "```" +
@@ -220,6 +230,12 @@ function info(message, args) {
     );
 }
 
+//
+// Help Command
+// Gives help
+// PLEASE ADD NEW COMMANDS HERE
+//
+
 function help(message, args) {
     var commands = [];
     commands.push("**These are your available commands**\n\n")
@@ -235,6 +251,16 @@ function help(message, args) {
     commands.push("**Remove command**\n" +
                 "Syntax - `kremove [role]`\n" +
                 "Desc - Removes a role from you\n");
+
+    if (utilities.isModerator(message.member)) {
+        commands.push("\n**Moderator Commands**\n");
+        commands.push("**Mute command**\n" +
+                    "Syntax - `kmute [user]`\n" +
+                    "Desc - Mutes a user\n");
+        commands.push("**Unmute command**\n" +
+                    "Syntax - `kumute [muted user]\n" +
+                    "Desc - Unmutes a user\n");
+    }
     logger.log(message.author.tag + " Requesting help.");
     try {
         message.member.send(commands.join(''));
