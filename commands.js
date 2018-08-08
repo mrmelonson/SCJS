@@ -11,6 +11,7 @@ var commandDictionary = {
     "unmute" : unmute,
     "assign" : assign,
     "remove" : remove,
+    "roll" : roll,
     "help" : help
 };
 
@@ -19,7 +20,11 @@ var commandDictionary = {
 // Pings the bot
 //
 function ping(message, args) {
-    message.channel.send(":ping_pong: Pong!");
+    var t1 = Date.now();
+    message.channel.send(":ping_pong: Pong!").then((message) =>{
+        var t2 = Date.now();
+        message.edit(":ping_pong: Pong! Took " + (t2 - t1) + " milliseconds!");
+    });
 }
 
 //
@@ -136,22 +141,21 @@ function assign(message, args) {
     }
 
     message.guild.roles.forEach(role => {
+        console.log(role.name);
         if(role.name == roleName) {
-            try {
-                message.member.addRole(role);
+            message.member.addRole(role).then(() => {
                 message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.")
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
-                flag = true;
-            }
-            catch (err) {
+            }).catch((err) => {
                 message.channel.send("Sorry, i don't have permission to assign that role to you.")
                 logger.warn("Could not assign role: " + err);
-            }
+            });
+            flag = true;
             return;
         }
     });
     if (!flag) {
-        message.channel.send("Sorry this role does not exist");
+        message.channel.send("Sorry this role does not exist or i don't have permission to assign it to you.");
         logger.warn("Role [" + roleName + "] does not exist.");
     } 
     return;
@@ -189,16 +193,14 @@ function remove(message, args) {
 
     message.member.roles.forEach(role => {
         if (role.name == roleName) {
-            try {
-                message.member.removeRole(role);
+            message.member.removeRole(role).then(() => {
                 message.channel.send("<@" + message.member.id+ ">, I have removed [" + role.name + "] from you.");
                 logger.log("Removed role [" + role.name + "] from " + message.member.user.tag);
-                flag = true;
-            }
-            catch (err) {
+            }).catch((err) => {
                 message.channel.send("Sorry, i don't have permission to remove that role from you.")
                 logger.warn("Could not remove role: " + err);
-            }
+            });
+            flag = true;
             return;
         }
     });
@@ -251,6 +253,9 @@ function help(message, args) {
     commands.push("**Remove command**\n" +
                 "Syntax - `kremove [role]`\n" +
                 "Desc - Removes a role from you\n");
+    commands.push("**Roll command**\n" +
+                "Syntax - `kroll [# of sides]`\n" +
+                "Desc - Rolls a dice\n");
 
     if (utilities.isModerator(message.member)) {
         commands.push("\n**Moderator Commands**\n");
@@ -258,23 +263,37 @@ function help(message, args) {
                     "Syntax - `kmute [user]`\n" +
                     "Desc - Mutes a user\n");
         commands.push("**Unmute command**\n" +
-                    "Syntax - `kumute [muted user]\n" +
+                    "Syntax - `kumute [muted user]`\n" +
                     "Desc - Unmutes a user\n");
     }
     logger.log(message.author.tag + " Requesting help.");
-    try {
-        message.member.send(commands.join(''));
-        logger.log("Success, " + message.author.tag + " has recived help.")
-        message.channel.send("<@" + message.member.id + ">, I have sent you your available commands.")
-    } 
-    catch (err) {
-        message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
-                            commands.join(''));
-        logger.warn("Failed sending message to chat. Error:" + err);
-    }
+
+    message.member.send(commands.join('')).then(() => {
+            message.channel.send("<@" + message.member.id + ">, I have sent you your available commands.");
+            logger.log("Success, " + message.author.tag + " has recived help.");
+    }).catch(() => {
+            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
+                                commands.join(''));
+            logger.warn("Failed sending message to chat. Error:" + err);
+    });
     
 }
 
+//
+// Roll command
+// Generates a radom number
+//
+
+function roll(message, args) {
+    var num = parseInt(args[0], 10);
+    if (Number.isNaN(num)) {
+        message.channel.send("<@" + message.member.id + ">, that is not a number.");
+    }
+    else {
+        message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
+    }
+    return;
+}
 
 
 exports.commandDictionary = commandDictionary;
