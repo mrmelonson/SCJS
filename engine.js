@@ -11,8 +11,8 @@ client.on("ready", async=> {
 
  client.on("message", async msg => {
     // Return if author is bot or message is not command
-    if (msg.author.bot) return;
-    if (msg.content.toLowerCase().indexOf(constants.prefix)) return;
+    if (msg.author.bot) { return; }
+    if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
     //format to args and command
     const args = msg.content.slice(constants.prefix.length).trim().split(" ");

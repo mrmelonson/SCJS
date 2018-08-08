@@ -4,23 +4,31 @@ module.exports = {
     isModerator: function(member) {
         var flag = false;
         member.roles.forEach(role => {
-            switch(role) {
-                case "staff":
+            if (role.name == "staff")
+                {
                     flag = true;
-                    break;
-                case "boss":
+                    return;
+                }
+                if (role.name == "boss")
+                {
                     flag = true;
-                    break;
-                case "admin":
+                    return;
+                }
+                if (role.name == "admin")
+                {
                     flag = true;
-                    break;
-                case "moderator":
+                    return;
+                }
+                if (role.name == "moderator")
+                {
                     flag = true;
-                    break;
-                case "Helper":
-                    flag = true
-                    break;
-            }
+                    return;
+                }
+                if (role.name == "helper")
+                {
+                    flag = true;
+                    return;
+                }
             //console.log(role.name);
         });
         return flag;

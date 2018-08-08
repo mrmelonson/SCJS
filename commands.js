@@ -4,6 +4,8 @@ const utilities = require("./utilities.js");
 const logger = require("./logging");
 const nonAssignable = require("./nonassignable.json");
 
+// If using VS code press F12 while cursor is on the function to quickly navigate to it!
+
 var commandDictionary = {
     "ping" : ping,
     "info" : info,
@@ -12,6 +14,8 @@ var commandDictionary = {
     "assign" : assign,
     "remove" : remove,
     "roles" : roles,
+    "purge" : purge,
+    "action" :action,
     "help" : help
 };
 
@@ -355,6 +359,105 @@ function roles(message, args) {
             message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. please check the Pins");
             logger.warn("Failed sending message to chat. Error:" + err);
     });
+
+}
+
+//
+// Purge Command
+// Purges messages
+//
+
+function purge(message, args) {
+    
+    if (!(utilities.isModerator(message.member))) {
+        logger.warn(message.author.tag + ": non staff attempting to use purge command");
+        message.channel.send("Sorry, you do not have access to this command");
+        return;
+    }
+    let num = parseInt(args[0], 10);
+
+    if (Number.isNaN(num)) {
+        message.channel.send("<@" + message.member.id + ">, please use a number. `kpurge [number of msgs]`");
+        return;
+    }
+
+    if(num >= 100) {
+        message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
+        return;
+    }
+    message.channel.send("Purging " + num + " messages now!");
+    num += 2;
+    logger.warn(message.author.tag + ": is purging " + num + " messages");
+    message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
+}
+
+//
+// Action command
+// Does an action in chat
+//
+
+function action(message, args) {
+    var member = message.mentions.members.first() || message.guild.members.get(args[1]);
+    if (!member || member == args[0]) {
+        logger.log(message.author.tag +": Failed action command incorrect syntax");
+        message.channel.send("Incorrect syntax, please mention user: `kaction [action] [user]`");
+        return;
+    }
+
+    if(member.id == message.member.id) {
+        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself. Sorry!");
+        return;
+    }
+
+
+    var action = args[0];
+    var userId = message.member.id;
+    var userId2 = member.id;
+    if (action == "bap") {
+        if (member.id == constant.SCID) {
+            message.channel.send(">:V <@" + userId2 + "> :newspaper2: <@" + userId + ">");
+        }
+        else {
+            message.channel.send("<@" + userId + "> :newspaper2: <@" + userId2 + ">");
+        }
+    }
+    else if (action == "smooch") {
+        if (member.id == constant.SCID) {
+            message.channel.send(">///< T-Thank you, <@" + userId + ">.");
+        }
+        else {
+            message.channel.send(":heart: <@" + userId + "> :kissing_heart: <@" + userId2 + "> :heart:");
+        }
+    }
+    else if (action == "boop") {
+        if (member.id == constant.SCID) {
+            message.channel.send("no");
+        }
+        else {
+            message.channel.send("<@" + userId + "> :right_facing_fist: :boom: <@" + userId2 + ">");
+        }
+    }
+    else if (action == "snug") {
+        if (member.id == constant.SCID) {
+            message.channel.send("*Holds <@${usersId}> tight*");
+        }
+        else {
+            message.channel.send("AWWW!! <@" + userId + "> and <@" + userId2 + "> are snuggling!!");
+        }
+    }
+    else {
+        message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
+                            "Avaliable actions:\n" +
+                            "```\n" +
+                            "Bap\n" +
+                            "Smooch\n" +
+                            "Boop\n" +
+                            "Punch\n" +
+                            "Snug" +
+                            "```");
+    }
+
+
 
 }
 
