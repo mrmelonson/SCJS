@@ -6,7 +6,7 @@ const logger = require("./logging");
 const commands = require("./commands");
 
 client.on("ready", async=> {
-    client.user.setActivity(`killme please`);
+    client.user.setActivity(`khelp`);
 });
 
  client.on("message", async msg => {

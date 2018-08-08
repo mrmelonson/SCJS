@@ -11,7 +11,7 @@ var commandDictionary = {
     "unmute" : unmute,
     "assign" : assign,
     "remove" : remove,
-    "roll" : roll,
+    "roles" : roles,
     "help" : help
 };
 
@@ -281,7 +281,7 @@ function help(message, args) {
 
 //
 // Roll command
-// Generates a radom number
+// Generates a random number
 //
 
 function roll(message, args) {
@@ -295,5 +295,67 @@ function roll(message, args) {
     return;
 }
 
+//
+// Rolls command
+// Lists all the roles
+//
+
+function roles(message, args) {
+    var roles = [];
+
+    roles.push("***ROLES!!!***\n");
+    roles.push("**Nationalities**\n" +
+                "Australia\n" +
+                "New Zealand\n" +
+                "International\n");
+
+    roles.push("\n**States (if in AUS)**\n" +
+                "QLD\n" +
+                "NSW\n" +
+                "ACT\n" +
+                "VIC\n" +
+                "TAS\n" +
+                "SA\n" +
+                "WA\n" +
+                "NT\n");
+
+    roles.push("\n**Sexuality**\n" +
+                "Straight\n" +           
+                "Gay\n" +
+                "Bi\n" +
+                "Asexual\n");
+    
+    roles.push("\n**Prefs (for Bi)**\n" +            
+                "Male Preference\n" +
+                "Female Preference\n");
+    
+    roles.push("\n**Gender**\n" +
+                "Male\n" +     
+                "Female\n" +             
+                "Non-binary\n" +         
+                "Trans\n" +       
+                "Unspecified Gender\n");
+
+    roles.push("\n**Artists Roles**\n" +
+                "Artist\n" +
+                "Commissions Open\n" +   
+                "Commissions Closed\n");
+    roles.push("\n**DM/RP Roles**\n" + 
+                "DM Friendly\n" +
+                "DM Unfriendly\n" +      
+                "DM Request\n" +    
+                "RP Friendly\n" +       
+                "RP Unfriendly\n" +     
+                "RP Request\n");
+    
+    message.member.send(roles.join('')).then(() => {
+            message.channel.send("<@" + message.member.id + ">, I have sent you your available roles.");
+            logger.log("Success, " + message.author.tag + " has recived help.");
+    }).catch(() => {
+            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. please check the Pins");
+            logger.warn("Failed sending message to chat. Error:" + err);
+    });
+
+}
 
 exports.commandDictionary = commandDictionary;
