@@ -7,17 +7,26 @@ const nonAssignable = require("./nonassignable.json");
 // If using VS code press F12 while cursor is on the function to quickly navigate to it!
 
 var commandDictionary = {
+    //user commands
     "ping" : ping,
     "info" : info,
-    "mute" : mute,
-    "unmute" : unmute,
     "assign" : assign,
     "remove" : remove,
     "roles" : roles,
-    "purge" : purge,
     "action" :action,
-    "help" : help
+    "help" : help,
+
+    // staff commands
+    "mute" : mute,
+    "unmute" : unmute,
+    "purge" : purge,
 };
+
+/*
+* 
+*  USER COMMANDS
+*
+*/
 
 //
 // PING COMMAND
@@ -32,91 +41,6 @@ function ping(message, args) {
 }
 
 //
-// MUTE COMMAND
-// Mutes people
-//
-
-function mute(message, args) {
-    if(!(utilities.isModerator(message.member))) {
-        logger.warn(message.author.tag + ": non staff attempting to use mute command");
-        message.channel.send("Sorry, you do not have access to this command")
-        return;
-    }
-
-    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
-    if (!member) {
-        logger.log(message.author.tag +": Failed mute command, did not mention user");
-        message.channel.send("Incorrect syntax, please mention user: `kmute [user]`");
-        return;
-    }
-
-    if(member.id == message.member.id) {
-        logger.log(message.author.tag + ": Tried to mute themselves :/");
-        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
-        return;
-    }
-
-    try {
-        var muteRole;
-        message.guild.roles.forEach(role => {
-            if (role.name == "cool off") {
-                muteRole = role;
-            }
-        }); 
-
-        member.addRole(muteRole);
-        message.channel.send("<@" + member.id + ">, you have been muted");
-        logger.warn(message.author.tag + " has muted " + member.user.tag);
-    }
-    catch (err) {
-        message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
-        logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
-    }
-}
-
-//
-// UNMUTE COMMAND
-// Does the polar opposite of the mute command
-//
-
-function unmute(message, args) {
-    if(!(utilities.isModerator(message.member))) {
-        logger.warn(message.author.tag + ": non staff attempting to use unmute command");
-        message.channel.send("Sorry, you do not have access to this command")
-        return;
-    }
-
-    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
-    if (!member) {
-        logger.log(message.author.tag +": Failed unmute command, did not mention user");
-        message.channel.send("Incorrect syntax, please mention user: `kunmute [user]`");
-        return;
-    }
-
-    if(member.id == message.member.id) {
-        logger.log(message.author.tag + ": Tried to unmute themselves");
-        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
-        return;
-    }
-
-    try {
-        var muteRole;
-        member.roles.forEach(role => {
-            if (role.name == "cool off") {
-                muteRole = role;
-            }
-        });
-
-        member.removeRole(muteRole);
-        logger.warn(message.author.tag + " has unmuted " + member.user.tag);
-    }
-    catch (err) {
-        message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
-        logger.warn(message.author.tag + ", failed to assign unmute role to " + member.tag);
-    }
-}
-
-//
 // ASSIGN COMMAND
 // Assigns roles to users
 //
@@ -124,6 +48,11 @@ function unmute(message, args) {
 function assign(message, args) {
     var roleName = args.join(' ');
     roleName = roleName.toLowerCase();
+
+    if (message.guild.id == constant.AusfursID && message.channel.id != constant.AusfursChangeroles) {
+        message.channel.send("Sorry, Please use this command in <#409721129515614210>.");
+        return;
+    }
 
     if(args.length == 0) {
         message.channel.send("Incorrect syntax : `kassign role`");
@@ -133,7 +62,7 @@ function assign(message, args) {
     var flag = false;
     try {
         nonAssignable.nonAssignable.forEach(role => {
-            if (roleName == role) {
+            if (roleName == role.toLowerCase()) {
                 throw ('forbidden');
             }
         });
@@ -145,8 +74,7 @@ function assign(message, args) {
     }
 
     message.guild.roles.forEach(role => {
-        console.log(role.name);
-        if(role.name == roleName) {
+        if(role.name.toLowerCase() == roleName) {
             message.member.addRole(role).then(() => {
                 message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.")
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
@@ -173,6 +101,10 @@ function assign(message, args) {
 function remove(message, args) {
     var roleName = args.join(' ');
     roleName = roleName.toLowerCase();
+    if (message.guild.id == constant.AusfursID && message.channel.id != constant.AusfursChangeroles) {
+        message.channel.send("Sorry, Please use this command in <#409721129515614210>.");
+        return;
+    }
 
     if(args.length == 0) {
         message.channel.send("Incorrect syntax : `kremove role`");
@@ -182,7 +114,7 @@ function remove(message, args) {
 
     try {
         nonAssignable.nonAssignable.forEach(role => {
-            if (roleName == "cool off") {
+            if (roleName == role.toLowerCase()) {
                 throw ('forbidden');
             }
         });
@@ -196,7 +128,7 @@ function remove(message, args) {
     var flag = false;
 
     message.member.roles.forEach(role => {
-        if (role.name == roleName) {
+        if (role.name.toLowerCase() == roleName) {
             message.member.removeRole(role).then(() => {
                 message.channel.send("<@" + message.member.id+ ">, I have removed [" + role.name + "] from you.");
                 logger.log("Removed role [" + role.name + "] from " + message.member.user.tag);
@@ -306,6 +238,9 @@ function roll(message, args) {
 
 function roles(message, args) {
     var roles = [];
+    if (message.guild.id != constant.AusfursID){
+        return;
+    }
 
     roles.push("***ROLES!!!***\n");
     roles.push("**Nationalities**\n" +
@@ -359,36 +294,6 @@ function roles(message, args) {
             message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. please check the Pins");
             logger.warn("Failed sending message to chat. Error:" + err);
     });
-
-}
-
-//
-// Purge Command
-// Purges messages
-//
-
-function purge(message, args) {
-    
-    if (!(utilities.isModerator(message.member))) {
-        logger.warn(message.author.tag + ": non staff attempting to use purge command");
-        message.channel.send("Sorry, you do not have access to this command");
-        return;
-    }
-    let num = parseInt(args[0], 10);
-
-    if (Number.isNaN(num)) {
-        message.channel.send("<@" + message.member.id + ">, please use a number. `kpurge [number of msgs]`");
-        return;
-    }
-
-    if(num >= 100) {
-        message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
-        return;
-    }
-    message.channel.send("Purging " + num + " messages now!");
-    num += 2;
-    logger.warn(message.author.tag + ": is purging " + num + " messages");
-    message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
 }
 
 //
@@ -429,12 +334,20 @@ function action(message, args) {
             message.channel.send(":heart: <@" + userId + "> :kissing_heart: <@" + userId2 + "> :heart:");
         }
     }
-    else if (action == "boop") {
+    else if (action == "punch") {
         if (member.id == constant.SCID) {
             message.channel.send("no");
         }
         else {
             message.channel.send("<@" + userId + "> :right_facing_fist: :boom: <@" + userId2 + ">");
+        }
+    }
+    else if (action == "boop") {
+        if (member.id == constant.SCID) {
+            message.channel.send("*receives boop*");
+        }
+        else {
+            message.channel.send("<@" + userId + "> :point_right: <@" + userId2 + "> *Boop*.");
         }
     }
     else if (action == "snug") {
@@ -459,6 +372,126 @@ function action(message, args) {
 
 
 
+}
+
+/*
+* 
+*  STAFF COMMANDS
+*
+*/
+
+//
+// MUTE COMMAND
+// Mutes people
+//
+
+function mute(message, args) {
+    if(!(utilities.isModerator(message.member))) {
+        logger.warn(message.author.tag + ": non staff attempting to use mute command");
+        message.channel.send("Sorry, you do not have access to this command")
+        return;
+    }
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if (!member) {
+        logger.log(message.author.tag +": Failed mute command, did not mention user");
+        message.channel.send("Incorrect syntax, please mention user: `kmute [user]`");
+        return;
+    }
+
+    if(member.id == message.member.id) {
+        logger.log(message.author.tag + ": Tried to mute themselves :/");
+        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
+        return;
+    }
+
+    try {
+        var muteRole;
+        message.guild.roles.forEach(role => {
+            if (role.name == "cool off") {
+                muteRole = role;
+            }
+        }); 
+
+        member.addRole(muteRole);
+        message.channel.send("<@" + member.id + ">, you have been muted");
+        logger.warn(message.author.tag + " has muted " + member.user.tag);
+    }
+    catch (err) {
+        message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
+        logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
+    }
+}
+
+//
+// UNMUTE COMMAND
+// Does the polar opposite of the mute command
+//
+
+function unmute(message, args) {
+    if(!(utilities.isModerator(message.member))) {
+        logger.warn(message.author.tag + ": non staff attempting to use unmute command");
+        message.channel.send("Sorry, you do not have access to this command")
+        return;
+    }
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if (!member) {
+        logger.log(message.author.tag +": Failed unmute command, did not mention user");
+        message.channel.send("Incorrect syntax, please mention user: `kunmute [user]`");
+        return;
+    }
+
+    if(member.id == message.member.id) {
+        logger.log(message.author.tag + ": Tried to unmute themselves");
+        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
+        return;
+    }
+
+    try {
+        var muteRole;
+        member.roles.forEach(role => {
+            if (role.name == "cool off") {
+                muteRole = role;
+            }
+        });
+
+        member.removeRole(muteRole);
+        logger.warn(message.author.tag + " has unmuted " + member.user.tag);
+    }
+    catch (err) {
+        message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
+        logger.warn(message.author.tag + ", failed to assign unmute role to " + member.tag);
+    }
+}
+
+//
+// Purge Command
+// Purges messages
+//
+
+function purge(message, args) {
+    
+    if (!(utilities.isModerator(message.member))) {
+        logger.warn(message.author.tag + ": non staff attempting to use purge command");
+        message.channel.send("Sorry, you do not have access to this command");
+        return;
+    }
+    let num = parseInt(args[0], 10);
+
+    if (Number.isNaN(num)) {
+        message.channel.send("<@" + message.member.id + ">, please use a number. `kpurge [number of msgs]`");
+        return;
+    }
+
+    if(num >= 100) {
+        message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
+        return;
+    }
+    message.channel.send("Purging " + num + " messages now!");
+    num += 2;
+    logger.warn(message.author.tag + ": is purging " + num + " messages");
+    message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
 }
 
 exports.commandDictionary = commandDictionary;

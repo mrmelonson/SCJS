@@ -6,6 +6,7 @@ const logger = require("./logging");
 const commands = require("./commands");
 
 client.on("ready", async=> {
+    logger.log("\nBOT START...\n")
     client.user.setActivity(`khelp`);
 });
 
