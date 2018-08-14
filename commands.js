@@ -12,7 +12,6 @@ var commandDictionary = {
     "info" : info,
     "assign" : assign,
     "remove" : remove,
-    "roles" : roles,
     "action" :action,
     "help" : help,
 
@@ -231,70 +230,6 @@ function roll(message, args) {
     return;
 }
 
-//
-// Rolls command
-// Lists all the roles
-//
-
-function roles(message, args) {
-    var roles = [];
-    if (message.guild.id != constant.AusfursID){
-        return;
-    }
-
-    roles.push("***ROLES!!!***\n");
-    roles.push("**Nationalities**\n" +
-                "Australia\n" +
-                "New Zealand\n" +
-                "International\n");
-
-    roles.push("\n**States (if in AUS)**\n" +
-                "QLD\n" +
-                "NSW\n" +
-                "ACT\n" +
-                "VIC\n" +
-                "TAS\n" +
-                "SA\n" +
-                "WA\n" +
-                "NT\n");
-
-    roles.push("\n**Sexuality**\n" +
-                "Straight\n" +           
-                "Gay\n" +
-                "Bi\n" +
-                "Asexual\n");
-    
-    roles.push("\n**Prefs (for Bi)**\n" +            
-                "Male Preference\n" +
-                "Female Preference\n");
-    
-    roles.push("\n**Gender**\n" +
-                "Male\n" +     
-                "Female\n" +             
-                "Non-binary\n" +         
-                "Trans\n" +       
-                "Unspecified Gender\n");
-
-    roles.push("\n**Artists Roles**\n" +
-                "Artist\n" +
-                "Commissions Open\n" +   
-                "Commissions Closed\n");
-    roles.push("\n**DM/RP Roles**\n" + 
-                "DM Friendly\n" +
-                "DM Unfriendly\n" +      
-                "DM Request\n" +    
-                "RP Friendly\n" +       
-                "RP Unfriendly\n" +     
-                "RP Request\n");
-    
-    message.member.send(roles.join('')).then(() => {
-            message.channel.send("<@" + message.member.id + ">, I have sent you your available roles.");
-            logger.log("Success, " + message.author.tag + " has recived help.");
-    }).catch(() => {
-            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. please check the Pins");
-            logger.warn("Failed sending message to chat. Error:" + err);
-    });
-}
 
 //
 // Action command
@@ -318,23 +253,7 @@ function action(message, args) {
     var action = args[0];
     var userId = message.member.id;
     var userId2 = member.id;
-    if (action == "bap") {
-        if (member.id == constant.SCID) {
-            message.channel.send(">:V <@" + userId2 + "> :newspaper2: <@" + userId + ">");
-        }
-        else {
-            message.channel.send("<@" + userId + "> :newspaper2: <@" + userId2 + ">");
-        }
-    }
-    else if (action == "smooch") {
-        if (member.id == constant.SCID) {
-            message.channel.send(">///< T-Thank you, <@" + userId + ">.");
-        }
-        else {
-            message.channel.send(":heart: <@" + userId + "> :kissing_heart: <@" + userId2 + "> :heart:");
-        }
-    }
-    else if (action == "punch") {
+    if (action == "punch") {
         if (member.id == constant.SCID) {
             message.channel.send("no");
         }
@@ -342,31 +261,20 @@ function action(message, args) {
             message.channel.send("<@" + userId + "> :right_facing_fist: :boom: <@" + userId2 + ">");
         }
     }
-    else if (action == "boop") {
+    else if (action == "hug") {
         if (member.id == constant.SCID) {
-            message.channel.send("*receives boop*");
+            message.channel.send("*hugs <@${usersId}> tight*");
         }
         else {
-            message.channel.send("<@" + userId + "> :point_right: <@" + userId2 + "> *Boop*.");
-        }
-    }
-    else if (action == "snug") {
-        if (member.id == constant.SCID) {
-            message.channel.send("*Holds <@${usersId}> tight*");
-        }
-        else {
-            message.channel.send("AWWW!! <@" + userId + "> and <@" + userId2 + "> are snuggling!!");
+            message.channel.send("<@" + userId + "> and <@" + userId2 + "> hug each other.");
         }
     }
     else {
         message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
                             "Avaliable actions:\n" +
                             "```\n" +
-                            "Bap\n" +
-                            "Smooch\n" +
-                            "Boop\n" +
                             "Punch\n" +
-                            "Snug" +
+                            "Hug" +
                             "```");
     }
 
