@@ -1,36 +1,36 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    isModerator: function(member) {
-        var flag = false;
+    ModLevel: function(member) {
+        var clearLvl = 0;
         member.roles.forEach(role => {
-            if (role.name.toLowerCase() == "staff")
-                {
-                    flag = true;
-                    return;
-                }
                 if (role.name.toLowerCase() == "boss")
                 {
-                    flag = true;
+                    clearLvl = 3;
                     return;
                 }
                 if (role.name.toLowerCase() == "admin")
                 {
-                    flag = true;
+                    clearLvl = 3;
                     return;
                 }
                 if (role.name.toLowerCase() == "moderator")
                 {
-                    flag = true;
+                    clearLvl = 2;
                     return;
                 }
                 if (role.name.toLowerCase() == "helper")
                 {
-                    flag = true;
+                    clearLvl = 1;
+                    return;
+                }
+                if (role.name.toLowerCase() == "staff")
+                {
+                    clearLvl = 1;
                     return;
                 }
             //console.log(role.name);
         });
-        return flag;
+        return clearLvl;
     }
 };

@@ -15,7 +15,7 @@ client.on("ready", async=> {
     if (msg.author.bot) { return; }
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
-    //format to args and command
+    //format args and command
     const args = msg.content.slice(constants.prefix.length).trim().split(" ");
     const command = args.shift().toLocaleLowerCase();
 
@@ -24,7 +24,7 @@ client.on("ready", async=> {
         logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
     }
     catch (err) {
-        logger.crit(msg.author.tag +" used unknown command: " + command);
+        logger.crit(msg.author.tag +" command failed");
         logger.crit(err);
     }
 });
