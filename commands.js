@@ -192,7 +192,7 @@ function help(message, args) {
                 "Syntax - `kroll [# of sides]`\n" +
                 "Desc - Rolls a dice\n");
 
-    if (utilities.isModerator(message.member)) {
+    if (utilities.ModLevel(message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
         commands.push("**Mute command**\n" +
                     "Syntax - `kmute [user]`\n" +
@@ -294,7 +294,7 @@ function action(message, args) {
 //
 
 function mute(message, args) {
-    if(!(utilities.isModerator(message.member))) {
+    if((utilities.ModLevel(message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use mute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -337,7 +337,7 @@ function mute(message, args) {
 //
 
 function unmute(message, args) {
-    if(!(utilities.isModerator(message.member))) {
+    if((utilities.ModLevel(message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use unmute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -380,7 +380,7 @@ function unmute(message, args) {
 
 function purge(message, args) {
     
-    if (!(utilities.isModerator(message.member))) {
+    if ((utilities.ModLevel(message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use purge command");
         message.channel.send("Sorry, you do not have access to this command");
         return;
@@ -401,5 +401,8 @@ function purge(message, args) {
     logger.warn(message.author.tag + ": is purging " + num + " messages");
     message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
 }
+
+
+
 
 exports.commandDictionary = commandDictionary;
