@@ -408,7 +408,7 @@ function mute(message, args) {
     try {
         var muteRole;
         message.guild.roles.forEach(role => {
-            if (role.name == "cool off") {
+            if (role.name.toLowerCase() == "muted") {
                 muteRole = role;
             }
         }); 
@@ -451,7 +451,7 @@ function unmute(message, args) {
     try {
         var muteRole;
         member.roles.forEach(role => {
-            if (role.name == "cool off") {
+            if (role.name.toLowerCase() == "muted") {
                 muteRole = role;
             }
         });
