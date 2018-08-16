@@ -12,13 +12,15 @@ var commandDictionary = {
     "info" : info,
     "assign" : assign,
     "remove" : remove,
-    "action" :action,
+    "roles" : roles,
+    "action" : action,
     "help" : help,
-
+    "roll" : roll,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
     "purge" : purge,
+    "promote" : promote,
 };
 
 /*
@@ -192,7 +194,7 @@ function help(message, args) {
                 "Syntax - `kroll [# of sides]`\n" +
                 "Desc - Rolls a dice\n");
 
-    if (utilities.ModLevel(message.member) > 0) {
+    if (utilities.ModLevel(message, message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
         commands.push("**Mute command**\n" +
                     "Syntax - `kmute [user]`\n" +
@@ -294,7 +296,7 @@ function action(message, args) {
 //
 
 function mute(message, args) {
-    if((utilities.ModLevel(message.member)) < 1) {
+    if((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use mute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -337,7 +339,7 @@ function mute(message, args) {
 //
 
 function unmute(message, args) {
-    if((utilities.ModLevel(message.member)) < 1) {
+    if((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use unmute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -380,7 +382,7 @@ function unmute(message, args) {
 
 function purge(message, args) {
     
-    if ((utilities.ModLevel(message.member)) < 1) {
+    if ((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use purge command");
         message.channel.send("Sorry, you do not have access to this command");
         return;
@@ -400,6 +402,68 @@ function purge(message, args) {
     num += 2;
     logger.warn(message.author.tag + ": is purging " + num + " messages");
     message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
+}
+
+//
+// Promote Command
+// Promote users to a higher clearence level
+//
+
+function promote(message, args) {
+    var clearence = utilities.ModLevel(message, message.member);
+
+    if (clearence < 1) {
+        logger.warn(message.author.tag + ": non staff attempting to use purge command");
+        message.channel.send("Sorry, you do not have access to this command");
+        return;
+    }
+
+    if (clearence < 3) {
+        logger.warn(message.author.tag + ": Non admin attempting yo use purge command");
+        message.channel.send("Sorry, you do not have access to this command. Please consult an admin to do this for you.");
+        return;
+    }
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if (!member) {
+        logger.log(message.author.tag +": Failed promote command, did not mention user");
+        message.channel.send("Incorrect syntax, please mention user: `kpromote [user] [level 1-2]`");
+        return;
+    }
+
+    if(member.id == message.member.id) {
+        logger.log(message.author.tag + ": Tried to promote themselves themselves");
+        message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
+        return;
+    }
+
+    var num = parseInt(args[1], 10);
+    if (num == NaN) {
+        logger.log(message.author.tag + ": no promotion level specified");
+        message.channel.send("<@" + message.member.id + ">, You must specify a promotion level.");
+        return;
+    }
+
+    try {
+        utilities.PromoterHelper(message, clearence, member, utilities.ModLevel(message, member) , num);
+    } catch (e) {
+        if (e == 'Permission Denied') {
+            logger.log(message.author.tag + ": cannot promote a user to you current level or higher");
+            message.channel.send("<@" + message.member.id + ">, I cannot promote a user to your current level or higher.");
+            return;
+        }
+        else if (e == 'Cannot Demote') {
+            logger.log(message.author.tag + ": Cannot demote a user");
+            message.channel.send("<@" + message.member.id + ">, I cannot demote users with this command.");
+            return;
+        }
+        else {
+            logger.log(message.author.tag + ": " + e);
+            message.channel.send("<@" + message.member.id + ">, command failed");
+            return;
+        }
+    }
+    return;
 }
 
 

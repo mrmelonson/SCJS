@@ -1,7 +1,9 @@
 const Discord = require("discord.js");
+const constant = require("./constants.json");
+const logger = require("./logging");
 
 module.exports = {
-    ModLevel: function(member) {
+    ModLevel: function(message, member) {
         var clearLvl = 0;
         member.roles.forEach(role => {
                 if (role.name.toLowerCase() == "boss")
@@ -31,6 +33,67 @@ module.exports = {
                 }
             //console.log(role.name);
         });
+        if (message.guild.owner == member) {
+            clearLvl = 4;
+        }
         return clearLvl;
+    },
+
+PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, promoteToLevel) {
+        var modLevel = memberlevel;
+        console.log(modLevel);
+        var previousLevel = mentionedlevel;
+        console.log(previousLevel);
+        console.log(promoteToLevel);
+        var modLevesls = {
+            1 : "staff",
+            2 : "moderator",
+            3 : "admin"
+        }
+        // Remove for assignment branch
+        var modLeveslsAusfurs = {
+            1 : "helper",
+            2 : "moderator",
+            3 : "admin"
+        }
+        if (modLevel <= promoteToLevel) {
+            throw('Permission Denied');
+            return;
+        }
+
+        if (previousLevel >= promoteToLevel) {
+            throw('Cannot Demote');
+            return;
+        }
+        
+        // Remove for assignment branch
+        if (message.guild.id == constant.AusfursID) {
+            message.guild.roles.forEach(role => {
+                if(role.name.toLowerCase() == modLeveslsAusfurs[promoteToLevel]) {
+                    mentionedUser.addRole(role).then(() => {
+                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promote to " + role.name)
+                        logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
+                    }).catch((err) => {
+                        message.channel.send("Sorry, i don't have permission to assign that role to you.")
+                        logger.warn("Could not assign role: " + err);
+                    });
+                }
+            });
+        } else {
+            message.guild.roles.forEach(role => {
+                if(role.name.toLowerCase() == modLevesls[promoteToLevel]) {
+                    mentionedUser.addRole(role).then(() => {
+                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promote to " + role.name)
+                        logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
+                    }).catch((err) => {
+                        message.channel.send("Sorry, i don't have permission to assign that role to you.")
+                        logger.warn("Could not assign role: " + err);
+                    });
+                }
+            });
+        }
+        return;
     }
+
 };
+
