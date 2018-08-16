@@ -466,7 +466,4 @@ function promote(message, args) {
     return;
 }
 
-
-
-
 exports.commandDictionary = commandDictionary;
