@@ -1,3 +1,4 @@
+
 const Discord = require("discord.js");
 const constant = require("./constants.json")
 const utilities = require("./utilities.js");
@@ -12,10 +13,9 @@ var commandDictionary = {
     "info" : info,
     "assign" : assign,
     "remove" : remove,
-    "roles" : roles,
-    "action" : action,
+    "action" :action,
     "help" : help,
-    "roll" : roll,
+
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -194,7 +194,7 @@ function help(message, args) {
                 "Syntax - `kroll [# of sides]`\n" +
                 "Desc - Rolls a dice\n");
 
-    if (utilities.ModLevel(message, message.member) > 0) {
+    if (utilities.ModLevel(message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
         commands.push("**Mute command**\n" +
                     "Syntax - `kmute [user]`\n" +
@@ -296,7 +296,7 @@ function action(message, args) {
 //
 
 function mute(message, args) {
-    if((utilities.ModLevel(message, message.member)) < 1) {
+    if((utilities.ModLevel(message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use mute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -339,7 +339,7 @@ function mute(message, args) {
 //
 
 function unmute(message, args) {
-    if((utilities.ModLevel(message, message.member)) < 1) {
+    if((utilities.ModLevel(message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use unmute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -382,7 +382,7 @@ function unmute(message, args) {
 
 function purge(message, args) {
     
-    if ((utilities.ModLevel(message, message.member)) < 1) {
+    if ((utilities.ModLevel(message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use purge command");
         message.channel.send("Sorry, you do not have access to this command");
         return;
