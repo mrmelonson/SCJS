@@ -193,6 +193,9 @@ function help(message, args) {
     commands.push("**Roll command**\n" +
                 "Syntax - `kroll [# of sides]`\n" +
                 "Desc - Rolls a dice\n");
+    commands.push("**Action command**\n" + 
+                "Syntax - `kroll [action] [user]`\n" + 
+                "Desc - Use an action on someone")
 
     if (utilities.ModLevel(message, message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
