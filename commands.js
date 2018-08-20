@@ -264,7 +264,23 @@ function action(message, args) {
     var action = args[0];
     var userId = message.member.id;
     var userId2 = member.id;
-    if (action == "punch") {
+    if (action == "bap") {
+        if (member.id == constant.SCID) {
+            message.channel.send(">:V <@" + userId2 + "> :newspaper2: <@" + userId + ">");
+        }
+        else {
+            message.channel.send("<@" + userId + "> :newspaper2: <@" + userId2 + ">");
+        }
+    }
+    else if (action == "smooch") {
+        if (member.id == constant.SCID) {
+            message.channel.send(">///< T-Thank you, <@" + userId + ">.");
+        }
+        else {
+            message.channel.send(":heart: <@" + userId + "> :kissing_heart: <@" + userId2 + "> :heart:");
+        }
+    }
+    else if (action == "punch") {
         if (member.id == constant.SCID) {
             message.channel.send("no");
         }
@@ -272,20 +288,31 @@ function action(message, args) {
             message.channel.send("<@" + userId + "> :right_facing_fist: :boom: <@" + userId2 + ">");
         }
     }
-    else if (action == "hug") {
+    else if (action == "boop") {
         if (member.id == constant.SCID) {
-            message.channel.send("*hugs <@${usersId}> tight*");
+            message.channel.send("*receives boop*");
         }
         else {
-            message.channel.send("<@" + userId + "> and <@" + userId2 + "> hug each other.");
+            message.channel.send("<@" + userId + "> :point_right: <@" + userId2 + "> *Boop*.");
+        }
+    }
+    else if (action == "snug") {
+        if (member.id == constant.SCID) {
+            message.channel.send("*Holds <@${usersId}> tight*");
+        }
+        else {
+            message.channel.send("AWWW!! <@" + userId + "> and <@" + userId2 + "> are snuggling!!");
         }
     }
     else {
         message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
                             "Avaliable actions:\n" +
                             "```\n" +
+                            "Bap\n" +
+                            "Smooch\n" +
+                            "Boop\n" +
                             "Punch\n" +
-                            "Hug" +
+                            "Snug" +
                             "```");
     }
 
