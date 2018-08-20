@@ -394,7 +394,7 @@ function purge(message, args) {
         return;
     }
 
-    if(num >= 100) {
+    if(num > 100) {
         message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
         return;
     }
