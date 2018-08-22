@@ -71,7 +71,7 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
             message.guild.roles.forEach(role => {
                 if(role.name.toLowerCase() == modLeveslsAusfurs[promoteToLevel]) {
                     mentionedUser.addRole(role).then(() => {
-                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promote to " + role.name)
+                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promoted to " + role.name)
                         logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
                     }).catch((err) => {
                         message.channel.send("Sorry, i don't have permission to assign that role to you.")
@@ -83,7 +83,7 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
             message.guild.roles.forEach(role => {
                 if(role.name.toLowerCase() == modLevesls[promoteToLevel]) {
                     mentionedUser.addRole(role).then(() => {
-                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promote to " + role.name)
+                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promoted to " + role.name)
                         logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
                     }).catch((err) => {
                         message.channel.send("Sorry, i don't have permission to assign that role to you.")

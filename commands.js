@@ -77,10 +77,10 @@ function assign(message, args) {
     message.guild.roles.forEach(role => {
         if(role.name.toLowerCase() == roleName) {
             message.member.addRole(role).then(() => {
-                message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.")
+                message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.");
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
             }).catch((err) => {
-                message.channel.send("Sorry, i don't have permission to assign that role to you.")
+                message.channel.send("Sorry, i don't have permission to assign that role to you.");
                 logger.warn("Could not assign role: " + err);
             });
             flag = true;
@@ -194,7 +194,7 @@ function help(message, args) {
                 "Syntax - `kroll [# of sides]`\n" +
                 "Desc - Rolls a dice\n");
     commands.push("**Action command**\n" + 
-                "Syntax - `kroll [action] [user]`\n" + 
+                "Syntax - `kaction [action] [user]`\n" + 
                 "Desc - Use an action on someone");
 
     if (utilities.ModLevel(message, message.member) > 0) {
