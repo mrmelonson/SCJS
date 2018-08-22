@@ -1,3 +1,4 @@
+
 const Discord = require("discord.js");
 const constant = require("./constants.json")
 const utilities = require("./utilities.js");
@@ -12,10 +13,9 @@ var commandDictionary = {
     "info" : info,
     "assign" : assign,
     "remove" : remove,
-    "roles" : roles,
-    "action" : action,
+    "action" :action,
     "help" : help,
-    "roll" : roll,
+
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -492,7 +492,7 @@ function purge(message, args) {
         return;
     }
 
-    if(num >= 100) {
+    if(num > 100) {
         message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
         return;
     }
