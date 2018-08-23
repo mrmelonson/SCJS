@@ -206,6 +206,12 @@ function help(message, args) {
                     "Syntax - `kumute [muted user]`\n" +
                     "Desc - Unmutes a user\n");
     }
+    if (utilities.ModLevel(message, message.member) > 2) {
+        commands.push("\n**Admin Commands**\n");
+        commands.push("**Promote command**\n" +
+                    "Syntax - `kpromote [user] [level 1-2]`\n" +
+                    "Desc - Promotes user to staff or moderator\n"); 
+    }
     logger.log(message.author.tag + " Requesting help.");
 
     message.member.send(commands.join('')).then(() => {
