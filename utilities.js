@@ -40,6 +40,11 @@ module.exports = {
     },
 
 PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, promoteToLevel) {
+    mentionedUser.roles.forEach( role => {
+        if (role.name.toLowerCase() == "staff" || role.name.toLowerCase() == "helper" || role.name.toLowerCase() == "moderator" || role.name.toLowerCase() == "admin") {
+            mentionedUser.removeRole(role);
+        }
+    });
         var modLevel = memberlevel;
         console.log(modLevel);
         var previousLevel = mentionedlevel;
@@ -60,12 +65,12 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
             throw('Permission Denied');
             return;
         }
-
-        if (previousLevel >= promoteToLevel) {
-            throw('Cannot Demote');
+        
+        if (promoteToLevel < 1) {
+            message.channel.send("<@" + mentionedUser.id+ ">, You have been demoted to user");
+            logger.warn(mentionedUser.tag + " : has been demoted to User");
             return;
         }
-        
         // Remove for assignment branch
         if (message.guild.id == constant.AusfursID) {
             message.guild.roles.forEach(role => {

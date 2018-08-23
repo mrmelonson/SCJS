@@ -536,7 +536,8 @@ function promote(message, args) {
     }
 
     var num = parseInt(args[1], 10);
-    if (num == NaN) {
+    console.log(num);
+    if (isNaN(num)) {
         logger.log(message.author.tag + ": no promotion level specified");
         message.channel.send("<@" + message.member.id + ">, You must specify a promotion level.");
         return;
