@@ -8,26 +8,26 @@ const nonAssignable = require("./nonassignable.json");
 
 var commandDictionary = {
     //user commands
-    "ping" : ping,
-    "info" : info,
-    "assign" : assign,
-    "remove" : remove,
-    "roles" : roles,
-    "action" : action,
-    "help" : help,
-    "roll" : roll,
+    "ping": ping,
+    "info": info,
+    "assign": assign,
+    "remove": remove,
+    "roles": roles,
+    "action": action,
+    "help": help,
+    "roll": roll,
     // staff commands
-    "mute" : mute,
-    "unmute" : unmute,
-    "purge" : purge,
-    "promote" : promote,
+    "mute": mute,
+    "unmute": unmute,
+    "purge": purge,
+    "promote": promote,
 };
 
 /*
-* 
-*  USER COMMANDS
-*
-*/
+ * 
+ *  USER COMMANDS
+ *
+ */
 
 //
 // PING COMMAND
@@ -35,7 +35,7 @@ var commandDictionary = {
 //
 function ping(message, args) {
     var t1 = Date.now();
-    message.channel.send(":ping_pong: Pong!").then((message) =>{
+    message.channel.send(":ping_pong: Pong!").then((message) => {
         var t2 = Date.now();
         message.edit(":ping_pong: Pong! Took " + (t2 - t1) + " milliseconds!");
     });
@@ -55,7 +55,7 @@ function assign(message, args) {
         return;
     }
 
-    if(args.length == 0) {
+    if (args.length == 0) {
         message.channel.send("Incorrect syntax : `kassign role`");
         logger.log(message.member.user.tag + " used kassign without args");
         return;
@@ -67,17 +67,16 @@ function assign(message, args) {
                 throw ('forbidden');
             }
         });
-    }
-    catch (err) {
+    } catch (err) {
         message.channel.send("Sorry, i don't have permission to assign that role to you.")
         logger.warn("Could not assign role: " + err);
         return;
     }
 
     message.guild.roles.forEach(role => {
-        if(role.name.toLowerCase() == roleName) {
+        if (role.name.toLowerCase() == roleName) {
             message.member.addRole(role).then(() => {
-                message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.");
+                message.channel.send("<@" + message.member.id + ">, I have assigned [" + role.name + "] to you.");
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
             }).catch((err) => {
                 message.channel.send("Sorry, i don't have permission to assign that role to you.");
@@ -90,7 +89,7 @@ function assign(message, args) {
     if (!flag) {
         message.channel.send("Sorry this role does not exist or i don't have permission to assign it to you.");
         logger.warn("Role [" + roleName + "] does not exist.");
-    } 
+    }
     return;
 }
 
@@ -107,7 +106,7 @@ function remove(message, args) {
         return;
     }
 
-    if(args.length == 0) {
+    if (args.length == 0) {
         message.channel.send("Incorrect syntax : `kremove role`");
         logger.log(message.member.user.tag + " used kremove without args");
         return;
@@ -119,8 +118,7 @@ function remove(message, args) {
                 throw ('forbidden');
             }
         });
-    }
-    catch (err) {
+    } catch (err) {
         message.channel.send("Sorry, i don't have permission to remove that role from you.")
         logger.warn("Could not assign role: " + err);
         return;
@@ -131,7 +129,7 @@ function remove(message, args) {
     message.member.roles.forEach(role => {
         if (role.name.toLowerCase() == roleName) {
             message.member.removeRole(role).then(() => {
-                message.channel.send("<@" + message.member.id+ ">, I have removed [" + role.name + "] from you.");
+                message.channel.send("<@" + message.member.id + ">, I have removed [" + role.name + "] from you.");
                 logger.log("Removed role [" + role.name + "] from " + message.member.user.tag);
             }).catch((err) => {
                 message.channel.send("Sorry, i don't have permission to remove that role from you.")
@@ -178,51 +176,51 @@ function info(message, args) {
 function help(message, args) {
     var commands = [];
     commands.push("**These are your available commands**\n\n")
-    commands.push("**Ping command**\n" + 
-                "Syntax - `kping`\n" +
-                "Desc - Pings bot\n");
-    commands.push("**Info command**\n" + 
-                "Syntax - `kinfo`\n" +
-                "Desc - Gives info about me\n");
+    commands.push("**Ping command**\n" +
+        "Syntax - `kping`\n" +
+        "Desc - Pings bot\n");
+    commands.push("**Info command**\n" +
+        "Syntax - `kinfo`\n" +
+        "Desc - Gives info about me\n");
     commands.push("**Assign command**\n" +
-                "Syntax - `kassign [role]`\n" +
-                "Desc - Assigns a role to you\n");
+        "Syntax - `kassign [role]`\n" +
+        "Desc - Assigns a role to you\n");
     commands.push("**Remove command**\n" +
-                "Syntax - `kremove [role]`\n" +
-                "Desc - Removes a role from you\n");
+        "Syntax - `kremove [role]`\n" +
+        "Desc - Removes a role from you\n");
     commands.push("**Roll command**\n" +
-                "Syntax - `kroll [# of sides]`\n" +
-                "Desc - Rolls a dice\n");
-    commands.push("**Action command**\n" + 
-                "Syntax - `kaction [action] [user]`\n" + 
-                "Desc - Use an action on someone");
+        "Syntax - `kroll [# of sides]`\n" +
+        "Desc - Rolls a dice\n");
+    commands.push("**Action command**\n" +
+        "Syntax - `kaction [action] [user]`\n" +
+        "Desc - Use an action on someone");
 
     if (utilities.ModLevel(message, message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
         commands.push("**Mute command**\n" +
-                    "Syntax - `kmute [user]`\n" +
-                    "Desc - Mutes a user\n");
+            "Syntax - `kmute [user]`\n" +
+            "Desc - Mutes a user\n");
         commands.push("**Unmute command**\n" +
-                    "Syntax - `kumute [muted user]`\n" +
-                    "Desc - Unmutes a user\n");
+            "Syntax - `kumute [muted user]`\n" +
+            "Desc - Unmutes a user\n");
     }
     if (utilities.ModLevel(message, message.member) > 2) {
         commands.push("\n**Admin Commands**\n");
         commands.push("**Promote command**\n" +
-                    "Syntax - `kpromote [user] [level 1-2]`\n" +
-                    "Desc - Promotes user to staff or moderator\n"); 
+            "Syntax - `kpromote [user] [level 1-2]`\n" +
+            "Desc - Promotes user to staff or moderator\n");
     }
     logger.log(message.author.tag + " Requesting help.");
 
     message.member.send(commands.join('')).then(() => {
-            message.channel.send("<@" + message.member.id + ">, I have sent you your available commands.");
-            logger.log("Success, " + message.author.tag + " has recived help.");
+        message.channel.send("<@" + message.member.id + ">, I have sent you your available commands.");
+        logger.log("Success, " + message.author.tag + " has recived help.");
     }).catch(() => {
-            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
-                                commands.join(''));
-            logger.warn("Failed sending message to chat. Error:" + err);
+        message.channel.send("Sorry <@" + message.member.id + "> i cannot message you. Here are your commands:\n" +
+            commands.join(''));
+        logger.warn("Failed sending message to chat. Error:" + err);
     });
-    
+
 }
 
 //
@@ -234,8 +232,7 @@ function roll(message, args) {
     var num = parseInt(args[0], 10);
     if (Number.isNaN(num)) {
         message.channel.send("<@" + message.member.id + ">, that is not a number.");
-    }
-    else {
+    } else {
         message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
     }
     return;
@@ -250,12 +247,12 @@ function roll(message, args) {
 function action(message, args) {
     var member = message.mentions.members.first() || message.guild.members.get(args[1]);
     if (!member || member == args[0]) {
-        logger.log(message.author.tag +": Failed action command incorrect syntax");
+        logger.log(message.author.tag + ": Failed action command incorrect syntax");
         message.channel.send("Incorrect syntax, please mention user: `kaction [action] [user]`");
         return;
     }
 
-    if(member.id == message.member.id) {
+    if (member.id == message.member.id) {
         message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself. Sorry!");
         return;
     }
@@ -267,53 +264,50 @@ function action(message, args) {
     if (action == "bap") {
         if (member.id == constant.SCID) {
             message.channel.send(">:V <@" + userId2 + "> :newspaper2: <@" + userId + ">");
-        }
-        else {
+        } else {
             message.channel.send("<@" + userId + "> :newspaper2: <@" + userId2 + ">");
         }
-    }
-    else if (action == "smooch") {
+    } else if (action == "smooch") {
         if (member.id == constant.SCID) {
             message.channel.send(">///< T-Thank you, <@" + userId + ">.");
-        }
-        else {
+        } else {
             message.channel.send(":heart: <@" + userId + "> :kissing_heart: <@" + userId2 + "> :heart:");
         }
-    }
-    else if (action == "punch") {
+    } else if (action == "punch") {
         if (member.id == constant.SCID) {
             message.channel.send("no");
-        }
-        else {
+        } else {
             message.channel.send("<@" + userId + "> :right_facing_fist: :boom: <@" + userId2 + ">");
         }
-    }
-    else if (action == "boop") {
+    } else if (action == "boop") {
         if (member.id == constant.SCID) {
             message.channel.send("*receives boop*");
-        }
-        else {
+        } else {
             message.channel.send("<@" + userId + "> :point_right: <@" + userId2 + "> *Boop*.");
         }
-    }
-    else if (action == "snug") {
+    } else if (action == "snug") {
         if (member.id == constant.SCID) {
-            message.channel.send("*Holds <@${usersId}> tight*");
-        }
-        else {
+            message.channel.send("*Holds <@" + usersId + "> tight*");
+        } else {
             message.channel.send("AWWW!! <@" + userId + "> and <@" + userId2 + "> are snuggling!!");
         }
-    }
-    else {
+    } else if (action == "murder") {
+        if (member.id == constant.SCID) {
+            message.channel.send("I cannot allow you to do that, <@" + userId + ">");
+        } else {
+            message.channel.send("<@" + userId + "> :knife: <@" + userId2 + ">");
+        }
+    } else {
         message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
-                            "Avaliable actions:\n" +
-                            "```\n" +
-                            "Bap\n" +
-                            "Smooch\n" +
-                            "Boop\n" +
-                            "Punch\n" +
-                            "Snug" +
-                            "```");
+            "Avaliable actions:\n" +
+            "```\n" +
+            "Bap\n" +
+            "Smooch\n" +
+            "Boop\n" +
+            "Punch\n" +
+            "Snug\n" +
+            "Murder" +
+            "```");
     }
 
 
@@ -330,63 +324,63 @@ function roles(message, args) {
 
     roles.push("***ROLES!!!***\n");
     roles.push("**Nationalities**\n" +
-                "Australia\n" +
-                "New Zealand\n" +
-                "International\n");
+        "Australia\n" +
+        "New Zealand\n" +
+        "International\n");
 
     roles.push("\n**States (if in AUS)**\n" +
-                "QLD\n" +
-                "NSW\n" +
-                "ACT\n" +
-                "VIC\n" +
-                "TAS\n" +
-                "SA\n" +
-                "WA\n" +
-                "NT\n");
+        "QLD\n" +
+        "NSW\n" +
+        "ACT\n" +
+        "VIC\n" +
+        "TAS\n" +
+        "SA\n" +
+        "WA\n" +
+        "NT\n");
 
     roles.push("\n**Sexuality**\n" +
-                "Straight\n" +           
-                "Gay\n" +
-                "Bi\n" +
-                "Asexual\n");
-    
-    roles.push("\n**Prefs (for Bi)**\n" +            
-                "Male Preference\n" +
-                "Female Preference\n");
-    
+        "Straight\n" +
+        "Gay\n" +
+        "Bi\n" +
+        "Asexual\n");
+
+    roles.push("\n**Prefs (for Bi)**\n" +
+        "Male Preference\n" +
+        "Female Preference\n");
+
     roles.push("\n**Gender**\n" +
-                "Male\n" +     
-                "Female\n" +             
-                "Non-binary\n" +         
-                "Trans\n" +       
-                "Unspecified Gender\n");
+        "Male\n" +
+        "Female\n" +
+        "Non-binary\n" +
+        "Trans\n" +
+        "Unspecified Gender\n");
 
     roles.push("\n**Artists Roles**\n" +
-                "Artist\n" +
-                "Commissions Open\n" +   
-                "Commissions Closed\n");
-    roles.push("\n**DM/RP Roles**\n" + 
-                "DM Friendly\n" +
-                "DM Unfriendly\n" +      
-                "DM Request\n" +    
-                "RP Friendly\n" +       
-                "RP Unfriendly\n" +     
-                "RP Request\n");
-    
+        "Artist\n" +
+        "Commissions Open\n" +
+        "Commissions Closed\n");
+    roles.push("\n**DM/RP Roles**\n" +
+        "DM Friendly\n" +
+        "DM Unfriendly\n" +
+        "DM Request\n" +
+        "RP Friendly\n" +
+        "RP Unfriendly\n" +
+        "RP Request\n");
+
     message.member.send(roles.join('')).then(() => {
-            message.channel.send("<@" + message.member.id + ">, I have sent you your available roles.");
-            logger.log("Success, " + message.author.tag + " has recived help.");
+        message.channel.send("<@" + message.member.id + ">, I have sent you your available roles.");
+        logger.log("Success, " + message.author.tag + " has recived help.");
     }).catch(() => {
-            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. please check the Pins");
-            logger.warn("Failed sending message to chat. Error:" + err);
+        message.channel.send("Sorry <@" + message.member.id + "> i cannot message you. please check the Pins");
+        logger.warn("Failed sending message to chat. Error:" + err);
     });
 }
 
 /*
-* 
-*  STAFF COMMANDS
-*
-*/
+ * 
+ *  STAFF COMMANDS
+ *
+ */
 
 //
 // MUTE COMMAND
@@ -394,7 +388,7 @@ function roles(message, args) {
 //
 
 function mute(message, args) {
-    if((utilities.ModLevel(message, message.member)) < 1) {
+    if ((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use mute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -402,12 +396,12 @@ function mute(message, args) {
 
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if (!member) {
-        logger.log(message.author.tag +": Failed mute command, did not mention user");
+        logger.log(message.author.tag + ": Failed mute command, did not mention user");
         message.channel.send("Incorrect syntax, please mention user: `kmute [user]`");
         return;
     }
 
-    if(member.id == message.member.id) {
+    if (member.id == message.member.id) {
         logger.log(message.author.tag + ": Tried to mute themselves :/");
         message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
         return;
@@ -419,13 +413,12 @@ function mute(message, args) {
             if (role.name.toLowerCase() == "muted") {
                 muteRole = role;
             }
-        }); 
+        });
 
         member.addRole(muteRole);
         message.channel.send("<@" + member.id + ">, you have been muted");
         logger.warn(message.author.tag + " has muted " + member.user.tag);
-    }
-    catch (err) {
+    } catch (err) {
         message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
         logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
     }
@@ -437,7 +430,7 @@ function mute(message, args) {
 //
 
 function unmute(message, args) {
-    if((utilities.ModLevel(message, message.member)) < 1) {
+    if ((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use unmute command");
         message.channel.send("Sorry, you do not have access to this command")
         return;
@@ -445,12 +438,12 @@ function unmute(message, args) {
 
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if (!member) {
-        logger.log(message.author.tag +": Failed unmute command, did not mention user");
+        logger.log(message.author.tag + ": Failed unmute command, did not mention user");
         message.channel.send("Incorrect syntax, please mention user: `kunmute [user]`");
         return;
     }
 
-    if(member.id == message.member.id) {
+    if (member.id == message.member.id) {
         logger.log(message.author.tag + ": Tried to unmute themselves");
         message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
         return;
@@ -466,8 +459,7 @@ function unmute(message, args) {
 
         member.removeRole(muteRole);
         logger.warn(message.author.tag + " has unmuted " + member.user.tag);
-    }
-    catch (err) {
+    } catch (err) {
         message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
         logger.warn(message.author.tag + ", failed to assign unmute role to " + member.tag);
     }
@@ -479,7 +471,7 @@ function unmute(message, args) {
 //
 
 function purge(message, args) {
-    
+
     if ((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use purge command");
         message.channel.send("Sorry, you do not have access to this command");
@@ -492,14 +484,16 @@ function purge(message, args) {
         return;
     }
 
-    if(num >= 100) {
+    if (num >= 100) {
         message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
         return;
     }
     message.channel.send("Purging " + num + " messages now!");
     num += 2;
     logger.warn(message.author.tag + ": is purging " + num + " messages");
-    message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
+    message.channel.fetchMessages({
+        limit: num
+    }).then(messages => message.channel.bulkDelete(messages));
 }
 
 //
@@ -524,12 +518,12 @@ function promote(message, args) {
 
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if (!member) {
-        logger.log(message.author.tag +": Failed promote command, did not mention user");
+        logger.log(message.author.tag + ": Failed promote command, did not mention user");
         message.channel.send("Incorrect syntax, please mention user: `kpromote [user] [level 1-2]`");
         return;
     }
 
-    if(member.id == message.member.id) {
+    if (member.id == message.member.id) {
         logger.log(message.author.tag + ": Tried to promote themselves themselves");
         message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
         return;
@@ -544,19 +538,17 @@ function promote(message, args) {
     }
 
     try {
-        utilities.PromoterHelper(message, clearence, member, utilities.ModLevel(message, member) , num);
+        utilities.PromoterHelper(message, clearence, member, utilities.ModLevel(message, member), num);
     } catch (e) {
         if (e == 'Permission Denied') {
             logger.log(message.author.tag + ": cannot promote a user to you current level or higher");
             message.channel.send("<@" + message.member.id + ">, I cannot promote a user to your current level or higher.");
             return;
-        }
-        else if (e == 'Cannot Demote') {
+        } else if (e == 'Cannot Demote') {
             logger.log(message.author.tag + ": Cannot demote a user");
             message.channel.send("<@" + message.member.id + ">, I cannot demote users with this command.");
             return;
-        }
-        else {
+        } else {
             logger.log(message.author.tag + ": " + e);
             message.channel.send("<@" + message.member.id + ">, command failed");
             return;
