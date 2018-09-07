@@ -177,7 +177,6 @@ function info(message, args, client) {
         "\n Created by: Zelenyy" +
         "\n Written in: Node JS" +
         "\n Up-time: " + time +
-        "\n Status: " + client.status +
         "```" +
         "Github: http://github.com/mrmelonson/SCJS"
     );
