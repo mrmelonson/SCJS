@@ -20,7 +20,7 @@ client.on("ready", async=> {
     const command = args.shift().toLocaleLowerCase();
 
     try {
-        commands.commandDictionary[command](msg, args);
+        commands.commandDictionary[command](msg, args, client);
         logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
     }
     catch (err) {
