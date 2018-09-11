@@ -35,7 +35,7 @@ var commandDictionary = {
 //
 function ping(message, args, client) {
 
-    message.channel.send(":ping_pong: Pong! Average ping: " + client.ping + " miliseconds!");
+    message.channel.send(":ping_pong: Pong! Average ping: " + Math.round(client.ping) + " miliseconds!");
 }
 
 //
@@ -164,7 +164,7 @@ function info(message, args, client) {
     var mins = s % 60;
     var hrs = (s - mins) / 60;
     
-    var time = pad(hrs) + ':' + pad(mins) + ':' + pad(secs) + '.' + pad(ms, 3);
+    var time = pad(hrs) + 'h ' + pad(mins) + 'm' + pad(secs) + '.' + pad(ms, 3) + "s";
 
     message.channel.send(
         "```" +
@@ -317,6 +317,14 @@ function action(message, args, client) {
             message.channel.send("AWWW!! <@" + userId + "> and <@" + userId2 + "> are snuggling!!");
         }
     }
+    else if (action == "slap") {
+        if (member.id == constant.SCID) {
+            message.channel.send(">:( that was rude <@" + userId + ">!");
+        }
+        else {
+            message.channel.send("<@" + userId + "> :hand_splayed: :boom: <@" + userId2 + "> *ouch*");
+        }
+    }
     else {
         message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
                             "Avaliable actions:\n" +
@@ -325,7 +333,8 @@ function action(message, args, client) {
                             "Smooch\n" +
                             "Boop\n" +
                             "Punch\n" +
-                            "Snug" +
+                            "Snug\n" +
+                            "slap" +
                             "```");
     }
 
