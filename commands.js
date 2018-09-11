@@ -75,7 +75,7 @@ function assign(message, args, client) {
     var alreadyassigned = false;
 
     message.member.roles.forEach(role => {
-        if (role.name == roleName) {
+        if (role.name.toLowerCase() == roleName) {
             alreadyassigned = true;
         }
     });
@@ -178,7 +178,7 @@ function info(message, args, client) {
     var mins = s % 60;
     var hrs = (s - mins) / 60;
     
-    var time = pad(hrs) + 'h ' + pad(mins) + 'm' + pad(secs) + '.' + pad(ms, 3) + "s";
+    var time = pad(hrs) + 'h ' + pad(mins) + 'm ' + pad(secs) + '.' + pad(ms, 3) + "s";
 
     message.channel.send(
         "```" +
