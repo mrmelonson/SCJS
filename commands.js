@@ -66,8 +66,22 @@ function assign(message, args, client) {
         });
     }
     catch (err) {
-        message.channel.send("Sorry, i don't have permission to assign that role to you.")
+        message.channel.send("Sorry, i don't have permission to assign that role to you.");
         logger.warn("Could not assign role: " + err);
+        return;
+    }
+
+    var flag = false;
+    var alreadyassigned = false;
+
+    message.member.roles.forEach(role => {
+        if (role.name == roleName) {
+            alreadyassigned = true;
+        }
+    });
+
+    if (alreadyassigned) {
+        message.channel.send("You seem to already have this role.");
         return;
     }
 
@@ -124,7 +138,7 @@ function remove(message, args, client) {
     }
 
     var flag = false;
-
+   
     message.member.roles.forEach(role => {
         if (role.name.toLowerCase() == roleName) {
             message.member.removeRole(role).then(() => {
