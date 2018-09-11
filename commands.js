@@ -325,6 +325,14 @@ function action(message, args, client) {
             message.channel.send("<@" + userId + "> :hand_splayed: :boom: <@" + userId2 + "> *ouch*");
         }
     }
+    else if (action == "nom") {
+        if (member.id == constant.SCID) {
+            message.channel.send("Nien Nom <@" + userId + ">!");
+        }
+        else {
+            message.channel.send("<@" + userId + "> :lips: <@" + userId2 + "> *nom*");
+        }
+    }
     else {
         message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
                             "Avaliable actions:\n" +
@@ -334,7 +342,8 @@ function action(message, args, client) {
                             "Boop\n" +
                             "Punch\n" +
                             "Snug\n" +
-                            "slap" +
+                            "slap\n" +
+                            "nom\n" +
                             "```");
     }
 
@@ -343,7 +352,7 @@ function action(message, args, client) {
 }
 
 //
-// Rolls command
+// Roles command
 // Lists all the roles
 //
 
