@@ -31,7 +31,7 @@ client.on("ready", async=> {
         console.log(awoocounter);
 
         if (awoocounter >= 3) {
-            awoochannel.send("a howl!! AWOOOO!!!");
+            awoochannel.send("a howl? AWOOOO!!!");
             awoocounter = 0;
             awoochannel = null;
         }
