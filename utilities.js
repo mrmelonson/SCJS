@@ -98,7 +98,17 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
             });
         }
         return;
-    }
+    },
+    CheckOs: function(message, x) {
+        var y = true;
+        for (let i = x; i < message.length; i++){
+            if (message[i] != 'o') {
+                y = false;
+                return false;
+            }
+        }
+        return y;
+     }
 
 };
 
