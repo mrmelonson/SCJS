@@ -6,6 +6,9 @@ const logger = require("./logging");
 const commands = require("./commands");
 const util = require("./utilities.js");
 
+var awoocounter = 0;
+var awoochannel = null;
+
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
     client.user.setActivity(`khelp`);
@@ -18,8 +21,25 @@ client.on("ready", async=> {
         msg.react(":awoo:494043211023777793").catch((err) => {
             logger.warn("server does not have 'awoo emote', " + err);
         })
+        if (awoochannel == null) {
+            awoochannel = msg.channel;
+        }
+        else if(msg.channel == awoochannel) {
+            awoocounter++;
+        }
 
-        //msg.channel.send("<:awoo:494043211023777793>");
+        console.log(awoocounter);
+
+        if (awoocounter >= 3) {
+            awoochannel.send("a howl!! AWOOOO!!!");
+            awoocounter = 0;
+            awoochannel = null;
+        }
+    } 
+    else{ 
+        awoocounter = 0;
+        awoochannel = null;
+        console.log("streak end");
     }
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
