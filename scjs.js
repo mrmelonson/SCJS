@@ -28,8 +28,6 @@ client.on("ready", async=> {
             awoocounter++;
         }
 
-        console.log(awoocounter);
-
         if (awoocounter >= 3) {
             awoochannel.send("a howl? AWOOOO!!!");
             awoocounter = 0;
@@ -39,7 +37,7 @@ client.on("ready", async=> {
     else{ 
         awoocounter = 0;
         awoochannel = null;
-        console.log("streak end");
+        logger.warn("awoo streak ended");
     }
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
