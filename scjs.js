@@ -35,9 +35,16 @@ client.on("ready", async=> {
         }
     } 
     else{ 
+        if (awoocounter > 0) {
+            logger.warn("awoo streak ended");
+        }
         awoocounter = 0;
         awoochannel = null;
         logger.warn("awoo streak ended");
+    }
+
+    if (msg.content.toLowerCase() == "owo") {
+        msg.channel.send("Whats this? OwO");
     }
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
