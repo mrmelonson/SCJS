@@ -17,7 +17,7 @@ client.on("ready", async=> {
  client.on("message", async msg => {
     // Return if author is bot or message is not command
     if (msg.author.bot) { return; }
-    if(msg.content[0].toLocaleLowerCase() == 'a' && msg.content[1].toLocaleLowerCase() == 'w' && util.CheckOs(msg.content.toLocaleLowerCase(),2)) {
+    if(msg.content.substring(0,4).toLocaleLowerCase() == "awoo") {
         msg.react(":awoo:494043211023777793").catch((err) => {
             logger.warn("server does not have 'awoo emote', " + err);
         })
@@ -40,7 +40,6 @@ client.on("ready", async=> {
         }
         awoocounter = 0;
         awoochannel = null;
-        logger.warn("awoo streak ended");
     }
 
     if (msg.content.toLowerCase() == "owo") {
