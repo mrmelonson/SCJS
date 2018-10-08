@@ -17,6 +17,7 @@ client.on("ready", async=> {
  client.on("message", async msg => {
     // Return if author is bot or message is not command
     if (msg.author.bot) { return; }
+
     if(msg.content.substring(0,4).toLocaleLowerCase() == "awoo") {
         msg.react(":awoo:494043211023777793").catch((err) => {
             logger.warn("server does not have 'awoo emote', " + err);
@@ -43,7 +44,21 @@ client.on("ready", async=> {
     }
 
     if (msg.content.toLowerCase() == "owo") {
-        msg.channel.send("Whats this? OwO");
+        var rand = Math.floor(Math.random() * 4);
+        switch(rand) {
+            case(0): 
+                msg.channel.send("whats this?");
+                break;
+            case(1):
+                msg.channel.send("*Notices bulge*");
+                break;
+            case(2):
+                msg.channel.send("OWOwOWO *Notices OwO*");
+                break;
+            default:
+                msg.channel.send("UwU");
+                break;
+        }
     }
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
@@ -56,7 +71,7 @@ client.on("ready", async=> {
         logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
     }
     catch (err) {
-        logger.crit(msg.author.tag +" command failed");
+        logger.crit(msg.author.tag +" command failed, [" + command + "]");
         logger.crit(err);
     }
 });
