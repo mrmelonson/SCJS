@@ -190,6 +190,7 @@ function info(message, args, client) {
         "v" + constant.versionNum +
         "\n Created by: Zelenyy" +
         "\n Written in: Node JS" +
+        "\n Num of servers serving: " + client.guilds.size +
         "\n Up-time: " + time +
         "```" +
         "Github: http://github.com/mrmelonson/SCJS"
