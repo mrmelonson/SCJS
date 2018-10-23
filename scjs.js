@@ -76,4 +76,12 @@ client.on("ready", async=> {
     }
 });
 
+client.on("guildCreate", guild => {
+    logger.log("I have joined a server (" + guild.name + ")");   
+});
+  
+  client.on("guildDelete", guild => {
+    logger.warn("I have been kicked/Banned from a server (" + guild.name + ")");
+  });
+
 client.login(token.token);
