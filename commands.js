@@ -21,6 +21,7 @@ var commandDictionary = {
     "unmute" : unmute,
     "purge" : purge,
     "promote" : promote,
+    "listroles" : listRoles,
 };
 
 /*
@@ -608,6 +609,31 @@ function promote(message, args, client) {
             return;
         }
     }
+    return;
+}
+
+//
+// ListRole Command
+// Lists roles with users with the roles
+//
+
+function listRoles(message, args, client) {
+    var clearence = utilities.ModLevel(message, message.member);
+    var rolesarr = ["**role --- num of members**\n"];
+
+    if (clearence < 1) {
+        logger.warn(message.author.tag + ": non staff attempting to use listrole command");
+        message.channel.send("Sorry, you do not have access to this command");
+        return;
+    }
+
+    message.guild.roles.forEach(role => {
+        if(role.name.toLowerCase() != "everyone") {
+            rolesarr.push(role.name + " --- " + role.members.map(m=>m.user.tag).length)
+        }
+    });
+
+    message.channel.send(rolesarr.join("\n"));
     return;
 }
 
