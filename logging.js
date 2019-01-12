@@ -33,7 +33,10 @@ function LogFile(string) {
     var d = new Date();
     var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
     var nd = new Date(utc + (3600000* '+9'));
-    fs.appendFile('logs/' + nd.toLocaleDateString() + '.txt', string + "\n", function (err) {
+    var year = nd.getFullYear();
+    var month = (nd.getMonth() + 1).toString();
+    var day = nd.getDate();
+    fs.appendFile('logs/' + year +'-'+ month +'-'+ day + '.txt', string + "\n", function (err) {
         if (err) throw err;
     });
 }
