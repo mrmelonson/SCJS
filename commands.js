@@ -12,7 +12,6 @@ var commandDictionary = {
     "info" : info,
     "assign" : assign,
     "remove" : remove,
-    "roles" : roles,
     "action" : action,
     "help" : help,
     "roll" : roll,
@@ -21,6 +20,7 @@ var commandDictionary = {
     "unmute" : unmute,
     "purge" : purge,
     "promote" : promote,
+    "listroles" : listRoles,
 };
 
 /*
@@ -198,6 +198,22 @@ function info(message, args, client) {
 }
 
 //
+// Roll command
+// Generates a random number
+//
+
+function roll(message, args, client) {
+    var num = parseInt(args[0], 10);
+    if (Number.isNaN(num)) {
+        message.channel.send("<@" + message.member.id + ">, that is not a number.");
+    }
+    else {
+        message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
+    }
+    return;
+}
+
+//
 // Help Command
 // Gives help
 // PLEASE ADD NEW COMMANDS HERE
@@ -268,7 +284,6 @@ function roll(message, args, client) {
     }
     return;
 }
-
 
 //
 // Action command
@@ -361,78 +376,11 @@ function action(message, args, client) {
                             "nom\n" +
                             "```");
     }
-
-
-
 }
 
 //
-// Roles command
-// Lists all the roles
+// STAFF COMMANDS
 //
-
-function roles(message, args, client) {
-    var roles = [];
-
-    roles.push("***ROLES!!!***\n");
-    roles.push("**Nationalities**\n" +
-                "Australia\n" +
-                "New Zealand\n" +
-                "International\n");
-
-    roles.push("\n**States (if in AUS)**\n" +
-                "QLD\n" +
-                "NSW\n" +
-                "ACT\n" +
-                "VIC\n" +
-                "TAS\n" +
-                "SA\n" +
-                "WA\n" +
-                "NT\n");
-
-    roles.push("\n**Sexuality**\n" +
-                "Straight\n" +           
-                "Gay\n" +
-                "Bi\n" +
-                "Asexual\n");
-    
-    roles.push("\n**Prefs (for Bi)**\n" +            
-                "Male Preference\n" +
-                "Female Preference\n");
-    
-    roles.push("\n**Gender**\n" +
-                "Male\n" +     
-                "Female\n" +             
-                "Non-binary\n" +         
-                "Trans\n" +       
-                "Unspecified Gender\n");
-
-    roles.push("\n**Artists Roles**\n" +
-                "Artist\n" +
-                "Commissions Open\n" +   
-                "Commissions Closed\n");
-    roles.push("\n**DM/RP Roles**\n" + 
-                "DM Friendly\n" +
-                "DM Unfriendly\n" +      
-                "DM Request\n" +    
-                "RP Friendly\n" +       
-                "RP Unfriendly\n" +     
-                "RP Request\n");
-    
-    message.member.send(roles.join('')).then(() => {
-            message.channel.send("<@" + message.member.id + ">, I have sent you your available roles.");
-            logger.log("Success, " + message.author.tag + " has recived help.");
-    }).catch(() => {
-            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. please check the Pins");
-            logger.warn("Failed sending message to chat. Error:" + err);
-    });
-}
-
-/*
-* 
-*  STAFF COMMANDS
-*
-*/
 
 //
 // MUTE COMMAND
@@ -476,6 +424,7 @@ function mute(message, args, client) {
         logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
     }
 }
+
 
 //
 // UNMUTE COMMAND
@@ -608,6 +557,35 @@ function promote(message, args, client) {
             return;
         }
     }
+    return;
+}
+
+//
+// ListRole Command
+// Lists roles with users with the roles
+//
+
+function listRoles(message, args, client) {
+    var clearence = utilities.ModLevel(message, message.member);
+    var rolesarr = [];
+    var rolesarrfinal = [];
+
+    message.guild.roles.forEach(role => {
+        console.log(role.name);
+        console.log(role.members.map(m=>m.user.tag).length);
+        if(role.name != '@everyone') {
+            rolesarr[role.name] = role.members.map(m=>m.user.tag).length;
+        }
+        console.log(rolesarr);
+    });
+
+    for(var key in rolesarr) {
+        console.log(key + " ---- " + rolesarr[key]);
+        rolesarrfinal.push(key + " ---- " + rolesarr[key]);
+    }
+    
+
+    message.channel.send(rolesarrfinal.join("\n"));
     return;
 }
 
