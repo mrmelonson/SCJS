@@ -512,7 +512,7 @@ function promote(message, args, client) {
     }
 
     if (clearence < 3) {
-        logger.warn(message.author.tag + ": Non admin attempting yo use purge command");
+        logger.warn(message.author.tag + ": Non admin attempting to use purge command");
         message.channel.send("Sorry, you do not have access to this command. Please consult an admin to do this for you.");
         return;
     }
@@ -568,22 +568,24 @@ function promote(message, args, client) {
 function listRoles(message, args, client) {
     var clearence = utilities.ModLevel(message, message.member);
     var rolesarr = [];
-    var rolesarrfinal = [];
+    var rolesarrfinal = ["```ROLE ---- COUNT\n"];
+
+    if (clearence < 1) {
+        logger.warn(message.author.tag + ": non staff attempting to use listroles command");
+        message.channel.send("Sorry, you do not have access to this command");
+        return;
+    }
 
     message.guild.roles.forEach(role => {
-        console.log(role.name);
-        console.log(role.members.map(m=>m.user.tag).length);
         if(role.name != '@everyone') {
             rolesarr[role.name] = role.members.map(m=>m.user.tag).length;
         }
-        console.log(rolesarr);
     });
 
     for(var key in rolesarr) {
-        console.log(key + " ---- " + rolesarr[key]);
         rolesarrfinal.push(key + " ---- " + rolesarr[key]);
     }
-    
+    rolesarrfinal.push("```")
 
     message.channel.send(rolesarrfinal.join("\n"));
     return;
