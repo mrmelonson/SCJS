@@ -10,10 +10,10 @@ var commandDictionary = {
     //user commands
     "ping" : ping,
     "info" : info,
-    "assign" : assign,
-    "remove" : remove,
+    "assign" : assign, a,
+    "remove" : remove, r,
     "action" : action,
-    "help" : help,
+    "help" : help, h,
     "roll" : roll,
     // staff commands
     "mute" : mute,
@@ -239,7 +239,17 @@ function help(message, args, client) {
                 "Desc - Rolls a dice\n");
     commands.push("**Action command**\n" + 
                 "Syntax - `kaction [action] [user]`\n" + 
-                "Desc - Use an action on someone");
+                "Desc - Use an action on someone"+
+                "Avaliable actions:\n" +
+                "```\n" +
+                "Bap\n" +
+                "Smooch\n" +
+                "Boop\n" +
+                "Punch\n" +
+                "Snug\n" +
+                "slap\n" +
+                "nom\n" +
+                "```");
 
     if (utilities.ModLevel(message, message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
@@ -249,6 +259,9 @@ function help(message, args, client) {
         commands.push("**Unmute command**\n" +
                     "Syntax - `kumute [muted user]`\n" +
                     "Desc - Unmutes a user\n");
+                    commands.push("**Listroles Command**\n" +
+                    "Syntax - `klistroles`\n" +
+                    "lists all roles with number of members with it\n");
     }
     if (utilities.ModLevel(message, message.member) > 2) {
         commands.push("\n**Admin Commands**\n");
@@ -294,7 +307,17 @@ function action(message, args, client) {
     var member = message.mentions.members.first() || message.guild.members.get(args[1]);
     if (!member || member == args[0]) {
         logger.log(message.author.tag +": Failed action command incorrect syntax");
-        message.channel.send("Incorrect syntax, please mention user: `kaction [action] [user]`");
+        message.channel.send("Incorrect syntax, please mention user: `kaction [action] [user]`" +
+                            "Avaliable actions:\n" +
+                            "```\n" +
+                            "Bap\n" +
+                            "Smooch\n" +
+                            "Boop\n" +
+                            "Punch\n" +
+                            "Snug\n" +
+                            "slap\n" +
+                            "nom\n" +
+                            "```");
         return;
     }
 
