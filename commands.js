@@ -10,10 +10,13 @@ var commandDictionary = {
     //user commands
     "ping" : ping,
     "info" : info,
-    "assign" : assign, a,
-    "remove" : remove, r,
+    "assign" : assign,
+    "a" : assign,
+    "remove" : remove,
+    "r" : remove,
     "action" : action,
-    "help" : help, h,
+    "help" : help,
+    "h" : help,
     "roll" : roll,
     // staff commands
     "mute" : mute,
