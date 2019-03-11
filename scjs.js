@@ -19,7 +19,7 @@ client.on("ready", async=> {
     if (msg.author.bot) { return; }
 
     if(msg.content.substring(0,4).toLocaleLowerCase() == "awoo") {
-        msg.react(":awoo:554480740952440835").catch((err) => {
+        msg.react(":awoo:554480169851682836").catch((err) => {
             logger.warn("server does not have 'awoo emote', " + err);
         })
         if (awoochannel == null) {
