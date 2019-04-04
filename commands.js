@@ -1,3 +1,4 @@
+
 const Discord = require("discord.js");
 const constant = require("./constants.json")
 const utilities = require("./utilities.js");
@@ -11,19 +12,15 @@ var commandDictionary = {
     "ping" : ping,
     "info" : info,
     "assign" : assign,
-    "a" : assign,
     "remove" : remove,
-    "r" : remove,
-    "action" : action,
+    "action" :action,
     "help" : help,
-    "h" : help,
-    "roll" : roll,
+
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
     "purge" : purge,
     "promote" : promote,
-    "listroles" : listRoles,
 };
 
 /*
@@ -36,9 +33,12 @@ var commandDictionary = {
 // PING COMMAND
 // Pings the bot
 //
-function ping(message, args, client) {
-
-    message.channel.send(":ping_pong: Pong! Average ping: " + Math.round(client.ping) + " miliseconds!");
+function ping(message, args) {
+    var t1 = Date.now();
+    message.channel.send(":ping_pong: Pong!").then((message) =>{
+        var t2 = Date.now();
+        message.edit(":ping_pong: Pong! Took " + (t2 - t1) + " milliseconds!");
+    });
 }
 
 //
@@ -46,7 +46,7 @@ function ping(message, args, client) {
 // Assigns roles to users
 //
 
-function assign(message, args, client) {
+function assign(message, args) {
     var roleName = args.join(' ');
     roleName = roleName.toLowerCase();
 
@@ -69,32 +69,18 @@ function assign(message, args, client) {
         });
     }
     catch (err) {
-        message.channel.send("Sorry, i don't have permission to assign that role to you.");
+        message.channel.send("Sorry, i don't have permission to assign that role to you.")
         logger.warn("Could not assign role: " + err);
-        return;
-    }
-
-    var flag = false;
-    var alreadyassigned = false;
-
-    message.member.roles.forEach(role => {
-        if (role.name.toLowerCase() == roleName) {
-            alreadyassigned = true;
-        }
-    });
-
-    if (alreadyassigned) {
-        message.channel.send("You seem to already have this role.");
         return;
     }
 
     message.guild.roles.forEach(role => {
         if(role.name.toLowerCase() == roleName) {
             message.member.addRole(role).then(() => {
-                message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.");
+                message.channel.send("<@" + message.member.id+ ">, I have assigned [" + role.name + "] to you.")
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
             }).catch((err) => {
-                message.channel.send("Sorry, i don't have permission to assign that role to you.");
+                message.channel.send("Sorry, i don't have permission to assign that role to you.")
                 logger.warn("Could not assign role: " + err);
             });
             flag = true;
@@ -113,7 +99,7 @@ function assign(message, args, client) {
 // Removes roles from user
 //
 
-function remove(message, args, client) {
+function remove(message, args) {
     var roleName = args.join(' ');
     roleName = roleName.toLowerCase();
     if (message.guild.id == constant.AusfursID && message.channel.id != constant.AusfursChangeroles) {
@@ -141,7 +127,7 @@ function remove(message, args, client) {
     }
 
     var flag = false;
-   
+
     message.member.roles.forEach(role => {
         if (role.name.toLowerCase() == roleName) {
             message.member.removeRole(role).then(() => {
@@ -167,22 +153,7 @@ function remove(message, args, client) {
 // Gives info about the bot
 //
 
-function info(message, args, client) {
-    function pad(n, z) {
-        z = z || 2;
-        return ('00' + n).slice(-z);
-    }
-    
-    var s = client.uptime
-    var ms = s % 1000;
-    s = (s - ms) / 1000;
-    var secs = s % 60;
-    s = (s - secs) / 60;
-    var mins = s % 60;
-    var hrs = (s - mins) / 60;
-    
-    var time = pad(hrs) + 'h ' + pad(mins) + 'm ' + pad(secs) + '.' + pad(ms, 3) + "s";
-
+function info(message, args) {
     message.channel.send(
         "```" +
         "   _____ ______ \n" +
@@ -193,27 +164,9 @@ function info(message, args, client) {
         "v" + constant.versionNum +
         "\n Created by: Zelenyy" +
         "\n Written in: Node JS" +
-        "\n Num of servers serving: " + client.guilds.size +
-        "\n Up-time: " + time +
         "```" +
         "Github: http://github.com/mrmelonson/SCJS"
     );
-}
-
-//
-// Roll command
-// Generates a random number
-//
-
-function roll(message, args, client) {
-    var num = parseInt(args[0], 10);
-    if (Number.isNaN(num)) {
-        message.channel.send("<@" + message.member.id + ">, that is not a number.");
-    }
-    else {
-        message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
-    }
-    return;
 }
 
 //
@@ -222,7 +175,7 @@ function roll(message, args, client) {
 // PLEASE ADD NEW COMMANDS HERE
 //
 
-function help(message, args, client) {
+function help(message, args) {
     var commands = [];
     commands.push("**These are your available commands**\n\n")
     commands.push("**Ping command**\n" + 
@@ -241,18 +194,8 @@ function help(message, args, client) {
                 "Syntax - `kroll [# of sides]`\n" +
                 "Desc - Rolls a dice\n");
     commands.push("**Action command**\n" + 
-                "Syntax - `kaction [action] [user]`\n" + 
-                "Desc - Use an action on someone"+
-                "Avaliable actions:\n" +
-                "```\n" +
-                "Bap\n" +
-                "Smooch\n" +
-                "Boop\n" +
-                "Punch\n" +
-                "Snug\n" +
-                "slap\n" +
-                "nom\n" +
-                "```");
+                "Syntax - `kroll [action] [user]`\n" + 
+                "Desc - Use an action on someone");
 
     if (utilities.ModLevel(message, message.member) > 0) {
         commands.push("\n**Moderator Commands**\n");
@@ -262,15 +205,6 @@ function help(message, args, client) {
         commands.push("**Unmute command**\n" +
                     "Syntax - `kumute [muted user]`\n" +
                     "Desc - Unmutes a user\n");
-                    commands.push("**Listroles Command**\n" +
-                    "Syntax - `klistroles`\n" +
-                    "lists all roles with number of members with it\n");
-    }
-    if (utilities.ModLevel(message, message.member) > 2) {
-        commands.push("\n**Admin Commands**\n");
-        commands.push("**Promote command**\n" +
-                    "Syntax - `kpromote [user] [level 1-2]`\n" +
-                    "Desc - Promotes user to staff or moderator\n"); 
     }
     logger.log(message.author.tag + " Requesting help.");
 
@@ -290,7 +224,7 @@ function help(message, args, client) {
 // Generates a random number
 //
 
-function roll(message, args, client) {
+function roll(message, args) {
     var num = parseInt(args[0], 10);
     if (Number.isNaN(num)) {
         message.channel.send("<@" + message.member.id + ">, that is not a number.");
@@ -301,26 +235,17 @@ function roll(message, args, client) {
     return;
 }
 
+
 //
 // Action command
 // Does an action in chat
 //
 
-function action(message, args, client) {
+function action(message, args) {
     var member = message.mentions.members.first() || message.guild.members.get(args[1]);
     if (!member || member == args[0]) {
         logger.log(message.author.tag +": Failed action command incorrect syntax");
-        message.channel.send("Incorrect syntax, please mention user: `kaction [action] [user]`" +
-                            "Avaliable actions:\n" +
-                            "```\n" +
-                            "Bap\n" +
-                            "Smooch\n" +
-                            "Boop\n" +
-                            "Punch\n" +
-                            "Snug\n" +
-                            "slap\n" +
-                            "nom\n" +
-                            "```");
+        message.channel.send("Incorrect syntax, please mention user: `kaction [action] [user]`");
         return;
     }
 
@@ -333,23 +258,7 @@ function action(message, args, client) {
     var action = args[0];
     var userId = message.member.id;
     var userId2 = member.id;
-    if (action == "bap") {
-        if (member.id == constant.SCID) {
-            message.channel.send(">:V <@" + userId2 + "> :newspaper2: <@" + userId + ">");
-        }
-        else {
-            message.channel.send("<@" + userId + "> :newspaper2: <@" + userId2 + ">");
-        }
-    }
-    else if (action == "smooch") {
-        if (member.id == constant.SCID) {
-            message.channel.send(">///< T-Thank you, <@" + userId + ">.");
-        }
-        else {
-            message.channel.send(":heart: <@" + userId + "> :kissing_heart: <@" + userId2 + "> :heart:");
-        }
-    }
-    else if (action == "punch") {
+    if (action == "punch") {
         if (member.id == constant.SCID) {
             message.channel.send("no");
         }
@@ -357,63 +266,39 @@ function action(message, args, client) {
             message.channel.send("<@" + userId + "> :right_facing_fist: :boom: <@" + userId2 + ">");
         }
     }
-    else if (action == "boop") {
+    else if (action == "hug") {
         if (member.id == constant.SCID) {
-            message.channel.send("*receives boop*");
+            message.channel.send("*hugs <@${usersId}> tight*");
         }
         else {
-            message.channel.send("<@" + userId + "> :point_right: <@" + userId2 + "> *Boop*.");
-        }
-    }
-    else if (action == "snug") {
-        if (member.id == constant.SCID) {
-            message.channel.send("*Holds <@${usersId}> tight*");
-        }
-        else {
-            message.channel.send("AWWW!! <@" + userId + "> and <@" + userId2 + "> are snuggling!!");
-        }
-    }
-    else if (action == "slap") {
-        if (member.id == constant.SCID) {
-            message.channel.send(">:( that was rude <@" + userId + ">!");
-        }
-        else {
-            message.channel.send("<@" + userId + "> :hand_splayed: :boom: <@" + userId2 + "> *ouch*");
-        }
-    }
-    else if (action == "nom") {
-        if (member.id == constant.SCID) {
-            message.channel.send("Nien Nom <@" + userId + ">!");
-        }
-        else {
-            message.channel.send("<@" + userId + "> :lips: <@" + userId2 + "> *nom*");
+            message.channel.send("<@" + userId + "> and <@" + userId2 + "> hug each other.");
         }
     }
     else {
         message.channel.send("Sorry <@" + userId + "> that was not an action or it was misspelt...\n" +
                             "Avaliable actions:\n" +
                             "```\n" +
-                            "Bap\n" +
-                            "Smooch\n" +
-                            "Boop\n" +
                             "Punch\n" +
-                            "Snug\n" +
-                            "slap\n" +
-                            "nom\n" +
+                            "Hug" +
                             "```");
     }
+
+
+
 }
 
-//
-// STAFF COMMANDS
-//
+/*
+* 
+*  STAFF COMMANDS
+*
+*/
 
 //
 // MUTE COMMAND
 // Mutes people
 //
 
-function mute(message, args, client) {
+function mute(message, args) {
     if((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use mute command");
         message.channel.send("Sorry, you do not have access to this command")
@@ -451,13 +336,12 @@ function mute(message, args, client) {
     }
 }
 
-
 //
 // UNMUTE COMMAND
 // Does the polar opposite of the mute command
 //
 
-function unmute(message, args, client) {
+function unmute(message, args) {
     if((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use unmute command");
         message.channel.send("Sorry, you do not have access to this command")
@@ -499,7 +383,7 @@ function unmute(message, args, client) {
 // Purges messages
 //
 
-function purge(message, args, client) {
+function purge(message, args) {
     
     if ((utilities.ModLevel(message, message.member)) < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use purge command");
@@ -513,7 +397,7 @@ function purge(message, args, client) {
         return;
     }
 
-    if(num >= 100) {
+    if(num > 100) {
         message.channel.send("<@" + message.member.id + ">, Sorry you cannot purge more than 100 messages in one go.");
         return;
     }
@@ -528,7 +412,7 @@ function purge(message, args, client) {
 // Promote users to a higher clearence level
 //
 
-function promote(message, args, client) {
+function promote(message, args) {
     var clearence = utilities.ModLevel(message, message.member);
 
     if (clearence < 1) {
@@ -538,7 +422,7 @@ function promote(message, args, client) {
     }
 
     if (clearence < 3) {
-        logger.warn(message.author.tag + ": Non admin attempting to use purge command");
+        logger.warn(message.author.tag + ": Non admin attempting yo use purge command");
         message.channel.send("Sorry, you do not have access to this command. Please consult an admin to do this for you.");
         return;
     }
@@ -557,8 +441,7 @@ function promote(message, args, client) {
     }
 
     var num = parseInt(args[1], 10);
-    console.log(num);
-    if (isNaN(num)) {
+    if (num == NaN) {
         logger.log(message.author.tag + ": no promotion level specified");
         message.channel.send("<@" + message.member.id + ">, You must specify a promotion level.");
         return;
@@ -583,37 +466,6 @@ function promote(message, args, client) {
             return;
         }
     }
-    return;
-}
-
-//
-// ListRole Command
-// Lists roles with users with the roles
-//
-
-function listRoles(message, args, client) {
-    var clearence = utilities.ModLevel(message, message.member);
-    var rolesarr = [];
-    var rolesarrfinal = ["```ROLE ---- COUNT\n"];
-
-    if (clearence < 1) {
-        logger.warn(message.author.tag + ": non staff attempting to use listroles command");
-        message.channel.send("Sorry, you do not have access to this command");
-        return;
-    }
-
-    message.guild.roles.forEach(role => {
-        if(role.name != '@everyone') {
-            rolesarr[role.name] = role.members.map(m=>m.user.tag).length;
-        }
-    });
-
-    for(var key in rolesarr) {
-        rolesarrfinal.push(key + " ---- " + rolesarr[key]);
-    }
-    rolesarrfinal.push("```")
-
-    message.channel.send(rolesarrfinal.join("\n"));
     return;
 }
 
