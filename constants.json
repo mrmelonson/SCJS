@@ -1,8 +1,4 @@
 {
-    "prefix" : "k",
-    "botspam" : 409717426159091725,
-    "AusfursID" : 311366698538369025,
-    "versionNum" : "2.03",
-    "SCID" : 463586896124051457,
-    "AusfursChangeroles" : 409721129515614210
+    "prefix" : "room ",
+    "versionNum" : "2.00"
 }
