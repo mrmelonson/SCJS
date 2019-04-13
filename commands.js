@@ -1,5 +1,6 @@
 
 const Discord = require("discord.js");
+const fs = require("fs");
 const constant = require("./constants.json")
 const logger = require("./logging");
 const data = require("./serverchanneldata.json")
@@ -28,36 +29,44 @@ function ping(message, args, client) {
     message.channel.send(":ping_pong: Pong! Average ping: " + Math.round(client.ping) + " miliseconds!");
 }
 
+/*
+* 
+*  ADMIN COMMANDS
+*
+*/
+
+
 //
 // RESET SERVER
 // Resets the entire server
 //
 function resetserver(message, args, client) {
+    //purges server
     message.guild.channels.forEach(channel => {
         channel.delete();
     });
 
+    //creates channel for each user
     message.guild.members.forEach(member => {
-        member.guild.createChannel(member.displayName + "(" + member.id.toString() +")", 'text',
+        member.guild.createChannel(member.displayName + member.id.toString(), 'text',
         [{
             type: 'member',
             id: member.id.toString(),
             allow:604372080
-        }]);
-
-        message.guild.channels.forEach(channel => {
-            if(channel.Name == member.displayName + "(" + member.id.toString() +")") {
-                /*data.data.push({
-                    userid:member.id.toString(), 
-                    channelid:channel.id.toString()
-                })*/
-                //channel.setTopic(member.id.toString());
-                console.log(channel.Name);
-            }
-        });
-        //console.log(data.data.toString());
+        }])
+        .then(function(channel) {
+            var data = {
+                data:[{
+                    userid:member.id, channelid:channel.id
+                }]
+            };
+            var dataJSON = JSON.stringify(data);
+            fs.appendFile('serverchanneldata.json', dataJSON, function (err) {
+                if (err) throw err;
+            });
+        })
+        .catch(console.error)
     });
 }
-
 
 exports.commandDictionary = commandDictionary;
