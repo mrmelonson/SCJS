@@ -6,7 +6,7 @@ module.exports = {
     ModLevel: function(message, member) {
         var clearLvl = 0;
         member.roles.forEach(role => {
-                if (role.name.toLowerCase() == "boss")
+                if (role.name.toLowerCase() == "dadmin")
                 {
                     clearLvl = 3;
                     return;
@@ -15,6 +15,7 @@ module.exports = {
                 {
                     clearLvl = 3;
                     return;
+                /*
                 }
                 if (role.name.toLowerCase() == "moderator")
                 {
@@ -32,6 +33,7 @@ module.exports = {
                     return;
                 }
             //console.log(role.name);
+            */
         });
         if (message.guild.owner == member) {
             clearLvl = 4;
