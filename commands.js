@@ -141,7 +141,6 @@ function remove(message, args, client) {
     }
 
     var flag = false;
-   
     message.member.roles.forEach(role => {
         if (role.name.toLowerCase() == roleName) {
             message.member.removeRole(role).then(() => {
@@ -185,15 +184,16 @@ function info(message, args, client) {
 
     message.channel.send(
         "```" +
-        "   _____ ______ \n" +
-        "  / ___// ____/ \n" +
-        "  \\__ \\/ /    \n" +
-        " ___/ / /__   \n" +
-        "/____/\____/     " +
+        "   _____             __  __                                ______                    \n" +
+        "  / ___/____  __  __/ /_/ /_  ___  _________              / ____/________  __________\n" +
+        "  \\__ \\/ __ \\/ / / / __/ __ \\/ _ \\/ ___/ __ \\   ______   / /   / ___/ __ \\/ ___/ ___/\n" +
+        " ___/ / /_/ / /_/ / /_/ / / /  __/ /  / / / /  /_____/  / /___/ /  / /_/ (__  |__  ) \n" +
+        "/____/\\____/\\__,_/\\__/_/ /_/\\___/_/  /_/ /_/            \\____/_/   \\____/____/____/  " +
         "v" + constant.versionNum +
         "\n Created by: Zelenyy" +
         "\n Written in: Node JS" +
         "\n Num of servers serving: " + client.guilds.size +
+        "\n Recorded ping: " + Math.round(client.ping) + "ms" +
         "\n Up-time: " + time +
         "```" +
         "Github: http://github.com/mrmelonson/SCJS"
@@ -283,22 +283,6 @@ function help(message, args, client) {
             logger.warn("Failed sending message to chat. Error:" + err);
     });
     
-}
-
-//
-// Roll command
-// Generates a random number
-//
-
-function roll(message, args, client) {
-    var num = parseInt(args[0], 10);
-    if (Number.isNaN(num)) {
-        message.channel.send("<@" + message.member.id + ">, that is not a number.");
-    }
-    else {
-        message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
-    }
-    return;
 }
 
 //
