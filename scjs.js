@@ -8,6 +8,11 @@ const util = require("./utilities.js");
 
 var awoocounter = 0;
 var awoochannel = null;
+var swear = ["fuck", "shit", "cunt", "fag", "faggot", "dick", "cock", "nigger", "nigga"];
+var responceSwear = ["Swearing?!? In \*MY\* christain server?!",
+                    "*picks up syringe* UwU, sorry swearing is punishable by death",
+                    "H-Hey, p-pwease no swearwing...",
+                    "nigger"]
 
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
@@ -39,6 +44,14 @@ client.on("ready", async=> {
         awoocounter = 0;
         awoochannel = null;
     }
+
+    swear.forEach(swearword => {
+        if (msg.content.toLowerCase().includes(swearword)) {
+            msg.channel.send(swear[Math.floor(Math.random() * 4)])
+            break;
+        }
+    });
+
 
     if (msg.content.toLowerCase() == "owo") {
         var rand = Math.floor(Math.random() * 4);
