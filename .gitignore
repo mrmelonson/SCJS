@@ -6,5 +6,3 @@ token.json
 logs/Tue Jul 31 2018.txt
 *.txt
 package-lock.json
-package-lock.json
-constants.json

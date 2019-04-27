@@ -15,8 +15,9 @@ module.exports = {
                 {
                     clearLvl = 3;
                     return;
-                /*
+                
                 }
+                /*
                 if (role.name.toLowerCase() == "moderator")
                 {
                     clearLvl = 2;
