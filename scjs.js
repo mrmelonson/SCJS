@@ -13,8 +13,8 @@ var swear = ["fuck", "shit", "cunt", "fag", "dick", "cock", "nigger", "nigga", "
 var responceSwear = ["Swearing?!? In *MY* christain server?!",
                     "*picks up syringe* UwU, sorry swearing is punishable by death",
                     "H-Hey, p-pwease no swearwing...",
-                    "no swearing nigga",
-                    "furries are legally allowed to euthanised you know :syringe:",]
+                    "No swearing nigga",
+                    "Furries are legally allowed to be euthanised you know :syringe:",]
 
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
