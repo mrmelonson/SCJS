@@ -3,6 +3,8 @@ const constant = require("./constants.json")
 const utilities = require("./utilities.js");
 const logger = require("./logging");
 const nonAssignable = require("./nonassignable.json");
+const db = require("./db")
+const fs = require("fs")
 
 // If using VS code press F12 while cursor is on the function to quickly navigate to it!
 
@@ -18,6 +20,7 @@ var commandDictionary = {
     "help" : help,
     "h" : help,
     "roll" : roll,
+    "sincount" : sinCount,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -387,6 +390,23 @@ function action(message, args, client) {
                             "```");
     }
 }
+
+//
+// SIN VIEWER COMMAND
+// HOW MANY TIMES HAVE YOU SINNED??
+//
+
+function sinCount(message, args, client) {
+    if(db[message.author.id] == null) {
+        db[message.author.id] = {}
+        message.channel.send("You have not sinned!")
+        return;
+    }
+
+    message.channel.send("UwU, you have sinned " + db[message.author.id].sin_counter + " times. :syringe: i'm sorry " + message.author);
+
+}
+
 
 //
 // STAFF COMMANDS

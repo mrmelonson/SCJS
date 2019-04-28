@@ -4,11 +4,12 @@ const token = require("./token.json");
 const constants = require("./constants.json");
 const logger = require("./logging");
 const commands = require("./commands");
-const util = require("./utilities.js");
+const db = require("./db")
+const fs = require("fs")
 
 var awoocounter = 0;
 var awoochannel = null;
-var swear = ["fuck", "shit", "cunt", "fag", "faggot", "dick", "cock", "nigger", "nigga"];
+var swear = ["fuck", "shit", "cunt", "fag", "dick", "cock", "nigger", "nigga", "bitch", "Slut", "ass"];
 var responceSwear = ["Swearing?!? In *MY* christain server?!",
                     "*picks up syringe* UwU, sorry swearing is punishable by death",
                     "H-Hey, p-pwease no swearwing...",
@@ -20,7 +21,7 @@ client.on("ready", async=> {
     client.user.setActivity(`khelp`);
 });
 
- client.on("message", async msg => {
+client.on("message", async msg => {
     // Return if author is bot or message is not command
     if (msg.author.bot) { return; }
 
@@ -48,7 +49,15 @@ client.on("ready", async=> {
 
     for (var i = 0; i < swear.length; i++) {
         if (msg.content.toLowerCase().includes(swear[i])) {
-            msg.channel.send(responceSwear[Math.floor(Math.random() * 4)]);
+            var x;
+            msg.channel.send(responceSwear[Math.floor(Math.random() * 5)]);
+            if(db[msg.author.id] == null) {
+                db[msg.author.id] = {};
+                db[msg.author.id].sin_counter = 1;
+            }
+            db[msg.author.id].sin_counter++;
+            jsonString = JSON.stringify(db, null, 2)
+            fs.writeFileSync('./db.json', jsonString)
             break;
         }
     }
