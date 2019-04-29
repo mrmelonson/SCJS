@@ -46,7 +46,7 @@ client.on("message", async msg => {
         awoocounter = 0;
         awoochannel = null;
     }
-
+/*
     for (var i = 0; i < swear.length; i++) {
         if (msg.content.toLowerCase().includes(swear[i])) {
             var x;
@@ -61,7 +61,7 @@ client.on("message", async msg => {
             break;
         }
     }
-
+*/
 
     if (msg.content.toLowerCase() == "owo") {
         var rand = Math.floor(Math.random() * 4);
