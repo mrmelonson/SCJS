@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const constant = require("./constants.json");
 const logger = require("./logging");
-const db = require("db");
+const db = require("./db");
 
 module.exports = {
 Editdb: function(key, value, member) {

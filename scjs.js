@@ -71,7 +71,7 @@ client.on("message", async msg => {
 */
 
 if (msg.content.toLowerCase().includes('owo')) {
-        msg.channel.send(responceowo(Math.floor(Math.random() * 5)));
+        msg.channel.send(responceowo[Math.floor(Math.random() * 5)]);
 }
 
 for (let i = 0; i < zeltrigger.length; i++) {
@@ -93,17 +93,17 @@ for (let i = 0; i < zeltrigger.length; i++) {
         logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
     }
     catch (err) {
-        logger.crit(msg.author.tag +" command failed, [" + command + "]");
-        logger.crit(err);
+        logger.warn(msg.author.tag +" command failed, [" + command + "]");
+        logger.warn(err);
     }
 });
 
 client.on("guildCreate", guild => {
     logger.log("I have joined a server (" + guild.name + ")");   
 });
-  
-  client.on("guildDelete", guild => {
+
+client.on("guildDelete", guild => {
     logger.warn("I have been kicked/Banned from a server (" + guild.name + ")");
-  });
+});
 
 client.login(token.token);

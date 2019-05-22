@@ -20,7 +20,7 @@ var commandDictionary = {
     "help" : help,
     "h" : help,
     "roll" : roll,
-    "sincount" : sinCount,
+    //"sincount" : sinCount,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -99,7 +99,7 @@ function assign(message, args, client) {
                 logger.log("Added role [" + role.name + "] to " + message.member.user.tag);
             }).catch((err) => {
                 message.channel.send("Sorry, i don't have permission to assign that role to you.");
-                logger.warn("Could not assign role: " + err);
+                logger.crit("Could not assign role: " + err);
             });
             flag = true;
             return;
@@ -152,7 +152,7 @@ function remove(message, args, client) {
                 logger.log("Removed role [" + role.name + "] from " + message.member.user.tag);
             }).catch((err) => {
                 message.channel.send("Sorry, i don't have permission to remove that role from you.")
-                logger.warn("Could not remove role: " + err);
+                logger.crit("Could not remove role: " + err);
             });
             flag = true;
             return;
@@ -286,7 +286,7 @@ function help(message, args, client) {
     }).catch(() => {
             message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
                                 commands.join(''));
-            logger.warn("Failed sending message to chat. Error:" + err);
+            logger.crit("Failed sending message to chat. Error:" + err);
     });
     
 }
@@ -474,7 +474,7 @@ function mute(message, args, client) {
     }
     catch (err) {
         message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
-        logger.warn(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
+        logger.crit(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
     }
 }
 
@@ -517,7 +517,7 @@ function unmute(message, args, client) {
     }
     catch (err) {
         message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
-        logger.warn(message.author.tag + ", failed to assign unmute role to " + member.tag);
+        logger.crit(message.author.tag + ", failed to assign unmute role to " + member.tag);
     }
 }
 
