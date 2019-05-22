@@ -40,9 +40,10 @@ var commandDictionary = {
 // Pings the bot
 //
 function ping(message, args, client) {
-
     message.channel.send(":ping_pong: Pong! Average ping: " + Math.round(client.ping) + " miliseconds!");
 }
+
+
 
 //
 // ASSIGN COMMAND
@@ -269,12 +270,14 @@ function help(message, args, client) {
                     "Syntax - `klistroles`\n" +
                     "lists all roles with number of members with it\n");
     }
+
     if (utilities.ModLevel(message, message.member) > 2) {
         commands.push("\n**Admin Commands**\n");
         commands.push("**Promote command**\n" +
                     "Syntax - `kpromote [user] [level 1-2]`\n" +
                     "Desc - Promotes user to staff or moderator\n"); 
     }
+
     logger.log(message.author.tag + " Requesting help.");
 
     message.member.send(commands.join('')).then(() => {
@@ -390,7 +393,7 @@ function action(message, args, client) {
                             "```");
     }
 }
-
+/*
 //
 // SIN VIEWER COMMAND
 // HOW MANY TIMES HAVE YOU SINNED??
@@ -406,6 +409,26 @@ function sinCount(message, args, client) {
     message.channel.send("UwU, you have sinned " + db[message.author.id].sin_counter + " times. :syringe: i'm sorry " + message.author);
 
 }
+
+//
+// SNUG COMMAND
+// So you can snug other users!
+//
+
+function snug(message, args, client) {
+
+    var member = message.mentions.members.first() || message.guild.members.get(args[1]);
+    if (!member || member == args[0]) {
+        logger.log(message.author.tag +": Failed action command incorrect syntax");
+        message.channel.send("Incorrect syntax, please mention user: `ksnug [user]`");
+        return;
+    }
+
+
+
+
+}
+*/
 
 
 //

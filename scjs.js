@@ -14,7 +14,14 @@ var responceSwear = ["Swearing?!? In *MY* christain server?!",
                     "*picks up syringe* UwU, sorry swearing is punishable by death",
                     "H-Hey, p-pwease no swearwing...",
                     "No swearing nigga",
-                    "Furries are legally allowed to be euthanised you know :syringe:",]
+                    "Furries are legally allowed to be euthanised you know :syringe:"];
+
+var responceowo = ["whats this?",
+                    "*Notices bulge*",
+                    "OWOwOWO *Notices OwO*",
+                    "UwU",
+                    "Bitch be OwO'n"];
+var zeltrigger = ["piss", "pee", "omorashi", "omo", "urine", "toilet", "urinal", "bladder"];
 
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
@@ -63,23 +70,18 @@ client.on("message", async msg => {
     }
 */
 
-    if (msg.content.toLowerCase() == "owo") {
-        var rand = Math.floor(Math.random() * 4);
-        switch(rand) {
-            case(0): 
-                msg.channel.send("whats this?");
-                break;
-            case(1):
-                msg.channel.send("*Notices bulge*");
-                break;
-            case(2):
-                msg.channel.send("OWOwOWO *Notices OwO*");
-                break;
-            default:
-                msg.channel.send("UwU");
-                break;
-        }
+if (msg.content.toLowerCase().includes('owo')) {
+        msg.channel.send(responceowo(Math.floor(Math.random() * 5)));
+}
+
+for (let i = 0; i < zeltrigger.length; i++) {
+    if (msg.content.toLowerCase().includes(zeltrigger[i])) {
+        msg.channel.send("<@284861595396472834>");
     }
+}
+
+
+
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
     //format args and command

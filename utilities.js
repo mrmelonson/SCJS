@@ -1,46 +1,59 @@
 const Discord = require("discord.js");
 const constant = require("./constants.json");
 const logger = require("./logging");
+const db = require("db");
 
 module.exports = {
-    ModLevel: function(message, member) {
-        var clearLvl = 0;
-        member.roles.forEach(role => {
-                if (role.name.toLowerCase() == "dadmin")
-                {
-                    clearLvl = 3;
-                    return;
-                }
-                if (role.name.toLowerCase() == "admin")
-                {
-                    clearLvl = 3;
-                    return;
-                
-                }
-                /*
-                if (role.name.toLowerCase() == "moderator")
-                {
-                    clearLvl = 2;
-                    return;
-                }
-                if (role.name.toLowerCase() == "helper")
-                {
-                    clearLvl = 1;
-                    return;
-                }
-                if (role.name.toLowerCase() == "staff")
-                {
-                    clearLvl = 1;
-                    return;
-                }
-            //console.log(role.name);
-            */
-        });
-        if (message.guild.owner == member) {
-            clearLvl = 4;
-        }
-        return clearLvl;
-    },
+Editdb: function(key, value, member) {
+
+    if(db[member.id] == null) {
+        db[member.id] = {};
+    }
+
+    db[member.id][key] = value;
+    jsonString = JSON.stringify(db, null, 2)
+    fs.writeFileSync('./db.json', jsonString)
+},
+
+
+ModLevel: function(message, member) {
+    var clearLvl = 0;
+    member.roles.forEach(role => {
+            if (role.name.toLowerCase() == "dadmin")
+            {
+                clearLvl = 3;
+                return;
+            }
+            if (role.name.toLowerCase() == "admin")
+            {
+                clearLvl = 3;
+                return;
+            
+            }
+            /*
+            if (role.name.toLowerCase() == "moderator")
+            {
+                clearLvl = 2;
+                return;
+            }
+            if (role.name.toLowerCase() == "helper")
+            {
+                clearLvl = 1;
+                return;
+            }
+            if (role.name.toLowerCase() == "staff")
+            {
+                clearLvl = 1;
+                return;
+            }
+        //console.log(role.name);
+        */
+    });
+    if (message.guild.owner == member) {
+        clearLvl = 4;
+    }
+    return clearLvl;
+},
 
 PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, promoteToLevel) {
     mentionedUser.roles.forEach( role => {
