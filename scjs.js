@@ -6,6 +6,10 @@ const logger = require("./logging");
 const commands = require("./commands");
 const db = require("./db")
 const fs = require("fs")
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 var awoocounter = 0;
 var awoochannel = null;
@@ -105,5 +109,17 @@ client.on("guildCreate", guild => {
 client.on("guildDelete", guild => {
     logger.warn("I have been kicked/Banned from a server (" + guild.name + ")");
 });
+
+/*
+readline.question("",(text) => {
+        var words = text.trim().split(" ");
+        var channelid = words.shift().toLocaleLowerCase();
+        var chan = client.channels.get(channelid);
+        
+        chan.send(words.join(" "));
+        logger.log("User input from command line;");
+        logger.log("'" + words + "' to channel '" + chan.name + "' in '" + chan.guild.name + "'");
+});
+*/
 
 client.login(token.token);
