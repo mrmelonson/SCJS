@@ -13,7 +13,6 @@ Editdb: function(key, value, memberid) {
     
     if(db[memberid][key] == null) {
         db[memberid][key] = 0;
-        console.log(db[memberid][key]);
     }
 
     if (value.includes('+')) {
