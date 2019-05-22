@@ -21,6 +21,7 @@ var commandDictionary = {
     "h" : help,
     "roll" : roll,
     //"sincount" : sinCount,
+    "snug" : snug,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -288,7 +289,7 @@ function help(message, args, client) {
                                 commands.join(''));
             logger.crit("Failed sending message to chat. Error:" + err);
     });
-    
+    return;
 }
 
 //
@@ -392,6 +393,7 @@ function action(message, args, client) {
                             "nom\n" +
                             "```");
     }
+    return;
 }
 /*
 //
@@ -409,26 +411,34 @@ function sinCount(message, args, client) {
     message.channel.send("UwU, you have sinned " + db[message.author.id].sin_counter + " times. :syringe: i'm sorry " + message.author);
 
 }
-
+*/
 //
 // SNUG COMMAND
 // So you can snug other users!
 //
 
 function snug(message, args, client) {
-
     var member = message.mentions.members.first() || message.guild.members.get(args[1]);
-    if (!member || member == args[0]) {
-        logger.log(message.author.tag +": Failed action command incorrect syntax");
+
+    if (!member) {
+        logger.log(message.author.tag +": Failed snug command incorrect syntax");
         message.channel.send("Incorrect syntax, please mention user: `ksnug [user]`");
         return;
     }
 
+    if (member.id == constant.SCID) {
+        message.channel.send(">///< T-Thank you, " + message.author.username + ".");
+        utilities.Editdb("snugreceive", "+1", constant.SCID);
+        utilities.Editdb("snuggive", "+1", message.member.id);
+        return;
+    }
 
-
-
+    message.channel.send("<@" + member.id + "> has been snuggled by " + message.author.username + "!");
+    utilities.Editdb("snugreceive", "+1", member.id);
+    utilities.Editdb("snuggive", "+1", message.author.id);
+    return;
 }
-*/
+
 
 
 //

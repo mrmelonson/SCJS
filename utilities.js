@@ -2,17 +2,32 @@ const Discord = require("discord.js");
 const constant = require("./constants.json");
 const logger = require("./logging");
 const db = require("./db");
+const fs = require("fs");
 
 module.exports = {
-Editdb: function(key, value, member) {
+Editdb: function(key, value, memberid) {
 
-    if(db[member.id] == null) {
-        db[member.id] = {};
+    if(db[memberid] == null) {
+        db[memberid] = {};
+    }
+    
+    if(db[memberid][key] == null) {
+        db[memberid][key] = 0;
+        console.log(db[memberid][key]);
     }
 
-    db[member.id][key] = value;
-    jsonString = JSON.stringify(db, null, 2)
-    fs.writeFileSync('./db.json', jsonString)
+    if (value.includes('+')) {
+        db[memberid][key] += parseInt(value.slice(1));
+    } 
+    else if (value.includes('-')) {
+        db[memberid][key] -= parseInt(value.slice(1));
+    }
+    else {
+        db[memberid][key] = value;
+    }
+    jsonString = JSON.stringify(db, null, 2);
+    fs.writeFileSync('./db.json', jsonString);
+    return;
 },
 
 
