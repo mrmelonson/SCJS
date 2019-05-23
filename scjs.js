@@ -26,7 +26,7 @@ var responceowo = ["whats this?",
                     "OWOwOWO *Notices OwO*",
                     "UwU",
                     "Bitch be OwO'n"];
-var zeltrigger = ["piss", "pee ", "omorashi", "urine", "toilet", "urinal", "bladder"];
+var zeltrigger = ["piss", "pee", "omorashi", "urine", "toilet", "urinal", "bladder"];
 var canpingzel = true;
 
 client.on("ready", async=> {
