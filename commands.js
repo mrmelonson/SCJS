@@ -22,6 +22,7 @@ var commandDictionary = {
     "roll" : roll,
     //"sincount" : sinCount,
     "snug" : snug,
+    "snugcount" : snugcount,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -412,6 +413,7 @@ function sinCount(message, args, client) {
 
 }
 */
+
 //
 // SNUG COMMAND
 // So you can snug other users!
@@ -429,7 +431,7 @@ function snug(message, args, client) {
     if (member.id == constant.SCID) {
         message.channel.send(">///< T-Thank you, " + message.author.username + ".");
         utilities.Editdb("snugreceive", "+1", constant.SCID);
-        utilities.Editdb("snuggive", "+1", message.member.id);
+        utilities.Editdb("snuggive", "+1", message.author.id);
         return;
     }
 
@@ -438,7 +440,38 @@ function snug(message, args, client) {
     utilities.Editdb("snuggive", "+1", message.author.id);
     return;
 }
+/*
+//
+// SNUGCOUNT COMMAND
+// So you can see snug count
+//
 
+function snugcount(message, args, client) {
+    var member = message.mentions.members.first() || message.guild.members.get(args[1]);
+
+    if (!member) {
+        member = message.author;
+    }
+    
+    if(db[member.id] == null) {
+        
+    }
+
+    if (db[member.id]['snuggive'] == null) {
+        db[member.id]['snuggive'] = 0;
+    }
+
+    if (db[member.id]['snugreceive'] == null) {
+        db[member.id]['snugreceive'] = 0;
+    }
+    
+    message.channel.send("```" +
+                        "Snugs given: " + db[member.id]['snuggive'] +
+                        "\nSnugs received: " + db[member.id]['snugreceive'] +
+                        "```");
+    return;
+}
+*/
 
 
 //
