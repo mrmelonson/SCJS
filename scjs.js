@@ -10,6 +10,7 @@ const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 });
+const utilities = require("./utilities")
 
 var awoocounter = 0;
 var awoochannel = null;
@@ -26,6 +27,7 @@ var responceowo = ["whats this?",
                     "UwU",
                     "Bitch be OwO'n"];
 var zeltrigger = ["piss", "pee", "omorashi", "omo", "urine", "toilet", "urinal", "bladder"];
+var canpingzel = true;
 
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
@@ -78,9 +80,20 @@ if (msg.content.toLowerCase().includes('owo')) {
         msg.channel.send(responceowo[Math.floor(Math.random() * 5)]);
 }
 
-for (let i = 0; i < zeltrigger.length; i++) {
-    if (msg.content.toLowerCase().includes(zeltrigger[i])) {
-        msg.channel.send("<@284861595396472834>");
+
+if (canpingzel) {
+    for (let i = 0; i < zeltrigger.length; i++) {
+        if (msg.content.toLowerCase().includes(zeltrigger[i])) {
+            canpingzel = false
+            //msg.channel.send("<@284861595396472834>");
+            msg.channel.send("hello");
+
+            setTimeout(function () {
+                canpingzel = true;
+                console.log("Can ping zel");
+            }, 10000);
+
+        }
     }
 }
 

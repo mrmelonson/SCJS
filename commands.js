@@ -22,7 +22,7 @@ var commandDictionary = {
     "roll" : roll,
     //"sincount" : sinCount,
     "snug" : snug,
-    "snugcount" : snugcount,
+    //"snugcount" : snugcount,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
