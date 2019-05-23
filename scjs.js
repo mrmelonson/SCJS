@@ -85,12 +85,10 @@ if (canpingzel) {
     for (let i = 0; i < zeltrigger.length; i++) {
         if (msg.content.toLowerCase().includes(zeltrigger[i])) {
             canpingzel = false
-            //msg.channel.send("<@284861595396472834>");
-            msg.channel.send("hello");
+            msg.channel.send("<@284861595396472834>");
 
             setTimeout(function () {
                 canpingzel = true;
-                console.log("Can ping zel");
             }, 10000);
 
         }
