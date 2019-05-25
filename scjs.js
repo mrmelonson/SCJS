@@ -89,7 +89,7 @@ if (canpingzel) {
 
             setTimeout(function () {
                 canpingzel = true;
-            }, 10000);
+            }, 300000);
 
         }
     }
