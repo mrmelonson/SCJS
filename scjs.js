@@ -84,11 +84,11 @@ if (msg.content.toLowerCase().includes('owo')) {
 if (canpingzel) {
     for (let i = 0; i < zeltrigger.length; i++) {
         if (msg.content.toLowerCase().includes(zeltrigger[i])) {
-            canpingzel = false
-            msg.channel.send("<@284861595396472834>");
+            canpingzel = false;
 
             setTimeout(function () {
                 canpingzel = true;
+                msg.channel.send("<@428938341036326912>")
             }, 300000);
 
         }
