@@ -4,31 +4,35 @@ const token = require("./token.json");
 const constants = require("./constants.json");
 const logger = require("./logging");
 const commands = require("./commands");
-const db = require("./db")
-const fs = require("fs")
+const db = require("./db");
+const fs = require("fs");
+
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 });
+
 const utilities = require("./utilities")
 
 var awoocounter = 0;
 var awoochannel = null;
+/*
 var swear = ["fuck", "shit", "cunt", "fag", "dick", "cock", "nigger", "nigga", "bitch", "Slut", "ass"];
 var responceSwear = ["Swearing?!? In *MY* christain server?!",
                     "*picks up syringe* UwU, sorry swearing is punishable by death",
                     "H-Hey, p-pwease no swearwing...",
                     "No swearing nigga",
                     "Furries are legally allowed to be euthanised you know :syringe:"];
-
+*/
 var responceowo = ["whats this?",
                     "*Notices bulge*",
                     "OWOwOWO *Notices OwO*",
                     "UwU",
                     "Bitch be OwO'n"];
+/*
 var zeltrigger = ["piss", "pee", "omorashi", "urine", "toilet", "urinal", "bladder"];
 var canpingzel = true;
-
+*/
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
     client.user.setActivity(`khelp`);
@@ -59,6 +63,7 @@ client.on("message", async msg => {
         awoocounter = 0;
         awoochannel = null;
     }
+
 /*
     for (var i = 0; i < swear.length; i++) {
         if (msg.content.toLowerCase().includes(swear[i])) {
@@ -80,7 +85,7 @@ if (msg.content.toLowerCase().includes('owo')) {
         msg.channel.send(responceowo[Math.floor(Math.random() * 5)]);
 }
 
-
+/*
 if (canpingzel) {
     for (let i = 0; i < zeltrigger.length; i++) {
         if (msg.content.toLowerCase().includes(zeltrigger[i])) {
@@ -94,7 +99,7 @@ if (canpingzel) {
         }
     }
 }
-
+*/
 
 
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
