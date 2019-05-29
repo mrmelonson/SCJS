@@ -22,7 +22,7 @@ var commandDictionary = {
     "roll" : roll,
     //"sincount" : sinCount,
     "snug" : snug,
-    //"snugcount" : snugcount,
+    "snugcount" : snugcount,
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -440,7 +440,7 @@ function snug(message, args, client) {
     utilities.Editdb("snuggive", "+1", message.author.id);
     return;
 }
-/*
+
 //
 // SNUGCOUNT COMMAND
 // So you can see snug count
@@ -452,18 +452,9 @@ function snugcount(message, args, client) {
     if (!member) {
         member = message.author;
     }
-    
-    if(db[member.id] == null) {
-        
-    }
 
-    if (db[member.id]['snuggive'] == null) {
-        db[member.id]['snuggive'] = 0;
-    }
-
-    if (db[member.id]['snugreceive'] == null) {
-        db[member.id]['snugreceive'] = 0;
-    }
+    utilities.Editdb("snuggive", "+0", member.id);
+    utilities.Editdb("snugreceive", "+0", member.id);
     
     message.channel.send("```" +
                         "Snugs given: " + db[member.id]['snuggive'] +
@@ -471,7 +462,7 @@ function snugcount(message, args, client) {
                         "```");
     return;
 }
-*/
+
 
 
 //
