@@ -24,6 +24,9 @@ Editdb: function(key, value, memberid) {
     else {
         db[memberid][key] = value;
     }
+    if (db[memberid][key] < 0) {
+        db[memberid][key] = 0;
+    }
     jsonString = JSON.stringify(db, null, 2);
     fs.writeFileSync('./db.json', jsonString);
     return;

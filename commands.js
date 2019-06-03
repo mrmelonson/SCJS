@@ -435,9 +435,16 @@ function snug(message, args, client) {
         return;
     }
 
+    if (member.id == message.author.id) {
+        message.channel.send("You have snugged yourself, Now thats lonely! (loneliness level +1)");
+        utilities.Editdb("lonelylvl", "+1", message.author.id);
+        return;
+    }
+
     message.channel.send("<@" + member.id + "> has been snuggled by " + message.author.username + "!");
     utilities.Editdb("snugreceive", "+1", member.id);
     utilities.Editdb("snuggive", "+1", message.author.id);
+    utilities.Editdb("lonelylvl", "-1", member.id);
     return;
 }
 
@@ -448,17 +455,24 @@ function snug(message, args, client) {
 
 function snugcount(message, args, client) {
     var member = message.mentions.members.first() || message.guild.members.get(args[1]);
-
+    var lonemessage = "";
     if (!member) {
         member = message.author;
     }
 
     utilities.Editdb("snuggive", "+0", member.id);
     utilities.Editdb("snugreceive", "+0", member.id);
-    
+    utilities.Editdb("lonelylvl", "+0", member.id);
+
+    if (db[member.id]["lonelylvl"] > 0) {
+        lonemessage = "\nLoneliness level: " + db[member.id]["lonelylvl"]
+    }
+
+
     message.channel.send("```" +
                         "Snugs given: " + db[member.id]['snuggive'] +
                         "\nSnugs received: " + db[member.id]['snugreceive'] +
+                        lonemessage +
                         "```");
     return;
 }
