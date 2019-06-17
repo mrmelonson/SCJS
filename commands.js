@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
-const constant = require("./constants.json")
+const constant = require("./constants.json");
 const utilities = require("./utilities.js");
 const logger = require("./logging");
 const nonAssignable = require("./nonassignable.json");
-const db = require("./db")
-const fs = require("fs")
+const db = require("./db");
+const fs = require("fs");
 
 // If using VS code press F12 while cursor is on the function to quickly navigate to it!
 
@@ -20,9 +20,10 @@ var commandDictionary = {
     "help" : help,
     "h" : help,
     "roll" : roll,
-    //"sincount" : sinCount,
     "snug" : snug,
     "snugcount" : snugcount,
+    "clown" : clown,
+
     // staff commands
     "mute" : mute,
     "unmute" : unmute,
@@ -43,6 +44,45 @@ var commandDictionary = {
 //
 function ping(message, args, client) {
     message.channel.send(":ping_pong: Pong! Average ping: " + Math.round(client.ping) + " miliseconds!");
+}
+
+//
+// Info command
+// Gives info about the bot
+//
+
+function info(message, args, client) {
+    function pad(n, z) {
+        z = z || 2;
+        return ('00' + n).slice(-z);
+    }
+    
+    var s = client.uptime
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+    
+    var time = pad(hrs) + 'h ' + pad(mins) + 'm ' + pad(secs) + '.' + pad(ms, 3) + "s";
+
+    message.channel.send(
+        "```" +
+        "   _____             __  __                                ______                    \n" +
+        "  / ___/____  __  __/ /_/ /_  ___  _________              / ____/________  __________\n" +
+        "  \\__ \\/ __ \\/ / / / __/ __ \\/ _ \\/ ___/ __ \\   ______   / /   / ___/ __ \\/ ___/ ___/\n" +
+        " ___/ / /_/ / /_/ / /_/ / / /  __/ /  / / / /  /_____/  / /___/ /  / /_/ (__  |__  ) \n" +
+        "/____/\\____/\\__,_/\\__/_/ /_/\\___/_/  /_/ /_/            \\____/_/   \\____/____/____/  " +
+        "v" + constant.versionNum +
+        "\n Created by: Zelenyy" +
+        "\n Written in: Node JS" +
+        "\n Num of servers serving: " + client.guilds.size +
+        "\n Recorded ping: " + Math.round(client.ping) + "ms" +
+        "\n Up-time: " + time +
+        "```" +
+        "Github: http://github.com/mrmelonson/SCJS"
+    );
 }
 
 
@@ -167,131 +207,6 @@ function remove(message, args, client) {
     return;
 }
 
-//
-// Info command
-// Gives info about the bot
-//
-
-function info(message, args, client) {
-    function pad(n, z) {
-        z = z || 2;
-        return ('00' + n).slice(-z);
-    }
-    
-    var s = client.uptime
-    var ms = s % 1000;
-    s = (s - ms) / 1000;
-    var secs = s % 60;
-    s = (s - secs) / 60;
-    var mins = s % 60;
-    var hrs = (s - mins) / 60;
-    
-    var time = pad(hrs) + 'h ' + pad(mins) + 'm ' + pad(secs) + '.' + pad(ms, 3) + "s";
-
-    message.channel.send(
-        "```" +
-        "   _____             __  __                                ______                    \n" +
-        "  / ___/____  __  __/ /_/ /_  ___  _________              / ____/________  __________\n" +
-        "  \\__ \\/ __ \\/ / / / __/ __ \\/ _ \\/ ___/ __ \\   ______   / /   / ___/ __ \\/ ___/ ___/\n" +
-        " ___/ / /_/ / /_/ / /_/ / / /  __/ /  / / / /  /_____/  / /___/ /  / /_/ (__  |__  ) \n" +
-        "/____/\\____/\\__,_/\\__/_/ /_/\\___/_/  /_/ /_/            \\____/_/   \\____/____/____/  " +
-        "v" + constant.versionNum +
-        "\n Created by: Zelenyy" +
-        "\n Written in: Node JS" +
-        "\n Num of servers serving: " + client.guilds.size +
-        "\n Recorded ping: " + Math.round(client.ping) + "ms" +
-        "\n Up-time: " + time +
-        "```" +
-        "Github: http://github.com/mrmelonson/SCJS"
-    );
-}
-
-//
-// Roll command
-// Generates a random number
-//
-
-function roll(message, args, client) {
-    var num = parseInt(args[0], 10);
-    if (Number.isNaN(num)) {
-        message.channel.send("<@" + message.member.id + ">, that is not a number.");
-    }
-    else {
-        message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
-    }
-    return;
-}
-
-//
-// Help Command
-// Gives help
-// PLEASE ADD NEW COMMANDS HERE
-//
-
-function help(message, args, client) {
-    var commands = [];
-    commands.push("**These are your available commands**\n\n")
-    commands.push("**Ping command**\n" + 
-                "Syntax - `kping`\n" +
-                "Desc - Pings bot\n");
-    commands.push("**Info command**\n" + 
-                "Syntax - `kinfo`\n" +
-                "Desc - Gives info about me\n");
-    commands.push("**Assign command**\n" +
-                "Syntax - `kassign [role]`\n" +
-                "Desc - Assigns a role to you\n");
-    commands.push("**Remove command**\n" +
-                "Syntax - `kremove [role]`\n" +
-                "Desc - Removes a role from you\n");
-    commands.push("**Roll command**\n" +
-                "Syntax - `kroll [# of sides]`\n" +
-                "Desc - Rolls a dice\n");
-    commands.push("**Action command**\n" + 
-                "Syntax - `kaction [action] [user]`\n" + 
-                "Desc - Use an action on someone"+
-                "Avaliable actions:\n" +
-                "```\n" +
-                "Bap\n" +
-                "Smooch\n" +
-                "Boop\n" +
-                "Punch\n" +
-                "Snug\n" +
-                "slap\n" +
-                "nom\n" +
-                "```");
-
-    if (utilities.ModLevel(message, message.member) > 0) {
-        commands.push("\n**Moderator Commands**\n");
-        commands.push("**Mute command**\n" +
-                    "Syntax - `kmute [user]`\n" +
-                    "Desc - Mutes a user\n");
-        commands.push("**Unmute command**\n" +
-                    "Syntax - `kumute [muted user]`\n" +
-                    "Desc - Unmutes a user\n");
-                    commands.push("**Listroles Command**\n" +
-                    "Syntax - `klistroles`\n" +
-                    "lists all roles with number of members with it\n");
-    }
-
-    if (utilities.ModLevel(message, message.member) > 2) {
-        commands.push("\n**Admin Commands**\n");
-        commands.push("**Promote command**\n" +
-                    "Syntax - `kpromote [user] [level 1-2]`\n" +
-                    "Desc - Promotes user to staff or moderator\n"); 
-    }
-
-    logger.log(message.author.tag + " Requesting help.");
-
-    message.member.send(commands.join('')).then(() => {
-            message.channel.send("<@" + message.member.id + ">, I have sent you your available commands.");
-            logger.log("Success, " + message.author.tag + " has recived help.");
-    }).catch(() => {
-            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
-                                commands.join(''));
-            logger.crit("Failed sending message to chat. Error:" + err);
-    });
-    return;
-}
 
 //
 // Action command
@@ -396,23 +311,94 @@ function action(message, args, client) {
     }
     return;
 }
-/*
+
 //
-// SIN VIEWER COMMAND
-// HOW MANY TIMES HAVE YOU SINNED??
+// Help Command
+// Gives help
+// PLEASE ADD NEW COMMANDS HERE
 //
 
-function sinCount(message, args, client) {
-    if(db[message.author.id] == null) {
-        db[message.author.id] = {}
-        message.channel.send("You have not sinned!")
-        return;
+function help(message, args, client) {
+    var commands = [];
+    commands.push("**These are your available commands**\n\n")
+    commands.push("**Ping command**\n" + 
+                "Syntax - `kping`\n" +
+                "Desc - Pings bot\n");
+    commands.push("**Info command**\n" + 
+                "Syntax - `kinfo`\n" +
+                "Desc - Gives info about me\n");
+    commands.push("**Assign command**\n" +
+                "Syntax - `kassign [role]`\n" +
+                "Desc - Assigns a role to you\n");
+    commands.push("**Remove command**\n" +
+                "Syntax - `kremove [role]`\n" +
+                "Desc - Removes a role from you\n");
+    commands.push("**Roll command**\n" +
+                "Syntax - `kroll [# of sides]`\n" +
+                "Desc - Rolls a dice\n");
+    commands.push("**Action command**\n" + 
+                "Syntax - `kaction [action] [user]`\n" + 
+                "Desc - Use an action on someone"+
+                "Avaliable actions:\n" +
+                "```\n" +
+                "Bap\n" +
+                "Smooch\n" +
+                "Boop\n" +
+                "Punch\n" +
+                "Snug\n" +
+                "slap\n" +
+                "nom\n" +
+                "```");
+
+    if (utilities.ModLevel(message, message.member) > 0) {
+        commands.push("\n**Moderator Commands**\n");
+        commands.push("**Mute command**\n" +
+                    "Syntax - `kmute [user]`\n" +
+                    "Desc - Mutes a user\n");
+        commands.push("**Unmute command**\n" +
+                    "Syntax - `kumute [muted user]`\n" +
+                    "Desc - Unmutes a user\n");
+                    commands.push("**Listroles Command**\n" +
+                    "Syntax - `klistroles`\n" +
+                    "lists all roles with number of members with it\n");
     }
 
-    message.channel.send("UwU, you have sinned " + db[message.author.id].sin_counter + " times. :syringe: i'm sorry " + message.author);
+    if (utilities.ModLevel(message, message.member) > 2) {
+        commands.push("\n**Admin Commands**\n");
+        commands.push("**Promote command**\n" +
+                    "Syntax - `kpromote [user] [level 1-2]`\n" +
+                    "Desc - Promotes user to staff or moderator\n"); 
+    }
 
+    logger.log(message.author.tag + " Requesting help.");
+
+    message.member.send(commands.join('')).then(() => {
+            message.channel.send("<@" + message.member.id + ">, I have sent you your available commands.");
+            logger.log("Success, " + message.author.tag + " has recived help.");
+    }).catch(() => {
+            message.channel.send("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
+                                commands.join(''));
+            logger.crit("Failed sending message to chat. Error:" + err);
+    });
+    return;
 }
-*/
+
+
+//
+// Roll command
+// Generates a random number
+//
+
+function roll(message, args, client) {
+    var num = parseInt(args[0], 10);
+    if (Number.isNaN(num)) {
+        message.channel.send("<@" + message.member.id + ">, that is not a number.");
+    }
+    else {
+        message.channel.send("<@" + message.member.id + ">, you rolled a " + Math.floor((Math.random() * num) + 1));
+    }
+    return;
+}
 
 //
 // SNUG COMMAND
@@ -463,9 +449,14 @@ function snugcount(message, args, client) {
     utilities.Editdb("snuggive", "+0", member.id);
     utilities.Editdb("snugreceive", "+0", member.id);
     utilities.Editdb("lonelylvl", "+0", member.id);
+    utilities.Editdb("clowncount", "+0", member.id);
 
     if (db[member.id]["lonelylvl"] > 0) {
         lonemessage = "\nLoneliness level: " + db[member.id]["lonelylvl"]
+    }
+
+    if (db[member.id]["clowncount"] > 0) {
+        lonemessage = "\nClown Count: " + db[member.id]["clowncount"]
     }
 
 
@@ -475,6 +466,33 @@ function snugcount(message, args, client) {
                         lonemessage +
                         "```");
     return;
+}
+
+function clown(message ,args, client) {
+    var member = message.mentions.members.first() || message.guild.members.get(args[1]);
+
+    if (!member) {
+        logger.log(message.author.tag +": Failed snug command incorrect syntax");
+        message.channel.send("Incorrect syntax, please mention user: `kclown [user]`");
+        return;
+    }
+
+    if (member.id == constant.SCID) {
+        message.channel.send("Oh god dont't drag me into this.");
+        return;
+    }
+
+    if (member.id == message.author.id) {
+        message.channel.send("You have clowned yourself, Congrats");
+        utilities.Editdb("lonelylvl", "+1", message.author.id);
+        return;
+    }
+
+    message.channel.send(":clown: <@" + member.id + "> just got clown'd on lmao :clown:");
+    utilities.Editdb("clowncount", "+1", member.id);
+    utilities.Editdb("clowncount", "-1", message.author.id);
+    return;
+
 }
 
 
@@ -495,6 +513,8 @@ function mute(message, args, client) {
         return;
     }
 
+    console.log((utilities.ModLevel(message, message.member)));
+
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if (!member) {
         logger.log(message.author.tag +": Failed mute command, did not mention user");
@@ -503,13 +523,14 @@ function mute(message, args, client) {
     }
 
     if(member.id == message.member.id) {
-        logger.log(message.author.tag + ": Tried to mute themselves :/");
+        logger.warn(message.author.tag + ": Tried to mute themselves :/");
         message.channel.send("<@" + message.member.id + ">, you cannot use this command on yourself.");
         return;
     }
 
     try {
         var muteRole;
+
         message.guild.roles.forEach(role => {
             if (role.name.toLowerCase() == "muted") {
                 muteRole = role;
@@ -523,7 +544,9 @@ function mute(message, args, client) {
     catch (err) {
         message.channel.send("I'm sorry Dave, I'm afraid I can't do that.");
         logger.crit(message.author.tag + ", failed to assign mute role to " + member.tag + ", " + err);
+        return;
     }
+    return;
 }
 
 
@@ -605,7 +628,7 @@ function purge(message, args, client) {
 
 function promote(message, args, client) {
     var clearence = utilities.ModLevel(message, message.member);
-
+    
     if (clearence < 1) {
         logger.warn(message.author.tag + ": non staff attempting to use purge command");
         message.channel.send("Sorry, you do not have access to this command");

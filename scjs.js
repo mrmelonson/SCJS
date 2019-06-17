@@ -24,6 +24,7 @@ var responceSwear = ["Swearing?!? In *MY* christain server?!",
                     "No swearing nigga",
                     "Furries are legally allowed to be euthanised you know :syringe:"];
 */
+
 var responceowo = ["whats this?",
                     "*Notices bulge*",
                     "OWOwOWO *Notices OwO*",
