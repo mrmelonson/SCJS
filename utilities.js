@@ -78,59 +78,41 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
             mentionedUser.removeRole(role);
         }
     });
-        var modLevel = memberlevel;
-        console.log(modLevel);
-        var previousLevel = mentionedlevel;
-        console.log(previousLevel);
-        console.log(promoteToLevel);
-        var modLevesls = {
-            1 : "staff",
-            2 : "moderator",
-            3 : "admin"
-        }
-        // Remove for assignment branch
-        var modLeveslsAusfurs = {
-            1 : "helper",
-            2 : "moderator",
-            3 : "admin"
-        }
-        if (modLevel <= promoteToLevel) {
-            throw('Permission Denied');
-            return;
-        }
-        
-        if (promoteToLevel < 1) {
-            message.channel.send("<@" + mentionedUser.id+ ">, You have been demoted to user");
-            logger.warn(mentionedUser.tag + " : has been demoted to User");
-            return;
-        }
-        // Remove for assignment branch
-        if (message.guild.id == constant.AusfursID) {
-            message.guild.roles.forEach(role => {
-                if(role.name.toLowerCase() == modLeveslsAusfurs[promoteToLevel]) {
-                    mentionedUser.addRole(role).then(() => {
-                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promoted to " + role.name)
-                        logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
-                    }).catch((err) => {
-                        message.channel.send("Sorry, i don't have permission to assign that role to you.")
-                        logger.warn("Could not assign role: " + err);
-                    });
-                }
-            });
-        } else {
-            message.guild.roles.forEach(role => {
-                if(role.name.toLowerCase() == modLevesls[promoteToLevel]) {
-                    mentionedUser.addRole(role).then(() => {
-                        message.channel.send("<@" + mentionedUser.id+ ">, You have been promoted to " + role.name)
-                        logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
-                    }).catch((err) => {
-                        message.channel.send("Sorry, i don't have permission to assign that role to you.")
-                        logger.warn("Could not assign role: " + err);
-                    });
-                }
-            });
-        }
+    var modLevel = memberlevel;
+    var previousLevel = mentionedlevel;
+
+    var modLevesls = {
+        1 : "dadmin",
+        2 : "dadmin",
+        3 : "dadmin"
+    }
+    
+    /*
+    if (modLevel <= promoteToLevel) {
+        throw('Permission Denied');
         return;
+    }
+    */
+    
+    if (promoteToLevel < 1) {
+        message.channel.send("<@" + mentionedUser.id+ ">, You have been demoted to user");
+        logger.warn(mentionedUser.tag + " : has been demoted to User");
+        return;
+    }
+
+    message.guild.roles.forEach(role => {
+        if(role.name.toLowerCase() == modLevesls[promoteToLevel]) {
+            mentionedUser.addRole(role).then(() => {
+                message.channel.send("<@" + mentionedUser.id+ ">, You have been promoted to " + role.name)
+                logger.log("Added role [" + role.name + "] to " + mentionedUser.user.tag);
+            }).catch((err) => {
+                message.channel.send("Sorry, i don't have permission to assign that role to you.")
+                logger.warn("Could not assign role: " + err);
+            });
+        }
+    });
+    
+    return;
     },
 
 };
