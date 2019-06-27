@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const constant = require("./constants.json");
-const utilities = require("./utilities.js");
+const utilities = require("../utilities.js/index.js");
 const logger = require("./logging");
 const nonAssignable = require("./nonassignable.json");
 const db = require("./db");
@@ -225,8 +225,8 @@ function action(message, args, client) {
                             "Boop\n" +
                             "Punch\n" +
                             "Snug\n" +
-                            "slap\n" +
-                            "nom\n" +
+                            "Slap\n" +
+                            "Nom\n" +
                             "```");
         return;
     }
@@ -305,8 +305,8 @@ function action(message, args, client) {
                             "Boop\n" +
                             "Punch\n" +
                             "Snug\n" +
-                            "slap\n" +
-                            "nom\n" +
+                            "Nlap\n" +
+                            "Nom\n" +
                             "```");
     }
     return;

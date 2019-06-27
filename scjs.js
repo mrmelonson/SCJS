@@ -3,19 +3,27 @@ const client = new Discord.Client();
 const token = require("./token.json");
 const constants = require("./constants.json");
 const logger = require("./logging");
-const commands = require("./commands");
 const db = require("./db");
 const fs = require("fs");
+
+client.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
 const utilities = require("./utilities")
 
 var awoocounter = 0;
 var awoochannel = null;
+
 /*
 var swear = ["fuck", "shit", "cunt", "fag", "dick", "cock", "nigger", "nigga", "bitch", "Slut", "ass"];
 var responceSwear = ["Swearing?!? In *MY* christain server?!",
@@ -34,6 +42,7 @@ var responceowo = ["whats this?",
 var zeltrigger = ["piss", "pee", "omorashi", "urine", "toilet", "urinal", "bladder"];
 var canpingzel = true;
 */
+
 client.on("ready", async=> {
     logger.log("\nBOT START...\n")
     client.user.setActivity(`khelp`);
@@ -101,16 +110,16 @@ if (canpingzel) {
     }
 }
 */
-
-
     if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
 
     //format args and command
     const args = msg.content.slice(constants.prefix.length).trim().split(" ");
     const command = args.shift().toLocaleLowerCase();
 
+    if (!client.commands.has(command)) return;
+
     try {
-        commands.commandDictionary[command](msg, args, client);
+        client.commands.get(command).execute(msg, args, client);
         logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
     }
     catch (err) {
