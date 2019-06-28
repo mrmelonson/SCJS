@@ -17,11 +17,11 @@ module.exports = {
 
             message.author.send(commandlists.join('')).then(() => {
                 if (message.channel.type != 'dm') {
-                    message.reply("<@" + message.author.id + ">, I have sent you your available commands.");
+                    message.reply("I have sent you your available commands.");
                 }
                 logger.log("Success, " + message.author.tag + " has recived help.");
             }).catch((err) => {
-                message.reply("Sorry <@"+ message.member.id + "> i cannot message you. Here are your commands:\n" +
+                message.reply("I cannot message you. Here are your commands:\n" +
                                     commandlists.join(''));
                 logger.warn("Failed sending message to chat. Error:" + err);
             });
