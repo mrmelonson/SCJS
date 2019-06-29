@@ -4,7 +4,8 @@ const contstants = require("../constants.json")
 module.exports = {
 	name: 'help',
 	description: 'Get Help!',
-	syntax: '`khelp`',
+    syntax: '`khelp`',
+    clearlvl: 0,
 	execute(message, args, client) {
         const commandlists = [];
         const { commands } = message.client;

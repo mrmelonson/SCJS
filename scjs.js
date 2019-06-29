@@ -5,9 +5,11 @@ const constants = require("./constants.json");
 const logger = require("./logging");
 const db = require("./db");
 const fs = require("fs");
+const utilities = require("./utilities")
 
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const staffcommandFiles = fs.readdirSync('./commands/staffcommands').filter(file => file.endsWith('.js'));
 
 const readline = require('readline').createInterface({
     input: process.stdin,
@@ -19,7 +21,11 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-const utilities = require("./utilities")
+for (const file of staffcommandFiles) {
+	const command = require(`./commands/staffcommands/${file}`);
+	client.commands.set(command.name, command);
+}
+
 
 var awoocounter = 0;
 var awoochannel = null;
@@ -38,6 +44,7 @@ var responceowo = ["whats this?",
                     "OWOwOWO *Notices OwO*",
                     "UwU",
                     "Bitch be OwO'n"];
+
 /*
 var zeltrigger = ["piss", "pee", "omorashi", "urine", "toilet", "urinal", "bladder"];
 var canpingzel = true;
@@ -49,7 +56,7 @@ client.on("ready", async=> {
 });
 
 client.on("message", async msg => {
-    // Return if author is bot or message is not command
+    
     if (msg.author.bot) { return; }
 
     if(msg.content.substring(0,4).toLocaleLowerCase() == "awoo") {
@@ -119,12 +126,23 @@ if (canpingzel) {
     if (!client.commands.has(command)) return;
 
     try {
-        client.commands.get(command).execute(msg, args, client);
+        console.log(utilities.ModLevel(msg));
+        if (client.commands.get(command).clearlvl <= utilities.ModLevel(msg)) {
+            client.commands.get(command).execute(msg, args, client);
+        } else {
+            throw "Forbidden";
+        }
         logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
     }
     catch (err) {
-        logger.warn(msg.author.tag +" command failed, [" + command + "]");
-        logger.warn(err);
+        if (err == "Forbidden") {
+            logger.warn(msg.author.tag +" tried running forbidden command, [" + command + "]");
+            msg.reply("Sorry this command can only be run by staff");
+        }
+        else {
+            logger.warn(msg.author.tag +" command failed, [" + command + "]");
+            logger.warn(err);
+        }
     }
 });
 

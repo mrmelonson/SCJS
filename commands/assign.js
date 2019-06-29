@@ -5,6 +5,7 @@ module.exports = {
     description: 'Assigns roles to you',
     syntax: '`kassign [role]`',
     aliases: ['a'],
+    clearlvl: 0,
 	execute(message, args, client) {
         var roleName = args.join(' ');
         roleName = roleName.toLowerCase();

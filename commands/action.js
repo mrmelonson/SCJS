@@ -5,6 +5,7 @@ module.exports = {
 	name: 'action',
     description: 'Use an action on someone, Avaliable actions:```\nBap\nSmooch\nBoop\nPunch\nSnug\nSlap\nNom\n```',
     syntax: '`kaction [action] [user]`',
+    clearlvl: 0,
     execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);
         if (!member || member == args[0]) {

@@ -6,6 +6,7 @@ module.exports = {
 	name: 'snug',
 	description: 'Snug other users!',
     syntax: '`ksnug [user]`',
+    clearlvl: 0,
 	execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);
 

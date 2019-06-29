@@ -33,42 +33,34 @@ Editdb: function(key, value, memberid) {
 },
 
 
-ModLevel: function(message, member) {
+ModLevel: function(message) {
     var clearLvl = 0;
-    member.roles.forEach(role => {
-            if (role.name.toLowerCase() == "dadmin")
-            {
-                clearLvl = 3;
-                return;
-            }
-            if (role.name.toLowerCase() == "admin")
-            {
-                clearLvl = 3;
-                return;
-            
-            }
-            /*
-            if (role.name.toLowerCase() == "moderator")
-            {
-                clearLvl = 2;
-                return;
-            }
-            if (role.name.toLowerCase() == "helper")
-            {
-                clearLvl = 1;
-                return;
-            }
-            if (role.name.toLowerCase() == "staff")
-            {
-                clearLvl = 1;
-                return;
-            }
-        //console.log(role.name);
-        */
-    });
-    if (message.guild.owner == member) {
+
+    if (message.guild.owner == message.member) {
         clearLvl = 4;
     }
+
+    message.member.roles.forEach(role => {
+        switch(role.name.toLowerCase()) {
+            case "super trusted":   //remove ASAP
+                if (clearLvl < 3) {
+                    clearLvl = 3;
+                }
+                break;
+            
+            case "admin":
+                if (clearLvl < 3) {
+                    clearLvl = 3;
+                }
+                break;
+            
+            case "moderator":
+                if (clearLvl < 2) {
+                    clearLvl = 2;
+                }
+                break;
+        }
+    });
     return clearLvl;
 },
 

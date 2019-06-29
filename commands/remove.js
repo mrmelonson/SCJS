@@ -5,6 +5,7 @@ module.exports = {
     description: 'Removes roles from you',
     syntax: '`kremove [role]`',
     aliases: ['r'],
+    clearlvl: 0,
 	execute(message, args, client) {
         var roleName = args.join(' ');
         roleName = roleName.toLowerCase();

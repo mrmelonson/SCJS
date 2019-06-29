@@ -2,6 +2,7 @@ module.exports = {
 	name: 'roll',
     description: 'Rolls a dice',
     syntax: '`kroll [# of sides]`',
+    clearlvl: 0,
 	execute(message, args, client) {
         var num = parseInt(args[0], 10);
         if (Number.isNaN(num)) {

@@ -4,6 +4,7 @@ module.exports = {
 	name: 'info',
     description: 'Gives Info about the bot',
     syntax: '`kinfo`',
+    clearlvl: 0,
 	execute(message, args, client) {
         function pad(n, z) {
             z = z || 2;
