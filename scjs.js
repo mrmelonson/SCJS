@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const token = require("./token.json");
+const token = require("./private/token.json");
 const constants = require("./constants.json");
 const logger = require("./logging");
 const db = require("./db");
@@ -17,13 +17,13 @@ const readline = require('readline').createInterface({
 });
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
 }
 
 for (const file of staffcommandFiles) {
-	const command = require(`./commands/staffcommands/${file}`);
-	client.commands.set(command.name, command);
+    const command = require(`./commands/staffcommands/${file}`);
+    client.commands.set(command.name, command);
 }
 
 
@@ -40,30 +40,32 @@ var responceSwear = ["Swearing?!? In *MY* christain server?!",
 */
 
 var responceowo = ["whats this?",
-                    "*Notices bulge*",
-                    "OWOwOWO *Notices OwO*",
-                    "UwU",
-                    "Bitch be OwO'n"];
+    "*Notices bulge*",
+    "OWOwOWO *Notices OwO*",
+    "UwU",
+    "Bitch be OwO'n"
+];
 
 /*
 var zeltrigger = ["piss", "pee", "omorashi", "urine", "toilet", "urinal", "bladder"];
 var canpingzel = true;
 */
 
-client.on("ready", async=> {
+client.on("ready", async =>{
     logger.log("\nBOT START...\n")
     client.user.setActivity(`khelp`);
 });
 
 client.on("message", async msg => {
-    
-    if (msg.author.bot) { return; }
 
-    if(msg.content.substring(0,4).toLocaleLowerCase() == "awoo") {
+    if (msg.author.bot) {
+        return;
+    }
+
+    if (msg.content.substring(0, 4).toLocaleLowerCase() == "awoo") {
         if (awoochannel == null) {
             awoochannel = msg.channel;
-        }
-        else if(msg.channel == awoochannel) {
+        } else if (msg.channel == awoochannel) {
             awoocounter++;
         }
 
@@ -72,8 +74,7 @@ client.on("message", async msg => {
             awoocounter = 0;
             awoochannel = null;
         }
-    } 
-    else{ 
+    } else {
         if (awoocounter > 0) {
             logger.warn("awoo streak ended");
         }
@@ -81,73 +82,76 @@ client.on("message", async msg => {
         awoochannel = null;
     }
 
-/*
-    for (var i = 0; i < swear.length; i++) {
-        if (msg.content.toLowerCase().includes(swear[i])) {
-            var x;
-            msg.channel.send(responceSwear[Math.floor(Math.random() * 5)]);
-            if(db[msg.author.id] == null) {
-                db[msg.author.id] = {};
-                db[msg.author.id].sin_counter = 1;
+    /*
+        for (var i = 0; i < swear.length; i++) {
+            if (msg.content.toLowerCase().includes(swear[i])) {
+                var x;
+                msg.channel.send(responceSwear[Math.floor(Math.random() * 5)]);
+                if(db[msg.author.id] == null) {
+                    db[msg.author.id] = {};
+                    db[msg.author.id].sin_counter = 1;
+                }
+                db[msg.author.id].sin_counter++;
+                jsonString = JSON.stringify(db, null, 2)
+                fs.writeFileSync('./db.json', jsonString)
+                break;
             }
-            db[msg.author.id].sin_counter++;
-            jsonString = JSON.stringify(db, null, 2)
-            fs.writeFileSync('./db.json', jsonString)
-            break;
         }
-    }
-*/
+    */
 
-if (msg.content.toLowerCase().includes('owo')) {
+    if (msg.content.toLowerCase().includes('owo')) {
         msg.channel.send(responceowo[Math.floor(Math.random() * 5)]);
-}
+    }
 
-/*
-if (canpingzel) {
-    for (let i = 0; i < zeltrigger.length; i++) {
-        if (msg.content.toLowerCase().includes(zeltrigger[i])) {
-            canpingzel = false;
+    /*
+    if (canpingzel) {
+        for (let i = 0; i < zeltrigger.length; i++) {
+            if (msg.content.toLowerCase().includes(zeltrigger[i])) {
+                canpingzel = false;
 
-            setTimeout(function () {
-                canpingzel = true;
-                msg.channel.send("<@428938341036326912>")
-            }, 300000);
+                setTimeout(function () {
+                    canpingzel = true;
+                    msg.channel.send("<@428938341036326912>")
+                }, 300000);
 
+            }
         }
     }
-}
-*/
-    if (msg.content.toLowerCase().indexOf(constants.prefix)) { return; }
-
-    //format args and command
+    */
+    if (msg.content.toLowerCase().indexOf(constants.prefix)) {
+        return;
+    }
     const args = msg.content.slice(constants.prefix.length).trim().split(" ");
-    const command = args.shift().toLocaleLowerCase();
+    const commandName = args.shift().toLocaleLowerCase();
 
-    if (!client.commands.has(command)) return;
+    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+	if (!command) return;
 
     try {
-        console.log(utilities.ModLevel(msg));
-        if (client.commands.get(command).clearlvl <= utilities.ModLevel(msg)) {
-            client.commands.get(command).execute(msg, args, client);
+        if (command.clearlvl <= utilities.ModLevel(msg)) {
+                command.execute(msg, args, client);
         } else {
             throw "Forbidden";
         }
-        logger.log(msg.author.tag + " used command: [" + command + "] with args: [" + args.toLocaleString() + "]");
-    }
-    catch (err) {
+        logger.log(msg.author.tag + " used command: [" + command.name + "] with args: [" + args.toLocaleString() + "]");
+    } catch (err) {
         if (err == "Forbidden") {
-            logger.warn(msg.author.tag +" tried running forbidden command, [" + command + "]");
-            msg.reply("Sorry this command can only be run by staff");
-        }
-        else {
-            logger.warn(msg.author.tag +" command failed, [" + command + "]");
+            logger.warn(msg.author.tag + " tried running forbidden command, [" + command.name + "]");
+            if (utilities.ModLevel(msg) >= 1) {
+                msg.reply(`Sorry you must have clearence level ${command.clearlvl} or above to run this command`);
+            } else {
+                msg.reply("Sorry this command can only be run by staff");
+            }
+        } else {
+            logger.warn(msg.author.tag + " command failed, [" + command.name + "]");
             logger.warn(err);
         }
     }
 });
 
 client.on("guildCreate", guild => {
-    logger.log("I have joined a server (" + guild.name + ")");   
+    logger.log("I have joined a server (" + guild.name + ")");
 });
 
 client.on("guildDelete", guild => {

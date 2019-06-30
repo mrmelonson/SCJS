@@ -1,10 +1,9 @@
 
 *.yml
-
 node_modules/
 token.json
 logs/Tue Jul 31 2018.txt
 *.txt
 package-lock.json
 db.json
-db.json
+.private/scjs-database-firebase-adminsdk-pfriu-dfa32da14b.json

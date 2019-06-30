@@ -2,14 +2,16 @@ const logger = require("../logging");
 const contstants = require("../constants.json")
 
 module.exports = {
-	name: 'help',
-	description: 'Get Help!',
+    name: 'help',
+    description: 'Get Help!',
     syntax: '`khelp`',
     clearlvl: 0,
-	execute(message, args, client) {
+    execute(message, args, client) {
         const commandlists = [];
-        const { commands } = message.client;
-        
+        const {
+            commands
+        } = message.client;
+
         if (!args.length) {
 
             commandlists.push("**These are your available commands**\n\n");
@@ -23,7 +25,7 @@ module.exports = {
                 logger.log("Success, " + message.author.tag + " has recived help.");
             }).catch((err) => {
                 message.reply("I cannot message you. Here are your commands:\n" +
-                                    commandlists.join(''));
+                    commandlists.join(''));
                 logger.warn("Failed sending message to chat. Error:" + err);
             });
             return;
@@ -42,7 +44,9 @@ module.exports = {
         if (command.description) commandlists.push(`**Description: ** ${command.description}`);
         if (command.syntax) commandlists.push(`**Syntax: ** ${command.syntax}`);
 
-        message.channel.send(commandlists, { split: true });
+        message.channel.send(commandlists, {
+            split: true
+        });
         return;
     },
 };

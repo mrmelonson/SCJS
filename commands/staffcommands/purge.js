@@ -13,8 +13,8 @@ module.exports = {
             return;
         }
     
-        if(num >= 97) {
-            message.reply("Sorry you cannot purge more than 99 messages in one go.");
+        if(num > 97) {
+            message.reply("Sorry you cannot purge more than 98 messages in one go.");
             return;
         }
 

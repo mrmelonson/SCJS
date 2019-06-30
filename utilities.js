@@ -42,9 +42,10 @@ ModLevel: function(message) {
 
     message.member.roles.forEach(role => {
         switch(role.name.toLowerCase()) {
-            case "super trusted":   //remove ASAP
-                if (clearLvl < 3) {
-                    clearLvl = 3;
+
+            case "super admin":   //remove ASAP
+                if (clearLvl < 4) {
+                    clearLvl = 4;
                 }
                 break;
             
