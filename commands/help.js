@@ -1,6 +1,12 @@
 const logger = require("../logging");
 const contstants = require("../constants.json")
 
+/*
+*   TODO
+*   Change command so only staff can see staff commands
+*/ 
+
+
 module.exports = {
     name: 'help',
     description: 'Get Help!',
@@ -18,6 +24,10 @@ module.exports = {
             commandlists.push(commands.map(command => command.name).join("\n"));
             commandlists.push(`\n\nRun \`${contstants.prefix}help [command name]\` to get more info`);
 
+            message.reply("Here are your commands:\n" +
+            commandlists.join(''));
+
+            /*
             message.author.send(commandlists.join('')).then(() => {
                 if (message.channel.type != 'dm') {
                     message.reply("I have sent you your available commands.");
@@ -28,6 +38,8 @@ module.exports = {
                     commandlists.join(''));
                 logger.warn("Failed sending message to chat. Error:" + err);
             });
+            */
+            
             return;
         }
 

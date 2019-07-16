@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const token = require("./private/token.json");
+const token = require("./.private/token.json");
 const constants = require("./constants.json");
 const logger = require("./logging");
 const db = require("./db");

@@ -3,9 +3,9 @@ const utilities = require("../utilities");
 const constant = require("../constants.json");
 
 module.exports = {
-	name: 'ping',
-	description: 'Pings the bot',
-    syntax: '`kping`',
+	name: 'clown',
+	description: 'clown people',
+    syntax: '`kclown [user]`',
     clearlvl: 0,
 	execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);

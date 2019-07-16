@@ -29,7 +29,7 @@ module.exports = {
             return;
         }
 
-        var action = args[0];
+        var action = args[0].toLocaleLowerCase();
         var userId = message.member.id;
         var userId2 = member.id;
 
@@ -98,7 +98,7 @@ module.exports = {
                                 "Boop\n" +
                                 "Punch\n" +
                                 "Snug\n" +
-                                "Nlap\n" +
+                                "Slap\n" +
                                 "Nom\n" +
                                 "```");
         }
