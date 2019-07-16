@@ -10,16 +10,28 @@ module.exports = {
             z = z || 2;
             return ('00' + n).slice(-z);
         }
+        /*
+        var date = new Date(client.uptime);
         
-        var s = client.uptime
-        var ms = s % 1000;
-        s = (s - ms) / 1000;
-        var secs = s % 60;
-        s = (s - secs) / 60;
-        var mins = s % 60;
-        var hrs = (s - mins) / 60;
-        
-        var time = pad(hrs) + 'h ' + pad(mins) + 'm ' + pad(secs) + '.' + pad(ms, 3) + "s";
+        var hrs = date.getHours();
+        var mins = date.getMinutes();
+        var secs = date.getSeconds();
+        var ms = date.getMilliseconds();
+        var days = date.getDay();
+
+        console.log(date.getHours());
+        */
+
+        let totalSeconds = (client.uptime / 1000);
+        let days = Math.floor(totalSeconds / 86400);
+        let hrs = Math.floor(totalSeconds / 3600);
+        totalSeconds %= 3600;
+        let mins = Math.floor(totalSeconds / 60);
+        let secs = totalSeconds % 60;
+
+
+
+        var time = days + 'd ' + hrs + 'h ' + mins + 'm ' + (secs) + 's'; //+ (ms) + "s";
     
         message.channel.send(
             "```" +
