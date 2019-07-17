@@ -29,7 +29,6 @@ module.exports = {
         let mins = Math.floor(totalSeconds / 60);
         let secs = totalSeconds % 60;
         */
-        console.log(client.uptime);
         var s = client.uptime
         var ms = s % 1000;
         s = s / 1000;
