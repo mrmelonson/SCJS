@@ -1,5 +1,6 @@
 const logger = require("../logging");
-const contstants = require("../constants.json")
+const contstants = require("../constants.json");
+const utils = require("../utilities");
 
 /*
 *   TODO
@@ -14,18 +15,33 @@ module.exports = {
     clearlvl: 0,
     execute(message, args, client) {
         const commandlists = [];
+        const staffcommandlist = [];
         const {
             commands
         } = message.client;
 
         if (!args.length) {
 
-            commandlists.push("**These are your available commands**\n\n");
-            commandlists.push(commands.map(command => command.name).join("\n"));
-            commandlists.push(`\n\nRun \`${contstants.prefix}help [command name]\` to get more info`);
+            //commandlists.push("**These are your available commands**\n");
+            
+            commands.forEach(command => {
+                if (command.clearlvl == 0) {
+                    commandlists.push(command.name);
+                }
+                else if(utils.ModLevel(message) >= command.clearlvl) {
+                    staffcommandlist.push(command.name);
+                }
+            });
+
+            //commandlists.push(commands.map(command => command.name).join("\n"));
+            //commandlists.push(`\n\nRun \`${contstants.prefix}help [command name]\` to get more info`);
 
             message.reply("Here are your commands:\n" +
-            commandlists.join(''));
+            "**These are your available commands**\n" + 
+            commandlists.join('\n') +
+            "\n\n**Staff commands:**\n" + 
+            staffcommandlist.join('\n') + 
+            `\n\nRun \`${contstants.prefix}help [command name]\` to get more info`);
 
             /*
             message.author.send(commandlists.join('')).then(() => {
@@ -53,6 +69,7 @@ module.exports = {
         commandlists.push(`**Name:** ${command.name}`);
 
         if (command.aliases) commandlists.push(`**Aliases: ** ${command.aliases.join(', ')}`);
+        if (command.clearlvl > 0) commandlists.push(`**Clearance Level: ** ${command.clearlvl}`);
         if (command.description) commandlists.push(`**Description: ** ${command.description}`);
         if (command.syntax) commandlists.push(`**Syntax: ** ${command.syntax}`);
 
