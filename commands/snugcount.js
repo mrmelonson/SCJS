@@ -1,5 +1,5 @@
 const utilities = require("../utilities");
-const db = require("../db.json");
+//const db = require("../db.json");
 
 module.exports = {
 	name: 'snugcount',

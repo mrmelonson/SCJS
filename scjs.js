@@ -3,7 +3,7 @@ const client = new Discord.Client();
 const token = require("./.private/token.json");
 const constants = require("./constants.json");
 const logger = require("./logging");
-const db = require("./db");
+//const db = require("./db");
 const fs = require("fs");
 const utilities = require("./utilities")
 
@@ -81,6 +81,7 @@ client.on("message", async msg => {
         awoocounter = 0;
         awoochannel = null;
     }
+    
 
     /*
         for (var i = 0; i < swear.length; i++) {
@@ -144,8 +145,8 @@ client.on("message", async msg => {
                 msg.reply("Sorry this command can only be run by staff");
             }
         } else {
-            logger.warn(msg.author.tag + " command failed, [" + command.name + "]");
-            logger.warn(err);
+            logger.crit(msg.author.tag + " command failed, [" + command.name + "]");
+            logger.crit(err);
         }
     }
 });

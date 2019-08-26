@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
 const constant = require("./constants.json");
 const logger = require("./logging");
-const db = require("./db");
+//const db = require("./db");
 const fs = require("fs");
 
 module.exports = {
+    /*
 Editdb: function(key, value, memberid) {
 
     if(db[memberid] == null) {
@@ -31,6 +32,7 @@ Editdb: function(key, value, memberid) {
     fs.writeFileSync('./db.json', jsonString);
     return;
 },
+*/
 
 
 ModLevel: function(message) {
