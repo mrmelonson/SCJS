@@ -11,28 +11,32 @@ module.exports = {
 	   
 		message.channel.send("Registering users");
 
-		MongoClient.connect(url, function(err, database) {
-			var openDatabase = database.db('test');
-			var myobj = [];
+		MongoClient.connect(url, function(err, db) {
+			var dbo = db.db("discord_test");
+			var query = {};
+			var object = {};
+			var total = 0;
 
 			message.guild.members.forEach(member => {
-				myobj.push({id: `${member.id}`, username: `${member.user.username}`})
+				query = {id: `${member.id}`};
+				object = {id: `${member.id}`, username: `${member.user.username}`};
+
+				dbo.collection(`${message.guild.name}`).updateOne(query, {$set: object}, {upsert:true}, function(err) {
+					if (err) {
+						message.channel.send("Something went wrong.");
+						throw err;
+					}
+
+					logger.log(`Registered User [${member.user.username}]`);
+
+				});
+				total++;
 			});
 
-			message.channel.send(`[${myobj.length}] users to register`);
+			db.close();
+			logger.log(`Registered [${total}] users`);
+			message.channel.send(`Registered [${total}] users`);
 
-			openDatabase.collection(message.guild.name).insertMany(myobj, function(err, res) {
-				if (err) {
-					message.channel.send(`Error, something went wrong :(`);
-					throw err;
-				}
-				logger.log(`Resgistering [${res.insertedCount}] entires`);
-				message.channel.send(`Done, [${res.insertedCount}] users successfully registered into database`);
-				database.close();
-			});
-
-
-		})
-
-    },
+		});
+	}
 };
