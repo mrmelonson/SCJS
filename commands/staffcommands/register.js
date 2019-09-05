@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/mydb";
-const logger = require("../../logging")
+const logger = require("../../logging");
 
 module.exports = {
 	name: 'register',
@@ -8,7 +8,7 @@ module.exports = {
 	syntax: '`kregister`',
 	clearlvl: 2,
 	execute(message, args, client) {
-	   
+
 		message.channel.send("Registering users");
 
 		MongoClient.connect(url, function(err, db) {

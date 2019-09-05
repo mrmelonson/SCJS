@@ -159,6 +159,16 @@ client.on("guildDelete", guild => {
     logger.warn("I have been kicked/Banned from a server (" + guild.name + ")");
 });
 
+client.on("guildMemberAdd", member => {
+    logger.log(`User [${member.user.username}] has joined [${member.guild.name}]`);
+    utilities.RegisterUser(member);
+});
+
+client.on("guildMemberRemove", member => {
+    logger.log(`User [${member.user.username}] has left [${member.guild.name}]`);
+    utilities.RemoveUser(member);
+});
+
 /*
 readline.question("",(text) => {
         var words = text.trim().split(" ");
