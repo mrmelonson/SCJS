@@ -7,31 +7,55 @@ const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/mydb";
 
 module.exports = {
-    /*
-Editdb: function(key, value, memberid) {
+Editdb: function(key, value, option, member) {
 
-    if(db[memberid] == null) {
-        db[memberid] = {};
-    }
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db('discord_test');
+        var query = {"id" : `${member.id}`};
+        var myobj = {};
+        dbo.collection(`${member.guild.name}`).findOne(query, function(err, res) {
+            if (err) throw err;
+            myobj = res;
+            console.log(myobj);
+
+            if (myobj == null) {
+                myobj = {id: `${member.id}`, username: `${member.user.username}`};
+                console.log("hererererer");
+            }
     
-    if(db[memberid][key] == null) {
-        db[memberid][key] = 0    if (value.includes('+')) {
-        db[memberid][key] += parseInt(value.slice(1));
-    } 
-    else if (value.includes('-')) {
-        db[memberid][key] -= parseInt(value.slice(1));
-    }
-    else {
-        db[memberid][key] = value;
-    }
-    if (db[memberid][key] < 0) {
-        db[memberid][key] = 0;
-    }
-    jsonString = JSON.stringify(db, null, 2);
-    fs.writeFileSync('./db.json', jsonString);
+            if (option == "inc") {
+    
+                if (myobj[key] == null) {
+                    myobj[key] = 0;
+                    console.log("Sklfjslkrfjsalkfjklwsjf");
+                }
+    
+                if (value.includes('-')) {
+                    myobj[key] -= parseInt(value.slice(1));
+                }
+    
+                if (value.includes('+')) {
+                    myobj[key] += parseInt(value.slice(1));
+                    console.log(myobj[key]);
+                }
+    
+                if (myobj[key] < 0) {
+                    myobj[key] = 0;
+                }
+    
+            } else if (option = "set") {
+                myobj[key] = value;
+            }
+    
+            dbo.collection(`${member.guild.name}`).updateOne(query, {$set: myobj}, {upsert:true}, function(err) {
+                if (err) throw err;
+            });
+            db.close();
+        });
+    });
     return;
 },
-*/
 
 RegisterUser: function(member) {
     MongoClient.connect(url, function(err, db) {
@@ -46,6 +70,7 @@ RegisterUser: function(member) {
         });
         db.close();
     });
+    return;
 },
 
 RemoveUser: function(member) {
@@ -60,6 +85,7 @@ RemoveUser: function(member) {
         });
         db.close();
     });
+    return;
 },
 
 
@@ -73,6 +99,12 @@ ModLevel: function(message) {
     message.member.roles.forEach(role => {
         switch(role.name.toLowerCase()) {
 
+            case "bot tester":
+                if (clearLvl < 4) {
+                    clearLvl = 4;
+                }
+                break;
+            
             case "super admin":   //remove ASAP
                 if (clearLvl < 4) {
                     clearLvl = 4;
@@ -95,6 +127,7 @@ ModLevel: function(message) {
     return clearLvl;
 },
 
+/*
 PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, promoteToLevel) {
     mentionedUser.roles.forEach( role => {
         if (role.name.toLowerCase() == "staff" || role.name.toLowerCase() == "helper" || role.name.toLowerCase() == "moderator" || role.name.toLowerCase() == "admin") {
@@ -110,12 +143,11 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
         3 : "dadmin"
     }
     
-    /*
+    
     if (modLevel <= promoteToLevel) {
         throw('Permission Denied');
         return;
     }
-    */
     
     if (promoteToLevel < 1) {
         message.channel.send("<@" + mentionedUser.id+ ">, You have been demoted to user");
@@ -137,6 +169,8 @@ PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, pr
     
     return;
     },
+    */
 
 };
+
 
