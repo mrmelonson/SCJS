@@ -17,18 +17,15 @@ Editdb: function(key, value, option, member) {
         dbo.collection(`${member.guild.name}`).findOne(query, function(err, res) {
             if (err) throw err;
             myobj = res;
-            console.log(myobj);
 
             if (myobj == null) {
                 myobj = {id: `${member.id}`, username: `${member.user.username}`};
-                console.log("hererererer");
             }
     
             if (option == "inc") {
     
                 if (myobj[key] == null) {
                     myobj[key] = 0;
-                    console.log("Sklfjslkrfjsalkfjklwsjf");
                 }
     
                 if (value.includes('-')) {
@@ -37,7 +34,6 @@ Editdb: function(key, value, option, member) {
     
                 if (value.includes('+')) {
                     myobj[key] += parseInt(value.slice(1));
-                    console.log(myobj[key]);
                 }
     
                 if (myobj[key] < 0) {
