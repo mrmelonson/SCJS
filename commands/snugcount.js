@@ -11,10 +11,9 @@ module.exports = {
     clearlvl: 0,
 	execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);
-        
-        member = member.user;
-
-        if (!member) {
+        if (member) {
+            member = member.user;
+        } else if (!member) {
             member = message.author;
         }
 
