@@ -14,7 +14,7 @@ Editdb: function(key, value, option, member) {
         var dbo = db.db('discord_test');
         var query = {"id" : `${member.id}`};
         var myobj = {};
-        dbo.collection(`${member.guild.id}`).findOne(query, function(err, res) {
+        dbo.collection(`_${member.guild.id}`).findOne(query, function(err, res) {
             if (err) throw err;
             myobj = res;
 
@@ -44,7 +44,7 @@ Editdb: function(key, value, option, member) {
                 myobj[key] = value;
             }
     
-            dbo.collection(`${member.guild.id}`).updateOne(query, {$set: myobj}, {upsert:true}, function(err) {
+            dbo.collection(`_${member.guild.id}`).updateOne(query, {$set: myobj}, {upsert:true}, function(err) {
                 if (err) throw err;
             });
             db.close();
@@ -60,7 +60,7 @@ RegisterUser: function(member) {
         var query = {id: `${member.id}`};
         var object = {id: `${member.id}`, username: `${member.user.username}`};
 
-        dbo.collection(`${member.guild.id}`).updateOne(query, {$set: object}, {upsert:true}, function(err) {
+        dbo.collection(`_${member.guild.id}`).updateOne(query, {$set: object}, {upsert:true}, function(err) {
             if (err) throw err;
             logger.log(`Registered User [${member.user.username}]`);
         });
@@ -75,7 +75,7 @@ RemoveUser: function(member) {
         var dbo = db.db("discord_test");
         var query = {id: `${member.id}`};
 
-        dbo.collection(`${member.guild.id}`).remove(query, function(err, Res) {
+        dbo.collection(`_${member.guild.id}`).remove(query, function(err, Res) {
             if (err) throw err;
             console.log(`Removed user [${member.user.username}] from database`);
         });
