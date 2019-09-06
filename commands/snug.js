@@ -18,21 +18,21 @@ module.exports = {
 
         if (member.id == constant.SCID) {
             message.channel.send(">///< T-Thank you, " + message.author.username + ".");
-            utilities.Editdb("snugreceive", "+1", constant.SCID);
-            utilities.Editdb("snuggive", "+1", message.author.id);
+            utilities.Editdb("snugreceive", "+1", "inc", member);
+            utilities.Editdb("snuggive", "+1", "inc",message.member);
             return;
         }
 
         if (member.id == message.author.id) {
             message.channel.send("You have snugged yourself, Now thats lonely! (loneliness level +1)");
-            utilities.Editdb("lonelylvl", "+1", message.author.id);
+            utilities.Editdb("lonelylvl", "+1", "inc",message.member);
             return;
         }
 
         message.channel.send("<@" + member.id + "> has been snuggled by " + message.author.username + "!");
-        utilities.Editdb("snugreceive", "+1", member.id);
-        utilities.Editdb("snuggive", "+1", message.author.id);
-        utilities.Editdb("lonelylvl", "-1", member.id);
+        utilities.Editdb("snugreceive", "+1", "inc", member);
+        utilities.Editdb("snuggive", "+1", "inc", message.member);
+        utilities.Editdb("lonelylvl", "-1", "inc", member);
         return;
     },
 };
