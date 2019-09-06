@@ -23,13 +23,13 @@ module.exports = {
 
         if (member.id == message.author.id) {
             message.channel.send("You have clowned yourself, Congrats");
-            utilities.Editdb("lonelylvl", "+1", message.author.id);
+            utilities.Editdb("lonelylvl", "+1", "inc", message.author.id);
             return;
         }
 
         message.channel.send(":clown: <@" + member.id + "> just got clown'd on lmao :clown:");
-        utilities.Editdb("clowncount", "+1", member.id);
-        utilities.Editdb("clowncount", "-1", message.author.id);
+        utilities.Editdb("clowncount", "+1" , "inc", member.id);
+        utilities.Editdb("clowncount", "-1", "inc", message.author.id);
         return;
     },
 };
