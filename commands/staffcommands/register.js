@@ -21,7 +21,7 @@ module.exports = {
 				query = {id: `${member.id}`};
 				object = {id: `${member.id}`, username: `${member.user.username}`};
 
-				dbo.collection(`_${message.guild.id}`).updateOne(query, {$set: object}, {upsert:true}, function(err) {
+				dbo.collection(`${message.guild.id}`).updateOne(query, {$set: object}, {upsert:true}, function(err) {
 					if (err) {
 						message.channel.send("Something went wrong.");
 						throw err;
