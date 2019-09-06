@@ -21,7 +21,7 @@ module.exports = {
             var dbo = db.db("discord_test");
             var query = {id: `${member.id}`};
             
-            dbo.collection(`${message.guild.name}`).findOne(query, function(err, object) {
+            dbo.collection(`${message.guild.id}`).findOne(query, function(err, object) {
                 if (err) throw err;
 
                 var snugreceive = 0;
