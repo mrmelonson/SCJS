@@ -12,6 +12,8 @@ module.exports = {
 	execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);
         
+        member = member.user;
+
         if (!member) {
             member = message.author;
         }
