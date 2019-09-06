@@ -48,8 +48,8 @@ module.exports = {
                 message.channel.send("```" +
                                     `Username: ${member.username}\n` +
                                     `\n` +
-                                    `Snugs Given: ${snugreceive}\n` +
-                                    `Snugs Received: ${snuggive}\n` +
+                                    `Snugs Given: ${snuggive}\n` +
+                                    `Snugs Received: ${snugreceive}\n` +
                                     `# of times clowned: ${clowncount}\n` +
                                     `Loneliness Level: ${lonelylvl}` +
                                     "```");
