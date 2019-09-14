@@ -82,6 +82,12 @@ client.on("message", async msg => {
         awoochannel = null;
     }
     
+    if (msg.content.toLowerCase().includes('nigger') || msg.content.toLowerCase().includes('nigga')) {
+        if (!(msg.member.roles.find(r => r.name.toLowerCase() === "n-word pass"))) {
+            msg.delete();
+            logger.log(`${msg.member.user.username} does not have the n-word pass`);
+        }
+    }
 
     /*
         for (var i = 0; i < swear.length; i++) {
