@@ -1,8 +1,8 @@
-const Discord = require("discord.js");
-const constant = require("./constants.json");
+//const Discord = require("discord.js");
+//const constant = require("./constants.json");
 const logger = require("./logging");
 //const db = require("./db");
-const fs = require("fs");
+//const fs = require("fs");
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/mydb";
 
