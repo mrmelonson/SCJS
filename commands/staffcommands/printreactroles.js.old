@@ -1,0 +1,28 @@
+const logger = require("../../logging");
+
+module.exports = {
+	name: 'printreactroles',
+	description: 'Prints the roles and gives a reaction for each role',
+	syntax: '`kprintreactroles [channelID](optional)`',
+	clearlvl: 3,
+	execute(message, args, client) {
+        let channelid = args[0];
+        
+        if (!channelid) {
+            message.reply("Incorrect Syntax: `kprintreactroles [channelID]`");
+            return;
+        }
+
+        var channel = message.guild.channels.get(channelid);
+
+        if (!channel) {
+            message.reply("Channel does not exist");
+            return;
+        }
+        channel.send("**React to any of the messages to assign that role to yourself!**");
+        message.guild.roles.forEach(role => {
+            channel.send(`**${role.name}**`).then(message => message.react('✅'));
+        });
+        return;
+    },
+};
