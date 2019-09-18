@@ -89,42 +89,12 @@ client.on("message", async msg => {
         }
     }
 
-    /*
-        for (var i = 0; i < swear.length; i++) {
-            if (msg.content.toLowerCase().includes(swear[i])) {
-                var x;
-                msg.channel.send(responceSwear[Math.floor(Math.random() * 5)]);
-                if(db[msg.author.id] == null) {
-                    db[msg.author.id] = {};
-                    db[msg.author.id].sin_counter = 1;
-                }
-                db[msg.author.id].sin_counter++;
-                jsonString = JSON.stringify(db, null, 2)
-                fs.writeFileSync('./db.json', jsonString)
-                break;
-            }
-        }
-    */
+    if (msg.content.toLocaleLowerCase().includes(''))
 
     if (msg.content.toLowerCase().includes('owo')) {
         msg.channel.send(responceowo[Math.floor(Math.random() * 5)]);
     }
 
-    /*
-    if (canpingzel) {
-        for (let i = 0; i < zeltrigger.length; i++) {
-            if (msg.content.toLowerCase().includes(zeltrigger[i])) {
-                canpingzel = false;
-
-                setTimeout(function () {
-                    canpingzel = true;
-                    msg.channel.send("<@428938341036326912>")
-                }, 300000);
-
-            }
-        }
-    }
-    */
     if (msg.content.toLowerCase().indexOf(constants.prefix)) {
         return;
     }
@@ -174,17 +144,5 @@ client.on("guildMemberRemove", member => {
     logger.log(`User [${member.user.username}] has left [${member.guild.name}]`);
     utilities.RemoveUser(member);
 });
-
-/*
-readline.question("",(text) => {
-        var words = text.trim().split(" ");
-        var channelid = words.shift().toLocaleLowerCase();
-        var chan = client.channels.get(channelid);
-        
-        chan.send(words.join(" "));
-        logger.log("User input from command line;");
-        logger.log("'" + words + "' to channel '" + chan.name + "' in '" + chan.guild.name + "'");
-});
-*/
 
 client.login(token.token);
