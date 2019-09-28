@@ -48,7 +48,7 @@ module.exports = {
         */
 
         var time = days + 'd ' + hrs + 'h ' + mins + 'm ' + pad(secs) + '.' + pad(ms, 3) + "s";
-    
+        /*
         message.channel.send(
             "```" +
             "   _____ ______    _______\n" +
@@ -64,6 +64,41 @@ module.exports = {
             "\n Up-time: " + time +
             "```" +
             "Github: http://github.com/mrmelonson/SCJS"
-        );
+        );*/
+
+        var scjs_logo = "```" +
+        "   _____ ______    _______\n" +
+        "  / ___// ____/   / / ___/\n" +
+        "  \\__ \\/ /   __  / /\\__ \\ \n" +
+        " ___/ / /___/ /_/ /___/ / \n" +
+        "/____/\\____/\\____//____/  " +
+        "v" + constant.versionNum +
+        "```";
+
+        var scjs_info = "\n **Created by:** Zelenyy" +
+        "\n **Written in**: Node JS" +
+        "\n **Num of servers serving:** " + client.guilds.size +
+        "\n **Recorded ping:** " + Math.round(client.ping) + "ms" +
+        "\n **Up-time:** " + time +
+        "\n **[Github](http://github.com/mrmelonson/SCJS)**"
+        
+        var colour = Math.floor(Math.random() * 16777215); 
+
+        message.channel.send({
+            "embed": {
+            "description": scjs_logo,
+            "color": colour,
+            "timestamp": new Date(),
+            "author": {
+                "name": client.user.username,
+                "icon_url" : client.user.avatarURL
+            },
+            "fields": [
+                {
+                    "name": "Info",
+                    "value": scjs_info
+                }]
+            }
+        });
     },
 };
