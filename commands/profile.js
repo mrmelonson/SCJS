@@ -2,11 +2,12 @@ const utilities = require("../utilities");
 //const db = require("../db.json");
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/mydb";
+const consts = require("../constants.json");
 
 module.exports = {
 	name: 'profile',
 	description: 'See your/others profile',
-    syntax: '`kproflie [user](optional)`',
+    syntax: `\`${consts.prefix}proflie [user](optional)\``,
     aliases: ['prof'],
     clearlvl: 0,
 	execute(message, args, client) {

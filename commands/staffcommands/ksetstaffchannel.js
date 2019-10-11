@@ -1,11 +1,12 @@
 const logger = require("../../logging");
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/mydb";
+const consts = require("../../constants.json");
 
 module.exports = {
 	name: 'setstaffchannel',
 	description: 'Prints the roles and gives a reaction for each role',
-	syntax: '`ksetctaffchannel [channelID]`',
+	syntax: `\`${consts.prefix}setctaffchannel [channelID]\``,
 	clearlvl: 3,
 	execute(message, args, client) {
         var channel = message.guild.channels.get(args[0]);

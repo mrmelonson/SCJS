@@ -3,7 +3,7 @@ const constant = require("../constants.json")
 module.exports = {
 	name: 'info',
     description: 'Gives Info about the bot',
-    syntax: '`kinfo`',
+    syntax: `\`${constant.prefix}info\``,
     clearlvl: 0,
 	execute(message, args, client) {
         function pad(n, z) {

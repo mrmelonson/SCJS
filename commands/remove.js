@@ -1,9 +1,10 @@
 const logger = require("../logging");
+const consts = require("../constants.json");
 
 module.exports = {
 	name: 'remove',
     description: 'Removes roles from you',
-    syntax: '`kremove [role]`',
+    syntax: `\`${consts.prefix}remove [role]\``,
     aliases: ['r'],
     clearlvl: 0,
 	execute(message, args, client) {
@@ -11,7 +12,7 @@ module.exports = {
         roleName = roleName.toLowerCase();
 
         if(args.length == 0) {
-            message.channel.send("Incorrect syntax : `kremove role`");
+            message.channel.send(`Incorrect syntax : \`${this.syntax}\``);
             logger.log(message.member.user.tag + " used kremove without args");
             return;
         }

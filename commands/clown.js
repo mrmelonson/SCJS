@@ -5,14 +5,14 @@ const constant = require("../constants.json");
 module.exports = {
 	name: 'clown',
 	description: 'clown people',
-    syntax: '`kclown [user]`',
+    syntax: `\`${constant.prefix}clown [user]\``,
     clearlvl: 0,
 	execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);
 
         if (!member) {
             logger.log(message.author.tag +": Failed snug command incorrect syntax");
-            message.channel.send("Incorrect syntax, please mention user: `kclown [user]`");
+            message.channel.send(`Incorrect syntax, please mention user: \`${this.syntax}\``);
             return;
         }
 

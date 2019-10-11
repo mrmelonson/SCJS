@@ -1,11 +1,12 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/mydb";
 const logger = require("../../logging");
+const consts = require("../../constants.json");
 
 module.exports = {
 	name: 'register',
 	description: 'Registers users to database',
-	syntax: '`kregister`',
+	syntax: `\`${consts.prefix}register\``,
 	clearlvl: 2,
 	execute(message, args, client) {
 

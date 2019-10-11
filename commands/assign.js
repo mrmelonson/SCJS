@@ -1,9 +1,10 @@
 const logger = require("../logging");
+const consts = require("../constants.json");
 
 module.exports = {
 	name: 'assign',
     description: 'Assigns roles to you',
-    syntax: '`kassign [role]`',
+    syntax: `\`${consts.prefix}assign [role]\``,
     aliases: ['a'],
     clearlvl: 0,
 	execute(message, args, client) {
@@ -11,7 +12,7 @@ module.exports = {
         roleName = roleName.toLowerCase();
 
         if(args.length == 0) {
-            message.channel.send("Incorrect syntax : `kassign role`");
+            message.channel.send(`Incorrect syntax : \`${this.syntax}\``);
             logger.log(message.member.user.tag + " used kassign without args");
             return;
         }

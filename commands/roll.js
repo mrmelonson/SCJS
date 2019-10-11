@@ -1,7 +1,9 @@
+const consts = require("../constants.json");
+
 module.exports = {
 	name: 'roll',
     description: 'Rolls a dice',
-    syntax: '`kroll [# of sides]`',
+    syntax: `\`${consts.prefix}roll [# of sides]\``,
     clearlvl: 0,
 	execute(message, args, client) {
         var num = parseInt(args[0], 10);

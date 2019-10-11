@@ -1,15 +1,16 @@
 const logger = require("../../logging");
+const consts = require("../../constants.json");
 
 module.exports = {
 	name: 'purge',
 	description: 'Purges messages',
-	syntax: '`kpurge [num of msgs]`',
+	syntax: `\`${consts.prefix}purge [num of msgs]\``,
 	clearlvl: 3,
 	execute(message, args, client) {
         let num = parseInt(args[0], 10);
     
         if (Number.isNaN(num)) {
-            message.reply("please use a number. `kpurge [number of msgs]`");
+            message.reply(`please use a number. \`${this.syntax}\``);
             return;
         }
     
