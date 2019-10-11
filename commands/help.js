@@ -1,6 +1,7 @@
 const logger = require("../logging");
 const contstants = require("../constants.json");
 const utils = require("../utilities");
+const consts = require("../constants.json");
 
 /*
 *   TODO
@@ -11,7 +12,7 @@ const utils = require("../utilities");
 module.exports = {
     name: 'help',
     description: 'Get Help!',
-    syntax: '`khelp`',
+    syntax: `\`${contstants.prefix}help\``,
     clearlvl: 0,
     execute(message, args, client) {
         const commandlists = [];
@@ -32,29 +33,30 @@ module.exports = {
                     staffcommandlist.push(command.name);
                 }
             });
-
-            //commandlists.push(commands.map(command => command.name).join("\n"));
-            //commandlists.push(`\n\nRun \`${contstants.prefix}help [command name]\` to get more info`);
-
-            message.reply("Here are your commands:\n" +
-            "**These are your available commands**\n" + 
-            commandlists.join('\n') +
-            "\n\n**Staff commands:**\n" + 
-            staffcommandlist.join('\n') + 
-            `\n\nRun \`${contstants.prefix}help [command name]\` to get more info`);
-
-            /*
-            message.author.send(commandlists.join('')).then(() => {
-                if (message.channel.type != 'dm') {
-                    message.reply("I have sent you your available commands.");
-                }
-                logger.log("Success, " + message.author.tag + " has recived help.");
-            }).catch((err) => {
-                message.reply("I cannot message you. Here are your commands:\n" +
-                    commandlists.join(''));
-                logger.warn("Failed sending message to chat. Error:" + err);
+            var fields = [];
+            fields.push({
+                "name" : "**User Commands**",
+                "value" : `\`\`\`${commandlists.join('\n')}\`\`\``
             });
-            */
+
+            if(staffcommandlist.length > 0) {
+                fields.push({
+                    "name" : "**Staff Commands**",
+                    "value" : `\`\`\`${staffcommandlist.join('\n')}\`\`\``
+                });
+            }
+
+            fields.push({
+                "name" : "***Need more help?***",
+                "value" : `Run \`${contstants.prefix}help [command name]\` to get more info on the command`
+            });
+
+            message.reply({embed : {
+                "title": "**These are your available commands**",
+                "color": Math.floor(Math.random() * 16777215),
+                "timestamp": new Date(),
+                "fields": fields
+            }});
             
             return;
         }
@@ -66,16 +68,41 @@ module.exports = {
             return message.reply("Invalid command name");
         }
 
-        commandlists.push(`**Name:** ${command.name}`);
+        fields = [];
 
-        if (command.aliases) commandlists.push(`**Aliases: ** ${command.aliases.join(', ')}`);
-        if (command.clearlvl > 0) commandlists.push(`**Clearance Level: ** ${command.clearlvl}`);
-        if (command.description) commandlists.push(`**Description: ** ${command.description}`);
-        if (command.syntax) commandlists.push(`**Syntax: ** ${command.syntax}`);
+        if (command.aliases) {
+            fields.push({
+                "name" : `Aliases:`,
+                "value" : `${command.aliases.join(', ')}`
+            });
+        }
 
-        message.channel.send(commandlists, {
-            split: true
-        });
+        if (command.clearlvl > 0) {
+            fields.push({
+                "name" : `Clearance Level:`,
+                "value" : `${command.clearlvl}`
+            });
+        }
+
+        if (command.description) {
+            fields.push({
+                "name" : `Description:`,
+                "value" : `${command.description}`
+            });
+        }
+        if (command.syntax) {
+            fields.push({
+                "name" : `Syntax:`,
+                "value" : `${command.syntax}`
+            });
+        }
+
+        message.channel.send({embed : {
+            "title": `**${command.name}**`,
+            "color": Math.floor(Math.random() * 16777215),
+            "timestamp": new Date(),
+            "fields": fields
+        }});
         return;
     },
 };
