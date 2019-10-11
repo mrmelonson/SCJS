@@ -6,7 +6,7 @@ const consts = require("../constants.json");
 /*
 *   TODO
 *   Change command so only staff can see staff commands
-*/ 
+*/  
 
 
 module.exports = {
@@ -23,7 +23,6 @@ module.exports = {
 
         if (!args.length) {
 
-            //commandlists.push("**These are your available commands**\n");
             
             commands.forEach(command => {
                 if (command.clearlvl == 0) {
@@ -33,16 +32,19 @@ module.exports = {
                     staffcommandlist.push(command.name);
                 }
             });
+
+
             var fields = [];
+
             fields.push({
                 "name" : "**User Commands**",
-                "value" : `\`\`\`${commandlists.join('\n')}\`\`\``
+                "value" : `\`\`\`\n${commandlists.join('\n')}\`\`\``
             });
 
             if(staffcommandlist.length > 0) {
                 fields.push({
                     "name" : "**Staff Commands**",
-                    "value" : `\`\`\`${staffcommandlist.join('\n')}\`\`\``
+                    "value" : `\`\`\`\n${staffcommandlist.join('\n')}\`\`\``
                 });
             }
 
