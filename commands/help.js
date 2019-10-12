@@ -53,7 +53,7 @@ module.exports = {
                 "value" : `Run \`${contstants.prefix}help [command name]\` to get more info on the command`
             });
 
-            message.reply({embed : {
+            message.channel.send({embed : {
                 "title": "**These are your available commands**",
                 "color": Math.floor(Math.random() * 16777215),
                 "timestamp": new Date(),
