@@ -5,7 +5,7 @@ module.exports = {
     description: 'Gives Info about the bot',
     syntax: `\`${constant.prefix}info\``,
     clearlvl: 0,
-	execute(message, args, client) {
+	async execute(message, args, client) {
         function pad(n, z) {
             z = z || 2;
             return ('00' + n).slice(-z);
@@ -74,8 +74,10 @@ module.exports = {
         "/____/\\____/\\____//____/  " +
         "v" + constant.versionNum +
         "```";
+        
+        var owner = await client.fetchApplication();
 
-        var scjs_info = "\n **Created by:** Zelenyy" +
+        var scjs_info = `\n **Created by:** ${owner.owner.tag}` +
         "\n **Written in**: Node JS" +
         "\n **Num of servers serving:** " + client.guilds.size +
         "\n **Recorded ping:** " + Math.round(client.ping) + "ms" +
