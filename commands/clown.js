@@ -8,7 +8,7 @@ module.exports = {
     syntax: `\`${constant.prefix}clown [user]\``,
     clearlvl: 0,
 	execute(message, args, client) {
-        var member = message.mentions.members.first() || message.guild.members.get(args[1]);
+        var member = message.mentions.members.first() || message.guild.members.get(args[0]);
 
         if (!member) {
             logger.log(message.author.tag +": Failed snug command incorrect syntax");

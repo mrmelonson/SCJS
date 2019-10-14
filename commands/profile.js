@@ -11,7 +11,7 @@ module.exports = {
     aliases: ['prof'],
     clearlvl: 0,
 	execute(message, args, client) {
-        var member = message.mentions.members.first() || message.guild.members.get(args[1]);
+        var member = message.mentions.members.first() || message.guild.members.get(args[0]);
         if (member) {
             member = member;
         } else if (!member) {
@@ -101,3 +101,4 @@ module.exports = {
         return;
     },
 };
+
