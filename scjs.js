@@ -122,7 +122,7 @@ client.on("message", async msg => {
             }
         } else {
             logger.crit(msg.author.tag + " command failed, [" + command.name + "]");
-            logger.crit(err);
+            logger.crit(err.stack);
         }
     }
 });

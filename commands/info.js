@@ -77,7 +77,8 @@ module.exports = {
         
         var owner = await client.fetchApplication();
 
-        var scjs_info = `\n **Created by:** ${owner.owner.tag}` +
+        var scjs_info = `\n **Current prefix**: ${constant.prefix}` +
+        `\n **Created by:** ${owner.owner.tag}` +
         "\n **Written in**: Node JS" +
         "\n **Num of servers serving:** " + client.guilds.size +
         "\n **Recorded ping:** " + Math.round(client.ping) + "ms" +
