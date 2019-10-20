@@ -6,6 +6,8 @@ module.exports = {
 	syntax: `\`${consts.prefix}ping\``,
 	clearlvl: 0,
 	execute(message, args, client) {
-        message.channel.send(":ping_pong: Pong! Average ping: " + Math.round(client.ping) + " miliseconds!");
+		var m = message.channel.send(`:ping_pong: Pong!`).then(msg => {
+			msg.edit(`:ping_pong: Pong! ping: ${msg.createdTimestamp - message.createdTimestamp}ms, websocket: ${Math.round(client.ping)}ms`)
+		});
     },
 };
