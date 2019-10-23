@@ -75,7 +75,7 @@ RemoveUser: function(member) {
         var dbo = db.db("discord_test");
         var query = {id: `${member.id}`};
 
-        dbo.collection(`${member.guild.id}`).remove(query, function(err, Res) {
+        dbo.collection(`${member.guild.id}`).removeOne(query, function(err, Res) {
             if (err) throw err;
             console.log(`Removed user [${member.user.username}] from database`);
         });
