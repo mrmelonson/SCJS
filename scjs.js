@@ -113,13 +113,16 @@ client.on("message", async msg => {
         }
         logger.log(msg.author.tag + " used command: [" + command.name + "] with args: [" + args.toLocaleString() + "]");
     } catch (err) {
-        if (err == "Forbidden") {
+        if (err === "Forbidden") {
             logger.warn(msg.author.tag + " tried running forbidden command, [" + command.name + "]");
             if (utilities.ModLevel(msg) >= 1) {
                 msg.reply(`Sorry you must have clearence level ${command.clearlvl} or above to run this command`);
             } else {
                 msg.reply("Sorry this command can only be run by staff");
             }
+        } else if(err === "Invalid Syntax") {
+            msg.reply(`Invalid syntax: \`${command.syntax}\``);
+            logger.log(`Invaild Syntax error from user [${msg.author.tag}] on command [${command.name}]`);
         } else {
             logger.crit(msg.author.tag + " command failed, [" + command.name + "]");
             logger.crit(err.stack);

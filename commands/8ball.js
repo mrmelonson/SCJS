@@ -15,9 +15,7 @@ module.exports = {
         question = question.toLowerCase();
 
         if (args.length === 0) {
-            message.channel.send(`Incorrect syntax : \`${this.syntax}\``);
-            logger.log(message.member.user.tag + " used 8ball without args");
-            return;
+            throw "Invalid Syntax";
         }
 
         if (!question.endsWith('?')) {

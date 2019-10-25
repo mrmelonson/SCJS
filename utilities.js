@@ -123,6 +123,26 @@ ModLevel: function(message) {
     return clearLvl;
 },
 
+//Make async work somehow?
+
+SetProfileDesc: function(message, desc) {
+    return new Promise((res, rej) => {
+        MongoClient.connect(url, function(err, db) {
+            if (err) rej(err);
+            var dbo = db.db("discord_test");
+            var query = {id: message.member.id};
+            var user = {desc: desc};
+
+            dbo.collection(message.guild.id).updateOne(query, {$set: user}, {upsert:true}, function(err) {
+                if (err) rej(err);
+                logger.log(`Changed user [${message.author.username}] desc to [${desc}]`);
+                db.close();
+                res(message);
+            });
+        });
+    });
+},
+
 /*
 PromoterHelper: function(message, memberlevel, mentionedUser, mentionedlevel, promoteToLevel) {
     mentionedUser.roles.forEach( role => {

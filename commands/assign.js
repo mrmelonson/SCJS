@@ -12,9 +12,7 @@ module.exports = {
         roleName = roleName.toLowerCase();
 
         if(args.length === 0) {
-            message.channel.send(`Incorrect syntax : \`${this.syntax}\``);
-            logger.log(message.member.user.tag + " used kassign without args");
-            return;
+            throw "Invalid Syntax";
         }
 
         var flag = false;

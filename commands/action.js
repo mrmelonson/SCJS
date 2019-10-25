@@ -9,19 +9,7 @@ module.exports = {
     execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[1]);
         if (!member || member == args[0]) {
-            logger.log(message.author.tag +": Failed action command incorrect syntax");
-            message.channel.send(`Incorrect syntax, please mention user: \`${this.syntax}\`` +
-                                "Avaliable actions:\n" +
-                                "```\n" +
-                                "Bap\n" +
-                                "Smooch\n" +
-                                "Boop\n" +
-                                "Punch\n" +
-                                "Snug\n" +
-                                "Slap\n" +
-                                "Nom\n" +
-                                "```");
-            return;
+            throw "Invalid Syntax";
         }
 
         if(member.id == message.member.id) {
