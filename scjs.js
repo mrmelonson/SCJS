@@ -89,8 +89,6 @@ client.on("message", async msg => {
         }
     }
 
-    if (msg.content.toLocaleLowerCase().includes(''))
-
     if (msg.content.toLowerCase().includes('owo')) {
         msg.channel.send(responceowo[Math.floor(Math.random() * 5)]);
     }
