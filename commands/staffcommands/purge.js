@@ -14,14 +14,22 @@ module.exports = {
             return;
         }
     
-        if(num > 97) {
-            message.reply("Sorry you cannot purge more than 98 messages in one go.");
+        if(num > 100) {
+            message.reply("Sorry you cannot purge more than 100 messages in one go.");
             return;
         }
 
         message.channel.send("Purging " + num + " messages now!");
-        num += 2;
         logger.warn(message.author.tag + ": is purging " + num + " messages in #" + message.channel.name);
-        message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
+        message.channel.fetchMessages({limit: num})
+        .then(messages => message.channel.bulkDelete(messages))
+        .catch(err => {
+            if(err.name === "DiscordAPIError") {
+                message.reply('You cannot delete messages older than 14 days old.');
+            } else {
+                message.reply('Something went wrong');
+                logger.crit(err);
+            }
+        });
     },
 };
