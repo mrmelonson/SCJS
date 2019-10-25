@@ -92,6 +92,10 @@ ModLevel: function(message) {
         clearLvl = 4;
     }
 
+    if(message.member.hasPermission('ADMINISTRATOR')) {
+        clearLvl = 3;
+    }
+
     message.member.roles.forEach(role => {
         switch(role.name.toLowerCase()) {
 
