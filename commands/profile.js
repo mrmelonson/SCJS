@@ -47,7 +47,7 @@ module.exports = {
                     lonelylvl = user.lonelylvl;
                 }
 
-                if(user.profile) {
+                if(user.desc) {
                     description = user.desc;
                 }
                 /*
@@ -69,7 +69,7 @@ module.exports = {
                         "url": member.user.avatarURL
                     },
                     "author": {
-                        "name": member.user.username,
+                        "name": `${member.user.username} (ID: ${member.id})`,
                         "icon_url": member.user.avatarURL
                     },
                     "fields": [
