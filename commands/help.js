@@ -55,14 +55,14 @@ module.exports = {
         const name = args[0].toLowerCase();
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
+        if (!command) {
+            return message.reply("Invalid command name");
+        }
+
         var helpEmbed = new discord.RichEmbed()
             .setTitle(`**${command.name}**`)
             .setColor(Math.floor(Math.random() * 16777215))
             .setTimestamp(new Date());
-
-        if (!command) {
-            return message.reply("Invalid command name");
-        }
 
         if (command.aliases) {
             helpEmbed.addField(`Aliases:`, `${command.aliases.join(', ')}`);
