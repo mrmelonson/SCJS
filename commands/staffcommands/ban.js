@@ -4,9 +4,9 @@ const consts = require("../../constants.json");
 module.exports = {
 	name: 'ban',
 	description: 'Bans a member',
-	syntax: `\`${consts.prefix}ban [user/ID] [days of msgs to purge] [reason]\``,
+	syntax: `\`${consts.prefix}ban [user/ID] (days of msgs to purge) (reason)\``,
 	clearlvl: 3,
-	execute(message, args, client) {
+	async execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[0]);
         
         if (member.user.id === client.user.id) {
@@ -30,7 +30,12 @@ module.exports = {
         }
         opts.reason = args.join(' ');
 
-        member.ban(opts);
+        await member.ban(opts).catch(()=> {
+            message.reply(`Sorry i do not have permission to ban this user.`);
+            logger.warn(`User: ${message.author.tag} tried to ban ${member.user.tag}`);
+            return;
+        });
         logger.warn(`[${message.author.tag}] has banned [${member.user.tag}]. Reason: [${opts.reason}] Messages purged (days): [${opts.days}]`);
+        return;
     },
 };
