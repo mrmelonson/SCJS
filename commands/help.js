@@ -35,7 +35,7 @@ module.exports = {
 
             var helpEmbedMain = new discord.RichEmbed()
                 .setTitle(`**These are your available commands**`)
-                .setDescription(`Current prefix: \`${contstants.prefix}\``)
+                .setDescription(`Current prefix: \`${contstants.prefix}\`\nOptional parameters: \`(arg)\`\nMandatory parameters: \`[args]\``)
                 .setColor(Math.floor(Math.random() * 16777215))
                 .setTimestamp(new Date())
                 .addField(`**User Commands**`, `\`\`\`\n${commandlists.join('\n')}\`\`\``);
@@ -60,23 +60,24 @@ module.exports = {
         }
 
         var helpEmbed = new discord.RichEmbed()
-            .setTitle(`**${command.name}**`)
+            .setTitle(`**Command: ${contstants.prefix}${command.name}**`)
             .setColor(Math.floor(Math.random() * 16777215))
+            .setDescription(`Current prefix: \`${contstants.prefix}\`\nOptional parameters: \`(arg)\`\nMandatory parameters: \`[args]\``)
             .setTimestamp(new Date());
 
         if (command.aliases) {
-            helpEmbed.addField(`Aliases:`, `${command.aliases.join(', ')}`);
+            helpEmbed.addField(`**Aliases:**`, `${command.aliases.join(', ')}`);
         }
 
         if (command.clearlvl > 0) {
-            helpEmbed.addField(`Clearance Level:`,  `${command.clearlvl}`);
+            helpEmbed.addField(`**Clearance Level:**`,  `${command.clearlvl}`);
         }
 
         if (command.description) {
-            helpEmbed.addField(`Description:`, `${command.description}`)
+            helpEmbed.addField(`**Description:**`, `${command.description}`)
         }
         if (command.syntax) {
-            helpEmbed.addField(`Syntax:`, `${command.syntax}`);
+            helpEmbed.addField(`**Syntax:**`, `${command.syntax}`);
         }
 
         message.channel.send(helpEmbed);

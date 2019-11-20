@@ -7,7 +7,7 @@ const consts = require("../constants.json");
 module.exports = {
 	name: 'profile',
 	description: 'See your/others profile',
-    syntax: `\`${consts.prefix}proflie [user](optional)\``,
+    syntax: `\`${consts.prefix}proflie (user)\``,
     aliases: ['prof'],
     clearlvl: 0,
 	execute(message, args, client) {
