@@ -28,10 +28,11 @@ module.exports = {
         } else {
             args.splice(0, 1);
         }
-        
+
         opts.reason = args.join(' ');
 
         await member.ban(opts).then(() => {
+            message.reply(`${member.user.tag} has been banned from the server`);
             var extra = "";
             if (opts.reason) {
                 extra = `, reason: ${opts.reason}`;

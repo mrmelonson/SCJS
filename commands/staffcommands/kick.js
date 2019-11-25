@@ -22,12 +22,13 @@ module.exports = {
         var reason = args.join(' ');
 
         await member.kick(reason).then(() => {
+            message.reply(`${member.user.tag} has been kicked from the server`);
             var extra = "";
             if (reason) {
                 extra = `, reason: ${reason}`;
             }
             member.send(`You have been kicked from the server "${message.guild.name}"` + extra).catch(() => {
-                logger.warn(`I cannot message user [${member.user.tag}] reason for kick`);
+            logger.warn(`I cannot message user [${member.user.tag}] reason for kick`);
             });
             logger.warn(`[${message.author.tag}] has kicked [${member.user.tag}]. Reason: [${reason}]`);
         })
