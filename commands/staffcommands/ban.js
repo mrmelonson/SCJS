@@ -28,14 +28,24 @@ module.exports = {
         } else {
             args.splice(0, 1);
         }
+        
         opts.reason = args.join(' ');
 
-        await member.ban(opts).catch(()=> {
+        await member.ban(opts).then(() => {
+            var extra = "";
+            if (opts.reason) {
+                extra = `, reason: ${opts.reason}`;
+            }
+            member.send(`You have been banned from the server "${message.guild.name}"` + extra).catch(() => {
+                logger.warn(`I cannot message user [${member.user.tag}] reason for ban`);
+            });
+            logger.warn(`[${message.author.tag}] has banned [${member.user.tag}]. Reason: [${opts.reason}] Messages purged (days): [${opts.days}]`);
+        })
+        .catch(() => {
             message.reply(`Sorry i do not have permission to ban this user.`);
-            logger.warn(`User: ${message.author.tag} tried to ban ${member.user.tag}`);
-            return;
+            logger.warn(`User [${message.author.tag}] tried to ban [${member.user.tag}], FORBIDDEN`);
         });
-        logger.warn(`[${message.author.tag}] has banned [${member.user.tag}]. Reason: [${opts.reason}] Messages purged (days): [${opts.days}]`);
+
         return;
     },
 };
