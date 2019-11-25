@@ -32,7 +32,10 @@ module.exports = {
         opts.reason = args.join(' ');
 
         await member.ban(opts).then(() => {
-            message.reply(`${member.user.tag} has been banned from the server`);
+            message.reply(`${member.user.tag} has been banned from the server`).then((msg) => {
+                message.delete(5000);
+                msg.delete(5000);
+            });
             var extra = "";
             if (opts.reason) {
                 extra = `, reason: ${opts.reason}`;

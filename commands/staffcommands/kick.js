@@ -22,7 +22,10 @@ module.exports = {
         var reason = args.join(' ');
 
         await member.kick(reason).then(() => {
-            message.reply(`${member.user.tag} has been kicked from the server`);
+            message.reply(`${member.user.tag} has been kicked from the server`).then((msg) => {
+                message.delete(5000);
+                msg.delete(5000);
+            });
             var extra = "";
             if (reason) {
                 extra = `, reason: ${reason}`;
