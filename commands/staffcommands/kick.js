@@ -5,7 +5,7 @@ module.exports = {
 	name: 'kick',
 	description: 'kicks a member',
 	syntax: `\`${consts.prefix}kick (reason)\``,
-	clearlvl: 3,
+	clearlvl: 2,
 	async execute(message, args, client) {
         var member = message.mentions.members.first() || message.guild.members.get(args[0]);
         

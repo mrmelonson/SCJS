@@ -5,7 +5,7 @@ module.exports = {
 	name: 'purge',
 	description: 'Purges messages',
 	syntax: `\`${consts.prefix}purge [num of msgs]\``,
-	clearlvl: 3,
+	clearlvl: 2,
 	execute(message, args, client) {
         let num = parseInt(args[0], 10);
     
