@@ -77,7 +77,7 @@ RemoveUser: function(member) {
 
         dbo.collection(`${member.guild.id}`).removeOne(query, function(err, Res) {
             if (err) throw err;
-            console.log(`Removed user [${member.user.username}] from database`);
+            logger.log(`Removed user [${member.user.username}] from database`);
         });
         db.close();
     });

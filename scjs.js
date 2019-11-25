@@ -84,8 +84,9 @@ client.on("message", async msg => {
     
     if (msg.content.toLowerCase().includes('nigger') || msg.content.toLowerCase().includes('nigga')) {
         if (!(msg.member.roles.find(r => r.name.toLowerCase() === "n-word pass"))) {
-            msg.delete();
-            logger.log(`${msg.member.user.username} does not have the n-word pass`);
+            logger.log(`${msg.author.username} does not have the n-word pass`);
+            await msg.delete();
+            return;
         }
     }
 
@@ -97,7 +98,7 @@ client.on("message", async msg => {
         return;
     }
     const args = msg.content.slice(constants.prefix.length).trim().split(" ");
-    const commandName = args.shift().toLocaleLowerCase();
+    const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
